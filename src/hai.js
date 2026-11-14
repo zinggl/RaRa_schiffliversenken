@@ -1,5 +1,10 @@
 // Ein Weisser Hai, der langsam durchs Meer zieht (unter dem Schiff durch).
 // Dunkler Rücken, heller Bauch – so wie echte Haie.
+// Geheimtipp: 2 Sekunden auf den Hai drücken öffnet die Werkstatt.
+// Solange man drückt, hält der Hai an, und ein goldener Ring füllt sich.
+import { werkstattOeffnen } from './werkstatt/werkstatt.js';
+
+const DRUECKEN_MS = 2000; // so lange muss man auf den Hai drücken
 
 const HAI_SVG = `
 <svg viewBox="0 0 300 120" aria-hidden="true">
@@ -39,9 +44,58 @@ const HAI_SVG = `
   <path d="M256,72 Q272,74 286,67" stroke="#2b3c48" stroke-width="1.3" fill="none"/>
 </svg>`;
 
-export function haiStarten(unterwasser) {
+// Einmal beim Spielstart aufrufen. Der Hai hat eine eigene Ebene über dem Spiel,
+// damit man ihn antippen kann.
+export function haiStarten() {
+  const ebene = document.createElement('div');
+  ebene.className = 'hai-ebene';
   const hai = document.createElement('div');
   hai.className = 'hai';
-  hai.innerHTML = HAI_SVG;
-  unterwasser.appendChild(hai);
+  hai.innerHTML = `
+    <svg class="hai-ring" viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="hai-ring-kreis" cx="50" cy="50" r="48" pathLength="100"/>
+    </svg>
+    ${HAI_SVG}`;
+  ebene.appendChild(hai);
+  document.body.appendChild(ebene);
+  langDrueckenEinrichten(hai);
+}
+
+function langDrueckenEinrichten(hai) {
+  const kreis = hai.querySelector('.hai-ring-kreis');
+  let start = null;
+  let bild = null;
+
+  const abbrechen = () => {
+    start = null;
+    cancelAnimationFrame(bild);
+    kreis.style.strokeDashoffset = 100;
+    hai.classList.remove('drueckt'); // Hai schwimmt weiter
+  };
+
+  // Ring füllen, solange der Finger drauf bleibt
+  const weiter = () => {
+    if (start === null) return;
+    const anteil = Math.min((performance.now() - start) / DRUECKEN_MS, 1);
+    kreis.style.strokeDashoffset = 100 - anteil * 100;
+    if (anteil >= 1) {
+      abbrechen();
+      if (navigator.vibrate) navigator.vibrate(50);
+      werkstattOeffnen();
+      return;
+    }
+    bild = requestAnimationFrame(weiter);
+  };
+
+  hai.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    if (document.querySelector('.werkstatt')) return;
+    start = performance.now();
+    hai.classList.add('drueckt'); // Hai hält an
+    bild = requestAnimationFrame(weiter);
+  });
+  for (const art of ['pointerup', 'pointerleave', 'pointercancel']) {
+    hai.addEventListener(art, abbrechen);
+  }
+  hai.addEventListener('contextmenu', (e) => e.preventDefault());
 }

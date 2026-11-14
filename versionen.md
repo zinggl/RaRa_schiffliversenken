@@ -2,6 +2,10 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 4 – 2026-11-14
+- Spiel startet nur noch durch Tippen aufs Schiff (Fische antippen startet nicht mehr)
+- Werkstatt: 2 Sekunden auf den Hai drücken, der Hai hält dabei an
+
 ## Version 3 – 2026-11-14
 - Neues, realistisches Design: Abendhimmel und Unterwasserwelt mit Lichtstrahlen
 - Dreimaster mit Licht und Schatten, Piratenflagge, Pirat hebt langsam den Säbel

@@ -2,7 +2,6 @@
 // Alles HTML/CSS hinter dem Spiel, damit es auf jedem Bildschirm scharf ist.
 // Die Wasserfarbe kommt aus der Werkstatt («meerfarbe»), siehe CSS-Variable --meer.
 import { wert, beiAenderung } from './werkstatt/werte.js';
-import { haiStarten } from './hai.js';
 
 const STRAHLEN = 6; // Lichtstrahlen unter Wasser
 const TEILCHEN = 18; // schwebende Teilchen im Wasser
@@ -57,6 +56,4 @@ export function meerStarten() {
     t.style.animationDelay = `${-Math.random() * 30}s`;
     teilchen.appendChild(t);
   }
-
-  haiStarten(ebene.querySelector('.unterwasser'));
 }

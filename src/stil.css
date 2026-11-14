@@ -144,14 +144,50 @@ body {
   to { -webkit-mask-position: 160px 0; mask-position: 160px 0; }
 }
 
-/* Hai: zieht langsam quer durchs Bild, dreht ausserhalb vom Bildschirm um */
+/* Hai: zieht langsam quer durchs Bild, dreht ausserhalb vom Bildschirm um.
+   Eigene Ebene über dem Spiel, damit man ihn antippen kann (Werkstatt). */
+.hai-ebene {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
 .hai {
   position: absolute;
-  top: 34%;
+  top: calc(var(--wl) + (100vh - var(--wl)) * 0.34);
   left: 0;
   width: min(30vmin, 300px);
-  opacity: 0.85;
+  opacity: 0.88;
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-touch-callout: none;
   animation: hai 40s linear infinite;
+}
+/* Solange man drückt, hält der Hai an */
+.hai.drueckt,
+.hai.drueckt .hai-schwanz {
+  animation-play-state: paused;
+}
+.hai-ring {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  width: 58%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  overflow: visible;
+  pointer-events: none;
+}
+.hai-ring-kreis {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.4;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0;
+}
+.hai.drueckt .hai-ring-kreis {
+  opacity: 0.95;
 }
 .hai svg {
   display: block;
@@ -279,27 +315,13 @@ body {
   to { transform: rotate(-24deg); }
 }
 
-/* Feiner goldener Ring, solange man aufs Schiff drückt */
-.logo-ring {
-  position: absolute;
-  left: 50%;
-  top: 40%;
-  width: 72%;
-  transform: translate(-50%, -50%) rotate(-90deg);
-  overflow: visible;
-  z-index: 1;
-  pointer-events: none;
+/* Beim Antippen leuchtet das Schiff kurz auf */
+.logo-schiff {
+  cursor: pointer;
+  transition: filter 0.15s ease;
 }
-.logo-ring-kreis {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 1.2;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  opacity: 0;
-}
-.logo-schiff.drueckt .logo-ring-kreis {
-  opacity: 0.95;
+.logo-schiff.gedrueckt {
+  filter: brightness(1.18) drop-shadow(0 0 12px rgba(255, 214, 150, 0.45));
 }
 
 /* Platzhalter fürs Spielfeld */

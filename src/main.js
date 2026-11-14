@@ -7,9 +7,11 @@ import { StartSzene } from './szenen/StartSzene.js';
 import { SpielSzene } from './szenen/SpielSzene.js';
 import { meerStarten } from './meer.js';
 import { fischeStarten } from './fische.js';
+import { haiStarten } from './hai.js';
 
-// Meer und Fische liegen als HTML hinter bzw. über dem Spiel, auf allen Bildschirmen
+// Meer, Hai und Fische liegen als HTML hinter bzw. über dem Spiel, auf allen Bildschirmen
 meerStarten();
+haiStarten();
 fischeStarten();
 
 new Phaser.Game({

@@ -16,9 +16,10 @@ export class SpielSzene extends Phaser.Scene {
     document.body.appendChild(this.ebene);
     this.events.once('shutdown', () => this.ebene.remove());
 
-    // Tippen (nicht auf einen Fisch) führt zurück
+    // Tippen (nicht auf einen Fisch oder den Hai) führt zurück
     this.input.on('pointerup', (zeiger) => {
-      if (zeiger.event?.target?.closest?.('.fisch')) return;
+      if (zeiger.event?.target?.closest?.('.fisch, .hai')) return;
+      if (document.querySelector('.werkstatt')) return;
       this.scene.start('Start');
     });
   }
