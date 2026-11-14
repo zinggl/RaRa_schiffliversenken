@@ -11,8 +11,8 @@ Läuft auf dem Mac und in der Cloud-Sitzung. Auf dem Mac, falls `npm` nicht gefu
 ## Ablauf
 1. `git status` prüfen. Nicht committete Änderungen? Fragen (als Auswahl), ob sie mit in den Release sollen.
 2. `npm run build`; bei Fehlern abbrechen und erklären.
-3. Was ist neu? Commits seit dem letzten Tag `release-*` lesen (`git log <letzter-tag>..HEAD --oneline`; ohne Tag: alle).
-4. Nächste Nummer bestimmen (`release-1`, `release-2`, …), Tag setzen, dann `git push origin main` und `git push origin --tags`.
+3. Was ist neu? In `versionen.md` steht zuoberst die letzte Version mit ihrem Commit. Commits seither lesen (`git log <commit>..HEAD --oneline`).
+4. Nächste Nummer bestimmen (Version 1, 2, …) und zuoberst in `versionen.md` eintragen: Nummer, Datum (YYYY-MM-DD), Kurz-Hash von HEAD, «Was ist neu» in 1–3 Stichworten. Committen («Version N»), dann `git push origin main`. Keine Git-Tags: Die Cloud-Sitzung darf keine Tags pushen.
 5. Warten, bis die Action «GitHub Pages» fertig ist:
    - mit `gh run watch`, falls `gh` angemeldet ist,
    - sonst den öffentlichen Status abfragen, bis `status` = `completed` ist (alle ~20 s):
