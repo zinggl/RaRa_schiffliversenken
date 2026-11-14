@@ -32,4 +32,6 @@ Das Spiel heisst jetzt **RaRa Seeschlacht**. Nach dem Start wählt man den Spiel
 - [x] Schiffe dürfen sich auch an der Seite nicht berühren
 - [x] Wenn alle Schiffe stehen, erscheint der Knopf «Bereit!» (Schiessen kommt in Modul 2)
 - [x] Alle neuen Werte haben einen Regler in der Werkstatt
-- [ ] Auf dem iPad getestet
+- [x] Auf dem iPad getestet
+
+Status: ✅ fertig
