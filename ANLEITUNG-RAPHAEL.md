@@ -5,13 +5,13 @@ Du bist der **Game Designer** und **Chef-Tester**. Du bestimmst, wie das Spiel a
 ## 1. Das Spiel aufs iPad holen (nur einmal)
 1. Safari öffnen und **zinggl.github.io/RaRa_schiffliversenken** eingeben
 2. Teilen-Knopf antippen (Viereck mit Pfeil) und dann **«Zum Home-Bildschirm»**
-3. Jetzt hast du ein App-Icon mit einem Schiff. iPad quer halten!
+3. Jetzt hast du ein App-Icon mit dem Piratenschiff. iPad quer halten!
 
 ## 2. Die geheime Werkstatt 🔧
 **2 Sekunden aufs Schiff drücken**, bis der gelbe Ring voll ist.
 In der Werkstatt kannst du Sachen verstellen, zum Beispiel die Farbe vom Meer, wie viele Fische herumschwimmen und wie schnell sie sind.
 
-🐟 Tipp: Tipp einen Fisch an, dann erschrickt er!
+🐟 Tipp: Tipp einen Fisch an, dann stiebt der ganze Schwarm davon!
 - Gefällt dir etwas? **📋 Kopieren** drücken und Papi schicken.
 
 ## 3. Dein erster Auftrag: Modul 1 «Meine Flotte»

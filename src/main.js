@@ -1,14 +1,21 @@
 // Hier startet das Spiel.
 import Phaser from 'phaser';
+import '@fontsource/cinzel/600.css';
+import '@fontsource/cinzel/700.css';
 import './stil.css';
 import { StartSzene } from './szenen/StartSzene.js';
 import { SpielSzene } from './szenen/SpielSzene.js';
+import { meerStarten } from './meer.js';
 import { fischeStarten } from './fische.js';
+
+// Meer und Fische liegen als HTML hinter bzw. über dem Spiel, auf allen Bildschirmen
+meerStarten();
+fischeStarten();
 
 new Phaser.Game({
   type: Phaser.AUTO,
   parent: 'spiel',
-  backgroundColor: '#0b3d6e',
+  transparent: true, // man sieht das Meer dahinter
   scale: {
     // EXPAND: Das Spiel füllt den ganzen Bildschirm, egal ob iPad oder iPhone
     mode: Phaser.Scale.EXPAND,
@@ -18,6 +25,3 @@ new Phaser.Game({
   },
   scene: [StartSzene, SpielSzene],
 });
-
-// Fische schwimmen im ganzen Meer, auf allen Bildschirmen
-fischeStarten();

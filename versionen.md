@@ -2,6 +2,12 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 3 – 2026-11-14
+- Neues, realistisches Design: Abendhimmel und Unterwasserwelt mit Lichtstrahlen
+- Dreimaster mit Licht und Schatten, Piratenflagge, Pirat hebt langsam den Säbel
+- Naturgetreuer Hai, silbrige Fischschwärme (antippen: Schwarm stiebt davon)
+- Titel in Serifenschrift, dunkle Werkstatt, neues App-Icon
+
 ## Version 2 – 2026-11-14
 - Pirat mit Holzbein auf dem Dreimaster, er winkt mit dem Säbel
 - Hai schwimmt unter dem Schiff hin und her

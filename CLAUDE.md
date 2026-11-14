@@ -8,6 +8,16 @@ Raphael liebt Fussball und Singen und ist sportbegeistert. Ideen in diese Richtu
 - Installierbar als Web-App (Manifest, Icon, Vollbild)
 - Keine Werbung, kein Tracking, keine persönlichen Daten
 
+## Design (gilt für alles)
+Realistisch und hochwertig, **nicht kindlich**: wie ein gutes Handy-Spiel, nicht wie ein Bilderbuch.
+- Szene: Abendhimmel oben, Unterwasserwelt unten (Wasserlinie `--wl`), Licht von rechts (tiefstehende Sonne)
+- Farben: Nachtblau `#0b1d33`, Meer `--meer`, Text `#f3ead6`, Akzent Gold `#d9b46a`; keine knalligen Bonbonfarben
+- Schrift: Titel in «Cinzel» (Serifen, Grossbuchstaben-Look), sonst System-Schrift; Hinweise klein, gesperrt, in Grossbuchstaben
+- Grafik als SVG mit Verläufen, Licht und Schatten; naturgetreue Formen (keine Comic-Augen, keine Emojis in der Oberfläche)
+- Bewegungen ruhig und natürlich (Schaukeln, Schwärme), nichts Hüpfendes
+- Sichtbares als HTML/SVG über dem Phaser-Canvas, damit es auf dem Retina-iPad scharf ist
+- Bedienelemente: dunkles Glas (`rgba(10,24,38,.94)`), feine goldene Linien, abgerundet 10–14px
+
 ## Spielmodi (Grobplan, Raphael darf ändern)
 1. Gegen den Computer – zuerst bauen
 2. Zwei Spieler am gleichen iPad – abwechselnd, mit «Nicht schauen!»-Bildschirm

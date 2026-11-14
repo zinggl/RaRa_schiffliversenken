@@ -1,7 +1,5 @@
 // Platzhalter fürs Spielfeld. Hier kommt in Modul 1 das Raster mit den Schiffen dazu.
 import Phaser from 'phaser';
-import { wert } from '../werkstatt/werte.js';
-import { zeichneMeer } from '../meer.js';
 
 export class SpielSzene extends Phaser.Scene {
   constructor() {
@@ -9,24 +7,14 @@ export class SpielSzene extends Phaser.Scene {
   }
 
   create() {
-    const { width, height } = this.scale;
-    zeichneMeer(this.add.graphics(), width, height, wert('meerfarbe'));
-
-    this.add
-      .text(width / 2, height / 2, '🚢 Hier kommt Modul 1', {
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        fontSize: '44px',
-        color: '#ffffff',
-      })
-      .setOrigin(0.5);
-
-    this.add
-      .text(width / 2, height / 2 + 80, 'Tippen = zurück', {
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        fontSize: '28px',
-        color: '#ffffffaa',
-      })
-      .setOrigin(0.5);
+    // Text als HTML, damit er scharf ist
+    this.ebene = document.createElement('div');
+    this.ebene.className = 'platzhalter';
+    this.ebene.innerHTML = `
+      <div class="platzhalter-titel">Modul 1 folgt</div>
+      <div class="start-hinweis">Tippen für zurück</div>`;
+    document.body.appendChild(this.ebene);
+    this.events.once('shutdown', () => this.ebene.remove());
 
     // Tippen (nicht auf einen Fisch) führt zurück
     this.input.on('pointerup', (zeiger) => {

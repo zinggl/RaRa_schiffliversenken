@@ -18,14 +18,14 @@ export function werkstattOeffnen() {
   fenster.innerHTML = `
     <div class="werkstatt-box">
       <div class="werkstatt-kopf">
-        <h2>🔧 Werkstatt</h2>
+        <h2>Werkstatt</h2>
         <button class="knopf-x" data-aktion="schliessen" aria-label="Schliessen">✕</button>
       </div>
       <div class="werkstatt-regler"></div>
       <div class="werkstatt-knoepfe">
-        ${AM_DEV_SERVER ? '<button data-aktion="speichern" class="knopf-haupt">💾 Speichern</button>' : ''}
-        <button data-aktion="kopieren" class="${AM_DEV_SERVER ? '' : 'knopf-haupt'}">📋 Kopieren</button>
-        <button data-aktion="zuruecksetzen">↩︎ Zurücksetzen</button>
+        ${AM_DEV_SERVER ? '<button data-aktion="speichern" class="knopf-haupt">Speichern</button>' : ''}
+        <button data-aktion="kopieren" class="${AM_DEV_SERVER ? '' : 'knopf-haupt'}">Kopieren</button>
+        <button data-aktion="zuruecksetzen">Zurücksetzen</button>
       </div>
       <div class="werkstatt-meldung" aria-live="polite"></div>
     </div>`;
@@ -119,7 +119,7 @@ async function kopieren() {
   const text = JSON.stringify(alleEinstellungen(), null, 2);
   try {
     await navigator.clipboard.writeText(text);
-    melden('Kopiert! Schick die Werte an Papi. 📨');
+    melden('Kopiert – schick die Werte an Papi.');
   } catch {
     melden('Kopieren hat nicht geklappt.', true);
   }
@@ -136,7 +136,7 @@ async function speichern() {
     if (!antwort.ok) throw new Error(await antwort.text());
     // Die Seite lädt gleich neu, weil sich werkstatt.json geändert hat.
     sessionStorageSetzen(true);
-    melden('Gespeichert in werkstatt.json ✅');
+    melden('Gespeichert in werkstatt.json.');
   } catch (fehler) {
     melden('Speichern hat nicht geklappt: ' + fehler.message, true);
   }

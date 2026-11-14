@@ -1,10 +1,26 @@
-/* Grundstil: Vollbild, kein Scrollen, kein Zoomen, kein Text-Markieren */
+/* ==========================================================================
+   Grundstil: Vollbild, kein Scrollen, kein Zoomen, kein Text-Markieren
+   ========================================================================== */
+:root {
+  --meer: #0f4c6e; /* kommt aus der Werkstatt («meerfarbe») */
+  --wasser-oben: color-mix(in srgb, var(--meer) 68%, #63c6d6);
+  --wasser-flach: color-mix(in srgb, var(--wasser-oben) 72%, var(--meer)); /* knapp unter der Oberfläche */
+  --wasser-unten: color-mix(in srgb, var(--meer) 38%, #02080e);
+  --wl: 60vh; /* Wasserlinie: hier trifft der Himmel aufs Meer */
+  --schiff-b: min(56vmin, 520px); /* Breite vom Dreimaster */
+  --text: #f3ead6;
+  --text-leise: rgba(243, 234, 214, 0.82);
+  --gold: #d9b46a;
+  --nacht: #0b1d33;
+}
+
 html,
 body {
   margin: 0;
   height: 100%;
   overflow: hidden;
-  background: #1971c2;
+  background: var(--nacht);
+  color: var(--text);
   font-family: system-ui, -apple-system, sans-serif;
   -webkit-user-select: none;
   user-select: none;
@@ -16,6 +32,288 @@ body {
 #spiel {
   position: fixed;
   inset: 0;
+  z-index: 1; /* über dem Meer, unter Fischen, Logo und Werkstatt */
+}
+
+/* ==========================================================================
+   Meer: Abendhimmel oben, Unterwasserwelt unten
+   ========================================================================== */
+.meer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.himmel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--wl);
+  background:
+    radial-gradient(ellipse 50% 60% at 72% 100%, rgba(255, 186, 116, 0.5), transparent 70%),
+    linear-gradient(to bottom, #060f1c 0%, #10233b 38%, #284562 70%, #7a7076 90%, #c99064 100%);
+}
+
+.sonne {
+  position: absolute;
+  left: 72%;
+  bottom: -3vmin;
+  width: 10vmin;
+  height: 10vmin;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff4dc 0%, #ffd596 40%, rgba(255, 168, 90, 0) 70%);
+}
+
+.unterwasser {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--wl);
+  bottom: 0;
+  overflow: hidden;
+  background: linear-gradient(to bottom, var(--wasser-oben) 0%, var(--meer) 38%, var(--wasser-unten) 100%);
+}
+
+/* Lichtstrahlen, die von der Oberfläche schräg ins Wasser fallen */
+.strahl {
+  position: absolute;
+  top: -4%;
+  height: 90%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  transform: skewX(-22deg);
+  transform-origin: top;
+  filter: blur(10px);
+  mix-blend-mode: screen;
+  animation: strahl ease-in-out infinite alternate;
+}
+@keyframes strahl {
+  from { opacity: 0.2; }
+  to { opacity: 0.8; }
+}
+
+/* Schwebende Teilchen */
+.teilchen-punkt {
+  position: absolute;
+  bottom: -10px;
+  border-radius: 50%;
+  background: rgba(214, 238, 248, 0.35);
+  animation: teilchen linear infinite;
+}
+@keyframes teilchen {
+  from { transform: translate(0, 0); }
+  to { transform: translate(3vw, -45vh); }
+}
+
+/* Je tiefer, desto dunkler am Rand */
+.tiefe {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 90% at 50% 0%, transparent 45%, rgba(0, 4, 10, 0.45) 100%);
+}
+
+/* Wasseroberfläche: sanfte Wellen, die langsam wandern */
+.oberflaeche,
+.oberflaeche-glanz {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--wl) - 7px);
+  height: 14px;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  -webkit-mask-size: 160px 14px;
+  mask-size: 160px 14px;
+  animation: wellen 9s linear infinite;
+}
+.oberflaeche {
+  background: var(--wasser-oben);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 14'%3E%3Cpath d='M0,7 Q20,3 40,7 T80,7 T120,7 T160,7 V14 H0 Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 14'%3E%3Cpath d='M0,7 Q20,3 40,7 T80,7 T120,7 T160,7 V14 H0 Z'/%3E%3C/svg%3E");
+}
+.oberflaeche-glanz {
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 14'%3E%3Cpath d='M0,7 Q20,3 40,7 T80,7 T120,7 T160,7' fill='none' stroke='black' stroke-width='1.2'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 14'%3E%3Cpath d='M0,7 Q20,3 40,7 T80,7 T120,7 T160,7' fill='none' stroke='black' stroke-width='1.2'/%3E%3C/svg%3E");
+}
+@keyframes wellen {
+  from { -webkit-mask-position: 0 0; mask-position: 0 0; }
+  to { -webkit-mask-position: 160px 0; mask-position: 160px 0; }
+}
+
+/* Hai: zieht langsam quer durchs Bild, dreht ausserhalb vom Bildschirm um */
+.hai {
+  position: absolute;
+  top: 34%;
+  left: 0;
+  width: min(30vmin, 300px);
+  opacity: 0.85;
+  animation: hai 40s linear infinite;
+}
+.hai svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@keyframes hai {
+  0% { transform: translateX(-40vmin) scaleX(1); }
+  48% { transform: translateX(104vw) scaleX(1); }
+  50% { transform: translateX(104vw) scaleX(-1); }
+  98% { transform: translateX(-40vmin) scaleX(-1); }
+  100% { transform: translateX(-40vmin) scaleX(1); }
+}
+.hai-schwanz {
+  transform-box: fill-box;
+  transform-origin: 100% 50%;
+  animation: hai-schwanz 1.8s ease-in-out infinite alternate;
+}
+@keyframes hai-schwanz {
+  from { transform: rotate(-5deg); }
+  to { transform: rotate(5deg); }
+}
+
+/* ==========================================================================
+   Fische
+   ========================================================================== */
+.fische {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+.fisch {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 8px; /* grössere Fläche zum Antippen */
+  pointer-events: auto;
+  touch-action: none;
+  opacity: 0.9;
+}
+.fisch svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ==========================================================================
+   Startbildschirm
+   ========================================================================== */
+.start,
+.platzhalter {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none; /* Tippen geht ans Spiel, ausser aufs Schiff */
+}
+
+.start-titel {
+  position: absolute;
+  top: 6vh;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 700;
+  font-size: min(7.2vmin, 72px);
+  letter-spacing: 0.08em;
+  color: var(--text);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.start-hinweis {
+  position: absolute;
+  bottom: 6vh;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: min(2.6vmin, 22px);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--text-leise);
+  animation: atmen 2.6s ease-in-out infinite;
+}
+@keyframes atmen {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+/* Dreimaster: seine Wasserlinie liegt genau auf der Wasserlinie vom Meer */
+.logo-schiff {
+  position: absolute;
+  left: 50%;
+  width: var(--schiff-b);
+  top: calc(var(--wl) - var(--schiff-b) * 0.725);
+  transform: translateX(-50%);
+  pointer-events: auto;
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+.logo-schiff .dreimaster {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 80.5%;
+  animation: schaukeln 7s ease-in-out infinite;
+}
+@keyframes schaukeln {
+  0%, 100% { transform: rotate(-0.7deg) translateY(0); }
+  50% { transform: rotate(0.7deg) translateY(1.5px); }
+}
+
+/* Pirat hebt langsam den Säbel */
+.dreimaster .pirat-arm {
+  transform-box: view-box;
+  transform-origin: 172.5px 202px;
+  animation: saebel 3.2s ease-in-out infinite alternate;
+}
+@keyframes saebel {
+  from { transform: rotate(10deg); }
+  to { transform: rotate(-24deg); }
+}
+
+/* Feiner goldener Ring, solange man aufs Schiff drückt */
+.logo-ring {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  width: 72%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  overflow: visible;
+  z-index: 1;
+  pointer-events: none;
+}
+.logo-ring-kreis {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.2;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0;
+}
+.logo-schiff.drueckt .logo-ring-kreis {
+  opacity: 0.95;
+}
+
+/* Platzhalter fürs Spielfeld */
+.platzhalter-titel {
+  position: absolute;
+  top: 40vh;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 600;
+  font-size: min(5vmin, 48px);
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
 }
 
 /* Hochformat: Bitte drehen */
@@ -27,23 +325,27 @@ body {
     display: flex;
     position: fixed;
     inset: 0;
-    z-index: 50;
+    z-index: 200;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 16px;
-    background: #0b3d6e;
-    color: #fff;
-    font-size: 26px;
+    background: var(--nacht);
+    color: var(--text);
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 22px;
+    letter-spacing: 0.06em;
     text-align: center;
     padding: 24px;
   }
   .drehen span {
-    font-size: 80px;
+    font-size: 64px;
   }
 }
 
-/* ---------- Werkstatt ---------- */
+/* ==========================================================================
+   Werkstatt
+   ========================================================================== */
 .werkstatt {
   position: fixed;
   inset: 0;
@@ -51,7 +353,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(2, 8, 14, 0.55);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
     max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   touch-action: manipulation;
@@ -61,12 +365,12 @@ body {
   width: min(560px, 100%);
   max-height: 100%;
   overflow-y: auto;
-  background: #fffdf5;
-  color: #222;
-  border-radius: 20px;
+  background: rgba(10, 24, 38, 0.94);
+  color: var(--text);
+  border-radius: 14px;
   padding: 20px 24px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-  border: 4px solid #ffd43b;
+  border: 1px solid rgba(217, 180, 106, 0.35);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
   touch-action: pan-y;
 }
 
@@ -74,16 +378,22 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid rgba(243, 234, 214, 0.12);
+  padding-bottom: 12px;
 }
 .werkstatt-kopf h2 {
   margin: 0;
-  font-size: 28px;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: 0.06em;
+  color: var(--gold);
 }
 
 .werkstatt-regler {
   margin: 16px 0;
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .regler-zeile {
@@ -91,15 +401,19 @@ body {
   grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: 12px;
-  font-size: 20px;
-  padding: 10px 12px;
-  background: #f1efe4;
-  border-radius: 12px;
+  font-size: 18px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+.regler-zeile input {
+  accent-color: var(--gold);
 }
 .regler-zeile input[type='color'] {
-  width: 64px;
-  height: 44px;
-  border: none;
+  width: 56px;
+  height: 36px;
+  border: 1px solid rgba(243, 234, 214, 0.25);
+  border-radius: 6px;
   background: none;
   padding: 0;
 }
@@ -107,15 +421,15 @@ body {
   width: 180px;
 }
 .regler-zeile input[type='checkbox'] {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
 }
 .regler-wert {
   font-family: ui-monospace, monospace;
-  font-size: 16px;
-  min-width: 80px;
+  font-size: 15px;
+  min-width: 72px;
   text-align: right;
-  color: #555;
+  color: var(--text-leise);
 }
 
 .werkstatt-knoepfe {
@@ -125,122 +439,34 @@ body {
 }
 .werkstatt button {
   font: inherit;
-  font-size: 18px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  border: 2px solid #ccc;
-  background: #fff;
-  color: #222;
+  font-size: 16px;
+  letter-spacing: 0.03em;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(243, 234, 214, 0.3);
+  background: transparent;
+  color: var(--text);
   cursor: pointer;
 }
 .werkstatt button.knopf-haupt {
-  background: #1971c2;
-  border-color: #1971c2;
-  color: #fff;
-  font-weight: 700;
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #1a1206;
+  font-weight: 600;
 }
 .werkstatt button.knopf-x {
   border: none;
-  font-size: 24px;
-  padding: 6px 12px;
+  font-size: 22px;
+  padding: 4px 10px;
+  color: var(--text-leise);
 }
 
 .werkstatt-meldung {
-  min-height: 24px;
+  min-height: 22px;
   margin-top: 12px;
-  font-size: 17px;
-  color: #1864ab;
+  font-size: 15px;
+  color: #9fd8c4;
 }
 .werkstatt-meldung.fehler {
-  color: #c92a2a;
-}
-
-/* ---------- Logo auf dem Startbildschirm (HTML, damit es scharf ist) ---------- */
-.start-logo {
-  position: fixed;
-  left: 50%;
-  top: 45%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  touch-action: none;
-}
-
-.logo-schiff {
-  position: relative;
-  width: min(42vmin, 400px);
-}
-.logo-schiff .dreimaster {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* Der gelbe Ring füllt sich, solange man drückt */
-.logo-ring {
-  position: absolute;
-  left: 50%;
-  top: 40%;
-  width: 100%;
-  transform: translate(-50%, -50%) rotate(-90deg);
-  overflow: visible;
-}
-.logo-ring-kreis {
-  fill: none;
-  stroke: #ffd43b;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  opacity: 0; /* nur sichtbar, solange man drückt */
-}
-.start-logo.drueckt .logo-ring-kreis {
-  opacity: 1;
-}
-
-.logo-titel {
-  margin: 0;
-  font-size: min(10vmin, 96px);
-  font-weight: 900;
-  color: #fff;
-  white-space: nowrap;
-  text-shadow: 0 0.5vmin 1.2vmin rgba(0, 0, 0, 0.4);
-}
-
-/* ---------- Fische im Meer ---------- */
-.fische {
-  position: fixed;
-  inset: 0;
-  z-index: 5; /* über dem Meer, unter dem Logo und der Werkstatt */
-  pointer-events: none;
-  overflow: hidden;
-}
-.fisch {
-  position: absolute;
-  left: 0;
-  top: 0;
-  pointer-events: auto; /* Fische kann man antippen */
-  touch-action: none;
-  opacity: 0.92;
-}
-.fisch svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-/* Erschreckt: kleiner Sprung mit Zappeln */
-.fisch svg.erschreckt {
-  animation: fisch-sprung 0.5s ease-out;
-}
-@keyframes fisch-sprung {
-  0% { transform: translateY(0) rotate(0deg) scale(1); }
-  30% { transform: translateY(-28px) rotate(-15deg) scale(1.2); }
-  60% { transform: translateY(-8px) rotate(10deg) scale(1.1); }
-  100% { transform: translateY(0) rotate(0deg) scale(1); }
+  color: #ff9a8a;
 }
