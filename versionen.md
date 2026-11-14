@@ -2,6 +2,11 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 6 – 2026-11-14 (95d6351)
+- Modul 1 «Meine Flotte»: Spielmodus wählen, Fussball-Flotte (moderne Kriegsschiffe) aufs Meer ziehen und drehen
+- Regeln: nicht übereinander, nicht berühren, nicht hinaus; «Bereit!»; Spielerwechsel «Nicht schauen!»
+- Neuer Name: RaRa Seeschlacht; Werkstatt: Meergrösse und Streifenfarben
+
 ## Version 5 – 2026-11-14
 - Hai neu als Tigerhai gezeichnet (nach Raphaels Foto): stumpfe Schnauze, Querstreifen, Lichtflecken
 
