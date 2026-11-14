@@ -662,6 +662,447 @@ body {
 }
 
 /* ==========================================================================
+   Kampf
+   ========================================================================== */
+.kampf {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(4, 12, 22, 0.62), rgba(4, 12, 22, 0.8));
+}
+.kampf .brett {
+  overflow: visible;
+}
+.brett-gross {
+  cursor: crosshair;
+}
+.brett-klein {
+  pointer-events: none;
+  border-color: rgba(217, 180, 106, 0.35);
+}
+.kampf-status {
+  position: absolute;
+  top: max(18px, 3vh);
+  left: 15vw;
+  right: 15vw;
+  text-align: center;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 600;
+  font-size: min(2.7vmin, 24px);
+  letter-spacing: 0.08em;
+  color: var(--text);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+.kampf-titel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 600;
+  font-size: min(1.9vmin, 15px);
+  letter-spacing: 0.12em;
+  color: rgba(217, 180, 106, 0.85);
+  white-space: nowrap;
+}
+.gegner-liste {
+  position: absolute;
+  display: grid;
+  gap: min(0.9vmin, 7px);
+}
+.gegner-liste .kampf-titel {
+  position: static;
+  justify-content: flex-start;
+  margin-bottom: 0.3em;
+}
+.liste-schiff {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: min(2vmin, 15px);
+  letter-spacing: 0.05em;
+  color: var(--text);
+  transition: opacity 0.4s ease;
+}
+.liste-felder {
+  display: flex;
+  gap: 3px;
+}
+.liste-felder i {
+  width: min(1.3vmin, 10px);
+  height: min(1.3vmin, 10px);
+  border-radius: 2px;
+  background: rgba(243, 234, 214, 0.75);
+}
+.liste-schiff.versenkt {
+  opacity: 0.45;
+}
+.liste-schiff.versenkt .liste-name {
+  text-decoration: line-through;
+  text-decoration-color: #ff8a5c;
+}
+.liste-schiff.versenkt .liste-felder i {
+  background: #c8502e;
+}
+
+/* Schiffe auf den Brettern (nicht ziehbar) */
+.schiff-bild {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+}
+.schiff-bild svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* Versenkt: dunkel, halb unter Wasser */
+.schiff-bild.wrack {
+  filter: brightness(0.38) saturate(0.4) blur(0.4px);
+  opacity: 0.75;
+}
+/* Frisch versenkt: taucht auf, dann sinkt es langsam */
+.schiff-bild.sinkt {
+  animation: sinken 2.6s ease-in-out both;
+}
+@keyframes sinken {
+  0% { opacity: 0; filter: brightness(1.1); }
+  18% { opacity: 1; filter: brightness(1) drop-shadow(0 0 10px rgba(255, 140, 60, 0.8)); }
+  45% { opacity: 1; filter: brightness(0.8); }
+  100% { opacity: 0.75; filter: brightness(0.38) saturate(0.4) blur(0.4px); }
+}
+/* Nach einer Niederlage: so lagen die Schiffe des Computers */
+.schiff-bild.enthuellt {
+  opacity: 0.7;
+  animation: auftauchen 1.2s ease-out both;
+}
+@keyframes auftauchen {
+  from { opacity: 0; }
+  to { opacity: 0.7; }
+}
+
+/* Bleibende Markierungen */
+.marke {
+  position: absolute;
+  pointer-events: none;
+}
+.marke.wasser .ring {
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  border: max(1px, calc(var(--zelle) * 0.025)) solid rgba(220, 240, 250, 0.55);
+}
+.marke.wasser .ring.r2 {
+  inset: 36%;
+  border-color: rgba(220, 240, 250, 0.35);
+}
+.marke.wasser .punkt {
+  position: absolute;
+  inset: 45%;
+  border-radius: 50%;
+  background: rgba(230, 245, 252, 0.8);
+}
+.marke.wasser:not(.klein) .ring {
+  animation: ringe 4s ease-in-out infinite;
+}
+@keyframes ringe {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.12); opacity: 0.6; }
+}
+.marke.treffer .glut {
+  position: absolute;
+  inset: 6%;
+  border-radius: 30%;
+  background: radial-gradient(circle, rgba(255, 140, 40, 0.75) 0%, rgba(140, 30, 10, 0.55) 45%, rgba(20, 8, 4, 0) 75%);
+}
+.marke.treffer .flamme {
+  position: absolute;
+  left: 32%;
+  width: 36%;
+  bottom: 30%;
+  height: 52%;
+  border-radius: 50% 50% 45% 45% / 65% 65% 35% 35%;
+  background: radial-gradient(ellipse at 50% 80%, #fff3c4 0%, #ffbf47 30%, #ff6a1f 60%, rgba(200, 40, 10, 0) 100%);
+  transform-origin: 50% 100%;
+  animation: flackern 0.45s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+}
+.marke.treffer .flamme.f2 {
+  left: 44%;
+  width: 26%;
+  height: 40%;
+  animation-duration: 0.33s;
+  animation-delay: -0.2s;
+}
+@keyframes flackern {
+  from { transform: scaleY(0.85) scaleX(1.05) rotate(-4deg); opacity: 0.85; }
+  to { transform: scaleY(1.15) scaleX(0.92) rotate(4deg); opacity: 1; }
+}
+.marke.treffer .rauch {
+  position: absolute;
+  left: 30%;
+  top: 0;
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(70, 70, 75, 0.55), rgba(70, 70, 75, 0));
+  animation: rauch 2.8s ease-out infinite;
+}
+.marke.treffer .rauch.r2 {
+  animation-delay: -0.9s;
+}
+.marke.treffer .rauch.r3 {
+  animation-delay: -1.8s;
+}
+@keyframes rauch {
+  0% { transform: translate(0, 40%) scale(0.5); opacity: 0; }
+  20% { opacity: 0.9; }
+  100% { transform: translate(35%, -140%) scale(1.8); opacity: 0; }
+}
+
+/* Kurze Effekte */
+.effekt {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.effekt > * {
+  position: absolute;
+}
+.zielen span {
+  left: calc(var(--z) * -0.9);
+  top: calc(var(--z) * -0.9);
+  width: calc(var(--z) * 1.8);
+  height: calc(var(--z) * 1.8);
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 0 10px rgba(217, 180, 106, 0.6);
+  animation: zielen 0.55s ease-in forwards;
+}
+@keyframes zielen {
+  from { transform: scale(1); opacity: 0.2; }
+  to { transform: scale(0.3); opacity: 1; }
+}
+.explosion .blitz {
+  left: calc(var(--z) * -1.4);
+  top: calc(var(--z) * -1.4);
+  width: calc(var(--z) * 2.8);
+  height: calc(var(--z) * 2.8);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffbe8 0%, #ffd27a 25%, rgba(255, 120, 40, 0.5) 50%, rgba(255, 80, 20, 0) 70%);
+  animation: blitz 0.5s ease-out forwards;
+  mix-blend-mode: screen;
+}
+@keyframes blitz {
+  from { transform: scale(0.2); opacity: 1; }
+  to { transform: scale(1.3); opacity: 0; }
+}
+.explosion .feuerball {
+  left: calc(var(--z) * -0.7);
+  top: calc(var(--z) * -0.7);
+  width: calc(var(--z) * 1.4);
+  height: calc(var(--z) * 1.4);
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 55%, #ffe9a8 0%, #ff8c2a 35%, #c2310e 65%, rgba(60, 20, 10, 0) 80%);
+  animation: feuerball 0.9s ease-out forwards;
+}
+@keyframes feuerball {
+  0% { transform: scale(0.3); opacity: 1; }
+  40% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1.4) translateY(-20%); opacity: 0; }
+}
+.explosion .funke {
+  left: -2px;
+  top: -2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffe2a0;
+  box-shadow: 0 0 6px #ffb347;
+  animation: funke 0.8s ease-out forwards;
+}
+@keyframes funke {
+  from { transform: rotate(var(--w)) translateX(0); opacity: 1; }
+  to { transform: rotate(var(--w)) translateX(calc(var(--z) * 1.3 * var(--d))); opacity: 0; }
+}
+.explosion .wolke {
+  left: calc(var(--z) * -0.8);
+  top: calc(var(--z) * -0.8);
+  width: calc(var(--z) * 1.6);
+  height: calc(var(--z) * 1.6);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(60, 60, 65, 0.7), rgba(60, 60, 65, 0) 70%);
+  animation: wolke 1.5s ease-out 0.25s both;
+}
+@keyframes wolke {
+  from { transform: scale(0.4); opacity: 0; }
+  30% { opacity: 0.9; }
+  to { transform: scale(1.6) translateY(-35%); opacity: 0; }
+}
+.fontaene .saeule {
+  left: calc(var(--z) * -0.18);
+  width: calc(var(--z) * 0.36);
+  bottom: 0;
+  height: calc(var(--z) * 1.6);
+  border-radius: 40% 40% 10% 10%;
+  background: linear-gradient(to top, rgba(230, 245, 252, 0.9), rgba(230, 245, 252, 0));
+  transform-origin: 50% 100%;
+  animation: saeule 0.9s ease-out forwards;
+}
+@keyframes saeule {
+  0% { transform: scaleY(0); opacity: 1; }
+  35% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(0.3); opacity: 0; }
+}
+.fontaene .tropfen {
+  left: -2.5px;
+  top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(235, 248, 255, 0.95);
+  animation: tropfen 1.1s cubic-bezier(0.2, 0.6, 0.4, 1) var(--v) forwards;
+  opacity: 0;
+}
+@keyframes tropfen {
+  0% { transform: translate(0, 0); opacity: 1; }
+  45% { transform: translate(calc(var(--z) * var(--dx) * 0.6), calc(var(--z) * var(--h) * -1)); opacity: 1; }
+  100% { transform: translate(calc(var(--z) * var(--dx)), calc(var(--z) * 0.2)); opacity: 0; }
+}
+.fontaene .spritzring {
+  left: calc(var(--z) * -0.5);
+  top: calc(var(--z) * -0.5);
+  width: var(--z);
+  height: var(--z);
+  border-radius: 50%;
+  border: 2px solid rgba(235, 248, 255, 0.8);
+  animation: spritzring 1.2s ease-out forwards;
+}
+@keyframes spritzring {
+  from { transform: scale(0.2); opacity: 1; }
+  to { transform: scale(1.5); opacity: 0; }
+}
+
+/* Meldung «Messi versenkt!» */
+.meldung {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  padding: 0.5em 1.2em;
+  border-radius: 12px;
+  background: rgba(10, 24, 38, 0.88);
+  border: 1px solid rgba(217, 180, 106, 0.6);
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 700;
+  font-size: min(5vmin, 42px);
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  white-space: nowrap;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  animation: meldung 2.6s ease-in-out forwards;
+  z-index: 20;
+}
+@keyframes meldung {
+  0% { opacity: 0; transform: translate(-50%, -40%) scale(0.95); }
+  12% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Spielende */
+.feuerwerk {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+  pointer-events: none;
+}
+.ende {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  pointer-events: auto;
+  background: rgba(4, 12, 22, 0.35);
+  animation: auftauchen-ende 0.6s ease-out both;
+}
+.ende.rechts {
+  justify-content: flex-end;
+  background: transparent;
+  pointer-events: none;
+}
+.ende.rechts .ende-box {
+  pointer-events: auto;
+  width: min(380px, 36vw);
+}
+@keyframes auftauchen-ende {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.ende-box {
+  width: min(520px, 90vw);
+  padding: min(3.4vmin, 30px);
+  border-radius: 14px;
+  background: rgba(10, 24, 38, 0.92);
+  border: 1px solid rgba(217, 180, 106, 0.5);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+.ende-titel {
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 700;
+  font-size: min(8vmin, 64px);
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  line-height: 1.1;
+}
+.ende.rechts .ende-titel {
+  font-size: min(6vmin, 44px);
+}
+.ende-text {
+  margin: 0.8em 0 1.2em;
+  font-size: min(2.4vmin, 18px);
+  line-height: 1.5;
+  color: var(--text-leise);
+}
+.ende-statistik {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.6em;
+  font-size: min(2.2vmin, 16px);
+}
+.ende-statistik th,
+.ende-statistik td {
+  padding: 0.45em 0.3em;
+  border-bottom: 1px solid rgba(243, 234, 214, 0.1);
+}
+.ende-statistik th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+}
+.ende-statistik td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.ende-statistik tr:first-child td {
+  font-size: 0.8em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-leise);
+}
+
+/* ==========================================================================
    Werkstatt
    ========================================================================== */
 .werkstatt {

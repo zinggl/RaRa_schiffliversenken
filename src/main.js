@@ -6,6 +6,7 @@ import './stil.css';
 import { StartSzene } from './szenen/StartSzene.js';
 import { ModusSzene } from './szenen/ModusSzene.js';
 import { AufstellSzene } from './szenen/AufstellSzene.js';
+import { KampfSzene } from './szenen/KampfSzene.js';
 import { meerStarten } from './meer.js';
 import { fischeStarten } from './fische.js';
 import { haiStarten } from './hai.js';
@@ -26,5 +27,5 @@ new Phaser.Game({
     width: 1200,
     height: 800,
   },
-  scene: [StartSzene, ModusSzene, AufstellSzene],
+  scene: [StartSzene, ModusSzene, AufstellSzene, KampfSzene],
 });

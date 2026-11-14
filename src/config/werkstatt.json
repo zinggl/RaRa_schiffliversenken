@@ -77,5 +77,26 @@
     "name": "Xhaka Streifen 2",
     "typ": "farbe",
     "wert": "#ffffff"
+  },
+  "geraeusche": {
+    "name": "Geräusche",
+    "typ": "schalter",
+    "wert": true
+  },
+  "lautstaerke": {
+    "name": "Lautstärke",
+    "typ": "zahl",
+    "wert": 0.7,
+    "min": 0,
+    "max": 1,
+    "schritt": 0.05
+  },
+  "computerDenkzeit": {
+    "name": "Denkzeit Computer (Sek.)",
+    "typ": "zahl",
+    "wert": 1,
+    "min": 0.3,
+    "max": 3,
+    "schritt": 0.1
   }
 }

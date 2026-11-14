@@ -8,6 +8,8 @@ export class Spielfeld {
   constructor(groesse) {
     this.groesse = groesse;
     this.schiffe = new Map(); // id → { laenge, x, y, quer }
+    this.schuesse = new Map(); // "x,y" → 'wasser' | 'treffer'
+    this.versenkt = new Set(); // ids der versenkten Schiffe
   }
 
   // Alle Felder, die ein Schiff belegt
@@ -51,9 +53,57 @@ export class Spielfeld {
     return this.schiffe.size;
   }
 
+  // Kopie der Aufstellung (ohne Schüsse)
   kopie() {
     const neu = new Spielfeld(this.groesse);
     for (const [id, s] of this.schiffe) neu.schiffe.set(id, { ...s });
     return neu;
+  }
+
+  // ---------- Schiessen (Modul 2) ----------
+
+  // Welches Schiff liegt auf Feld (x, y)? null = Wasser
+  schiffAn(x, y) {
+    for (const [id, s] of this.schiffe) {
+      if (Spielfeld.felder(s.laenge, s.x, s.y, s.quer).some(([a, b]) => a === x && b === y)) return id;
+    }
+    return null;
+  }
+
+  schonBeschossen(x, y) {
+    return this.schuesse.has(`${x},${y}`);
+  }
+
+  // Schuss auf Feld (x, y). Ergebnis: 'wasser', 'treffer', 'versenkt' oder 'schon' (dort war schon ein Schuss)
+  schiessen(x, y) {
+    const schluessel = `${x},${y}`;
+    if (this.schuesse.has(schluessel)) return { ergebnis: 'schon' };
+    const id = this.schiffAn(x, y);
+    if (!id) {
+      this.schuesse.set(schluessel, 'wasser');
+      return { ergebnis: 'wasser' };
+    }
+    this.schuesse.set(schluessel, 'treffer');
+    const s = this.schiffe.get(id);
+    const alleGetroffen = Spielfeld.felder(s.laenge, s.x, s.y, s.quer).every(([a, b]) => this.schuesse.get(`${a},${b}`) === 'treffer');
+    if (alleGetroffen) {
+      this.versenkt.add(id);
+      return { ergebnis: 'versenkt', id };
+    }
+    return { ergebnis: 'treffer', id };
+  }
+
+  alleVersenkt() {
+    return this.schiffe.size > 0 && this.versenkt.size === this.schiffe.size;
+  }
+
+  anzahlSchuesse() {
+    return this.schuesse.size;
+  }
+
+  anzahlTreffer() {
+    let n = 0;
+    for (const e of this.schuesse.values()) if (e === 'treffer') n++;
+    return n;
   }
 }

@@ -9,6 +9,8 @@ import { Spielfeld } from '../logik/spielfeld.js';
 import { spielstand } from '../logik/spielstand.js';
 import { kriegsschiffSvg } from '../kriegsschiff.js';
 import { fischeZeigen } from '../fische.js';
+import { zwischenbild } from '../zwischenbild.js';
+import { zufallsFlotte } from '../logik/zufallsflotte.js';
 
 const BUCHSTABEN = 'ABCDEFGHIJKL';
 const BEWEGUNG_AB = 8; // so viele Pixel, dann ist es Ziehen statt Antippen
@@ -299,8 +301,15 @@ export class AufstellSzene extends Phaser.Scene {
     spielstand.modus = this.modus;
     spielstand.flotten[this.spieler - 1] = this.feld.kopie();
 
+    // Gegen den Computer: Er stellt seine Flotte zufällig auf, dann geht es los
+    if (this.modus === 'computer') {
+      spielstand.flotten[1] = zufallsFlotte(this.feld.groesse, FLOTTE);
+      this.scene.start('Kampf', { modus: 'computer' });
+      return;
+    }
+
     if (this.modus === 'zwei' && this.spieler === 1) {
-      this.zwischenbild({
+      zwischenbild(this.ebene, {
         titel: 'Spieler 2 ist dran',
         text: 'Die Flotte von Spieler 1 steht. Gib das iPad an Spieler 2 weiter.<br>Spieler 1: nicht schauen!',
         knoepfe: [{ text: 'Ich bin Spieler 2', gold: true, los: () => this.scene.start('Aufstellen', { modus: 'zwei', spieler: 2 }) }],
@@ -308,39 +317,23 @@ export class AufstellSzene extends Phaser.Scene {
       return;
     }
 
-    const titel = this.modus === 'zwei' ? 'Beide Flotten sind bereit' : 'Deine Flotte ist bereit';
-    const text =
-      this.modus === 'online'
-        ? 'Das Spiel mit zwei Geräten kommt bald.'
-        : 'Das Schiessen kommt in Modul 2.';
-    this.zwischenbild({
-      titel,
-      text,
+    if (this.modus === 'zwei') {
+      zwischenbild(this.ebene, {
+        titel: 'Beide Flotten sind bereit',
+        text: 'Spieler 1 beginnt. Gib das iPad an Spieler 1 weiter.<br>Spieler 2: nicht schauen!',
+        knoepfe: [{ text: 'Ich bin Spieler 1', gold: true, los: () => this.scene.start('Kampf', { modus: 'zwei' }) }],
+      });
+      return;
+    }
+
+    // Zwei Geräte: kommt später
+    zwischenbild(this.ebene, {
+      titel: 'Deine Flotte ist bereit',
+      text: 'Das Spiel mit zwei Geräten kommt bald.',
       knoepfe: [
         { text: 'Neu aufstellen', los: () => this.scene.start('Aufstellen', { modus: this.modus, spieler: 1 }) },
         { text: 'Zum Start', gold: true, los: () => this.scene.start('Start') },
       ],
     });
-  }
-
-  // Bildschirm dazwischen (deckt das Spielfeld ganz zu, damit niemand spicken kann)
-  zwischenbild({ titel, text, knoepfe }) {
-    const bild = document.createElement('div');
-    bild.className = 'zwischenbild';
-    bild.innerHTML = `
-      <div class="zwischenbild-box">
-        <div class="zwischenbild-titel">${titel}</div>
-        <div class="zwischenbild-text">${text}</div>
-        <div class="zwischenbild-knoepfe">
-          ${knoepfe.map((k, i) => `<button class="knopf ${k.gold ? 'knopf-gold' : ''}" data-nr="${i}">${k.text}</button>`).join('')}
-        </div>
-      </div>`;
-    const ab = performance.now() + SPERRE_MS;
-    bild.addEventListener('click', (e) => {
-      const knopf = e.target.closest('button');
-      if (!knopf || performance.now() < ab) return;
-      knoepfe[Number(knopf.dataset.nr)].los();
-    });
-    this.ebene.appendChild(bild);
   }
 }

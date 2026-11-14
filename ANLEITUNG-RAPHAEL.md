@@ -23,20 +23,21 @@ In der Werkstatt kannst du Sachen verstellen, zum Beispiel die Farbe vom Meer, w
 
 In der Werkstatt (Hai) kannst du die **Meergrösse** und die **Streifenfarben** jedes Schiffs ändern.
 
-## Dein nächster Auftrag: Modul 2 «Schiessen»
-Überleg dir das und sag es Papi:
-- Wie zielst du? (Feld antippen?)
-- Wie sieht ein **Treffer** aus, wie ein Schuss **ins Wasser**? Gibt es Geräusche?
-- Was passiert, wenn ein Schiff **versenkt** ist?
-- Wie schlau soll der **Computer** sein?
-- **Fertig, wenn …:** Woran merkst du, dass es klappt?
+## 4. Die Schlacht (Modul 2)
+- Tippe auf ein Feld im **grossen Meer** – das ist das Meer deines Gegners.
+- **Treffer:** Es explodiert und brennt. Du darfst **nochmals** schiessen.
+- **Wasser:** Eine Fontäne spritzt hoch. Jetzt ist der andere dran.
+- Ist ein Schiff **versenkt**, taucht es auf und sinkt. Rechts siehst du, welche Schiffe noch schwimmen.
+- Im **kleinen Feld** siehst du deine eigene Flotte und wo der Gegner hingeschossen hat.
+- Wer zuerst alle Schiffe versenkt, gewinnt – mit **Feuerwerk**! 🎆
+- Achtung: Der Computer ist **schwer**. In der Werkstatt kannst du einstellen, wie lange er überlegt, und die Geräusche ein- oder ausschalten.
 
-## 4. Testen und Feedback
+## 5. Testen und Feedback
 Spielen, ausprobieren, Regler verstellen. Danach sagst du:
 **Was ist gut? Was nervt? Was fehlt?** Das kommt in `feedback.md`.
 Papi schreibt **/feedback**, und Claude baut es um.
 
 ## Unser Plan
-1. ⚓ Flotte aufstellen ✓ – dann gegen den Computer spielen
-2. 👨‍👦 Zu zweit am gleichen iPad
+1. ⚓ Flotte aufstellen ✓ und gegen den Computer spielen ✓
+2. 👨‍👦 Zu zweit am gleichen iPad ✓
 3. 📱 Zu zweit online: du auf dem iPad, Papi auf dem iPhone

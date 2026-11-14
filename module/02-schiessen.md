@@ -17,11 +17,11 @@ Jetzt wird richtig gespielt: Man schiesst auf das Meer des Gegners, bis eine Flo
 - **Werkstatt-Regler:** Geräusche ein/aus, Lautstärke, Denkzeit des Computers.
 
 ## Fertig, wenn …
-- [ ] Ich kann ein ganzes Spiel gegen den Computer spielen, bis einer alle Schiffe verloren hat
-- [ ] Zu zweit auf einem iPad spielbar, mit «Nicht schauen!»-Bildschirm bei jedem Wechsel
-- [ ] Ich sehe klar, wo ich getroffen habe und wo ins Wasser
-- [ ] Ich sehe auf einem kleinen Feld meine eigene Flotte und wo der Gegner hingeschossen hat
-- [ ] Versenkte Schiffe tauchen auf und sinken, Meldung mit Name
-- [ ] Feuerwerk für den Gewinner
-- [ ] Alle neuen Werte haben einen Regler in der Werkstatt
+- [x] Ich kann ein ganzes Spiel gegen den Computer spielen, bis einer alle Schiffe verloren hat
+- [x] Zu zweit auf einem iPad spielbar, mit «Nicht schauen!»-Bildschirm bei jedem Wechsel
+- [x] Ich sehe klar, wo ich getroffen habe und wo ins Wasser
+- [x] Ich sehe auf einem kleinen Feld meine eigene Flotte und wo der Gegner hingeschossen hat
+- [x] Versenkte Schiffe tauchen auf und sinken, Meldung mit Name
+- [x] Feuerwerk für den Gewinner
+- [x] Alle neuen Werte haben einen Regler in der Werkstatt
 - [ ] Auf dem iPad getestet
