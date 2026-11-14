@@ -6,8 +6,14 @@ import { wert, beiAenderung } from './werkstatt/werte.js';
 
 const PRO_SCHWARM = 6; // so viele Fische hat ein Schwarm (ungefähr)
 const SCHRECK_DAUER = 1.4; // Sekunden, so lange ist ein Schwarm erschreckt
-const WASSER_OBEN = 0.64; // Fische schwimmen zwischen diesen Anteilen der Bildhöhe
-const WASSER_UNTEN = 0.85;
+const ABSTAND_OBERFLAECHE = 14; // so viele Pixel bleibt jeder Fisch mindestens unter der Wasserlinie
+const WASSER_UNTEN = 0.85; // Schwärme schwimmen höchstens bis hier (Anteil der Bildhöhe)
+
+// Wo ist die Wasserlinie gerade? (Oberkante der Unterwasserwelt, siehe meer.js)
+function wasserlinie() {
+  const unterwasser = document.querySelector('.unterwasser');
+  return unterwasser ? unterwasser.getBoundingClientRect().top : window.innerHeight * 0.6;
+}
 
 // Farbarten: [Rücken, Bauch, Schwanz]
 const ARTEN = [
@@ -48,7 +54,7 @@ function schwarmNeu(irgendwo = false) {
   const schwarm = {
     richtung: Math.random() < 0.5 ? 1 : -1,
     tempo: zufall(22, 45),
-    y: zufall(WASSER_OBEN, WASSER_UNTEN) * window.innerHeight,
+    y: zufall(wasserlinie() + 50, Math.max(wasserlinie() + 60, WASSER_UNTEN * window.innerHeight)),
     x: 0,
     breite: 0,
     schreck: 0,
@@ -80,6 +86,7 @@ function fischeVerteilen(schwarm) {
 function fischNeu(schwarm) {
   const element = document.createElement('div');
   element.className = 'fisch';
+  element.style.transform = 'translate3d(-9999px, 0, 0)'; // unsichtbar, bis er seinen Platz im Wasser hat
   const fisch = { element, dx: 0, dy: 0, breite: 30, phase: 0, flucht: 0 };
   element.addEventListener('pointerdown', (e) => {
     e.preventDefault();
@@ -115,6 +122,7 @@ function schwimmen(zeit) {
   const dt = Math.min((zeit - letzteZeit) / 1000, 0.1);
   letzteZeit = zeit;
   const tempo = wert('fischTempo') ?? 1;
+  const oben = wasserlinie() + ABSTAND_OBERFLAECHE - 8; // 8 = Tipp-Rand über dem Fisch
 
   for (const schwarm of schwaerme) {
     schwarm.schreck = Math.max(0, schwarm.schreck - dt);
@@ -133,7 +141,10 @@ function schwimmen(zeit) {
     for (const fisch of schwarm.fische) {
       fisch.phase += dt * (1.2 + 3 * anteil);
       const x = schwarm.x + fisch.dx * schwarm.richtung;
-      const y = schwarm.y + fisch.dy + Math.sin(fisch.phase) * 3 + fisch.flucht * anteil;
+      // Fische bleiben immer im Wasser: nie über der Wasserlinie, nie unter dem Bildschirmrand
+      const hoch = fisch.breite * 0.4 + 16; // Fischhöhe samt Tipp-Rand
+      const wunsch = schwarm.y + fisch.dy + Math.sin(fisch.phase) * 3 + fisch.flucht * anteil;
+      const y = Math.min(Math.max(wunsch, oben), window.innerHeight - hoch);
       fisch.element.style.transform = `translate3d(${x}px, ${y}px, 0) scaleX(${schwarm.richtung})`;
     }
   }

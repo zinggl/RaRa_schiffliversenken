@@ -2,6 +2,9 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 7 – 2026-11-14
+- Keine fliegenden Fische mehr: Fische bleiben immer im Wasser (auch beim Erschrecken und auf dem iPhone)
+
 ## Version 6 – 2026-11-14 (95d6351)
 - Modul 1 «Meine Flotte»: Spielmodus wählen, Fussball-Flotte (moderne Kriegsschiffe) aufs Meer ziehen und drehen
 - Regeln: nicht übereinander, nicht berühren, nicht hinaus; «Bereit!»; Spielerwechsel «Nicht schauen!»
