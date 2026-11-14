@@ -3,5 +3,21 @@
     "name": "Meerfarbe",
     "typ": "farbe",
     "wert": "#1971c2"
+  },
+  "fischAnzahl": {
+    "name": "Anzahl Fische",
+    "typ": "zahl",
+    "wert": 8,
+    "min": 0,
+    "max": 25,
+    "schritt": 1
+  },
+  "fischTempo": {
+    "name": "Tempo der Fische",
+    "typ": "zahl",
+    "wert": 1,
+    "min": 0.2,
+    "max": 3,
+    "schritt": 0.1
   }
 }

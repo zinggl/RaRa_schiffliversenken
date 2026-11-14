@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import './stil.css';
 import { StartSzene } from './szenen/StartSzene.js';
 import { SpielSzene } from './szenen/SpielSzene.js';
+import { fischeStarten } from './fische.js';
 
 new Phaser.Game({
   type: Phaser.AUTO,
@@ -17,3 +18,6 @@ new Phaser.Game({
   },
   scene: [StartSzene, SpielSzene],
 });
+
+// Fische schwimmen im ganzen Meer, auf allen Bildschirmen
+fischeStarten();

@@ -9,7 +9,9 @@ Du bist der **Game Designer** und **Chef-Tester**. Du bestimmst, wie das Spiel a
 
 ## 2. Die geheime Werkstatt 🔧
 **2 Sekunden aufs Schiff drücken**, bis der gelbe Ring voll ist.
-In der Werkstatt kannst du Sachen verstellen, zum Beispiel die Farbe vom Meer.
+In der Werkstatt kannst du Sachen verstellen, zum Beispiel die Farbe vom Meer, wie viele Fische herumschwimmen und wie schnell sie sind.
+
+🐟 Tipp: Tipp einen Fisch an, dann erschrickt er!
 - Gefällt dir etwas? **📋 Kopieren** drücken und Papi schicken.
 
 ## 3. Dein erster Auftrag: Modul 1 «Meine Flotte»

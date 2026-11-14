@@ -28,6 +28,10 @@ export class SpielSzene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    this.input.once('pointerup', () => this.scene.start('Start'));
+    // Tippen (nicht auf einen Fisch) führt zurück
+    this.input.on('pointerup', (zeiger) => {
+      if (zeiger.event?.target?.closest?.('.fisch')) return;
+      this.scene.start('Start');
+    });
   }
 }

@@ -43,9 +43,9 @@ export class StartSzene extends Phaser.Scene {
 
     this.langDrueckenEinrichten();
 
-    // Irgendwo tippen (nicht aufs Logo) startet das Spiel
+    // Irgendwo tippen (nicht aufs Logo und nicht auf einen Fisch) startet das Spiel
     this.input.on('pointerup', (zeiger) => {
-      if (zeiger.event?.target?.closest?.('.start-logo')) return;
+      if (zeiger.event?.target?.closest?.('.start-logo, .fisch')) return;
       if (document.querySelector('.werkstatt')) return;
       this.scene.start('Spiel');
     });

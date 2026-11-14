@@ -159,7 +159,7 @@ body {
 .start-logo {
   position: fixed;
   left: 50%;
-  top: 44%;
+  top: 45%;
   transform: translate(-50%, -50%);
   z-index: 10;
   display: flex;
@@ -173,7 +173,7 @@ body {
 
 .logo-schiff {
   position: relative;
-  width: min(44vmin, 420px);
+  width: min(42vmin, 400px);
 }
 .logo-schiff .dreimaster {
   position: relative;
@@ -186,7 +186,7 @@ body {
 .logo-ring {
   position: absolute;
   left: 50%;
-  top: 47%;
+  top: 40%;
   width: 100%;
   transform: translate(-50%, -50%) rotate(-90deg);
   overflow: visible;
@@ -205,10 +205,42 @@ body {
 }
 
 .logo-titel {
-  margin: 5vmin 0 0;
+  margin: 0;
   font-size: min(10vmin, 96px);
   font-weight: 900;
   color: #fff;
   white-space: nowrap;
   text-shadow: 0 0.5vmin 1.2vmin rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Fische im Meer ---------- */
+.fische {
+  position: fixed;
+  inset: 0;
+  z-index: 5; /* über dem Meer, unter dem Logo und der Werkstatt */
+  pointer-events: none;
+  overflow: hidden;
+}
+.fisch {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: auto; /* Fische kann man antippen */
+  touch-action: none;
+  opacity: 0.92;
+}
+.fisch svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* Erschreckt: kleiner Sprung mit Zappeln */
+.fisch svg.erschreckt {
+  animation: fisch-sprung 0.5s ease-out;
+}
+@keyframes fisch-sprung {
+  0% { transform: translateY(0) rotate(0deg) scale(1); }
+  30% { transform: translateY(-28px) rotate(-15deg) scale(1.2); }
+  60% { transform: translateY(-8px) rotate(10deg) scale(1.1); }
+  100% { transform: translateY(0) rotate(0deg) scale(1); }
 }

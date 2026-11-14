@@ -34,7 +34,7 @@ function luken() {
 }
 
 export const DREIMASTER_SVG = `
-<svg class="dreimaster" viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dreimaster">
+<svg class="dreimaster" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dreimaster">
   <defs>
     <linearGradient id="holz" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#9c5a2b"/>
@@ -71,6 +71,19 @@ export const DREIMASTER_SVG = `
     .dreimaster .planke { stroke: #3d1d08; stroke-width: 1.2; opacity: 0.45; }
     .dreimaster .fenster { fill: #ffe08a; stroke: #e8b030; stroke-width: 1; }
     .dreimaster .wasser { fill: var(--meer, #1971c2); }
+    .dreimaster .haut { fill: #f1c27d; }
+    .dreimaster .pirat-arm { animation: winken 0.9s ease-in-out infinite alternate;
+      transform-box: view-box; transform-origin: 172px 203px; }
+    @keyframes winken { from { transform: rotate(-25deg); } to { transform: rotate(20deg); } }
+    .dreimaster .hai { animation: hai-schwimmen 10s linear infinite;
+      transform-box: view-box; transform-origin: 200px 352px; }
+    @keyframes hai-schwimmen {
+      0%   { transform: translateX(-80px) scaleX(1); }
+      46%  { transform: translateX(80px) scaleX(1); }
+      50%  { transform: translateX(80px) scaleX(-1); }
+      96%  { transform: translateX(-80px) scaleX(-1); }
+      100% { transform: translateX(-80px) scaleX(1); }
+    }
     .dreimaster .gischt { fill: none; stroke: #ffffff; stroke-width: 3; stroke-linecap: round; opacity: 0.8; }
   </style>
 
@@ -124,10 +137,70 @@ export const DREIMASTER_SVG = `
   <line x1="50" y1="212" x2="50" y2="198" stroke="#5a2c10" stroke-width="2"/>
   <circle cx="50" cy="196" r="5" fill="#ffd43b" stroke="#e8b030" stroke-width="1.5"/>
 
+
+  <!-- Pirat mit Holzbein, er winkt mit dem Säbel -->
+  <g class="pirat">
+    <!-- Beine: links normal mit Stiefel, rechts ein Holzbein -->
+    <rect x="159" y="219" width="6" height="11" fill="#364fc7"/>
+    <rect x="158" y="229" width="8" height="8" rx="1.5" fill="#212529"/>
+    <rect x="167" y="219" width="6" height="8" fill="#364fc7"/>
+    <rect x="168.5" y="226" width="3" height="11" rx="1" fill="#8b5a2b"/>
+    <!-- Körper: gestreiftes Hemd -->
+    <rect x="156" y="198" width="19" height="22" rx="4" fill="#fff"/>
+    <rect x="156" y="202" width="19" height="3" fill="#e03131"/>
+    <rect x="156" y="208" width="19" height="3" fill="#e03131"/>
+    <rect x="156" y="214" width="19" height="3" fill="#e03131"/>
+    <!-- Gurt mit goldener Schnalle -->
+    <rect x="156" y="216" width="19" height="4" fill="#212529"/>
+    <rect x="163.5" y="216" width="4" height="4" fill="#e8b030"/>
+    <!-- Linker Arm hängt hinunter -->
+    <rect x="151" y="200" width="5" height="15" rx="2.5" fill="#fff"/>
+    <circle class="haut" cx="153.5" cy="216" r="2.5"/>
+    <!-- Kopf -->
+    <circle class="haut" cx="165.5" cy="190" r="8"/>
+    <!-- Bart -->
+    <path d="M158,191 Q165.5,204 173,191 Q169,196 165.5,196 Q162,196 158,191 Z" fill="#3b2a1a"/>
+    <!-- Auge und Augenklappe -->
+    <circle cx="168.5" cy="188" r="1.3" fill="#212529"/>
+    <line x1="157.5" y1="184" x2="173" y2="192" stroke="#212529" stroke-width="1.2"/>
+    <ellipse cx="162.5" cy="188" rx="2.6" ry="2.2" fill="#212529"/>
+    <!-- Piratenhut mit Totenkopf -->
+    <path d="M154,184 Q165.5,170 177,184 Q165.5,180 154,184 Z" fill="#212529"/>
+    <circle cx="165.5" cy="178.5" r="2" fill="#fff"/>
+    <!-- Rechter Arm mit Säbel, winkt -->
+    <g class="pirat-arm">
+      <line x1="172" y1="203" x2="184" y2="191" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+      <circle class="haut" cx="185" cy="190" r="2.6"/>
+      <path d="M185,190 Q192,180 190,166" stroke="#ced4da" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <line x1="181" y1="191" x2="189" y2="189" stroke="#e8b030" stroke-width="2.2" stroke-linecap="round"/>
+    </g>
+  </g>
+
   <!-- Galionsfigur-Schnörkel am Bug -->
   <path d="M364,226 Q376,224 378,214" stroke="#e8b030" stroke-width="3" fill="none" stroke-linecap="round"/>
 
   <!-- Wasser vorne über dem Rumpf, damit das Schiff schwimmt -->
   <path class="wasser" mask="url(#wasser-maske)" d="M0,292 Q25,284 50,292 T100,292 T150,292 T200,292 T250,292 T300,292 T350,292 T400,292 L400,312 L0,312 Z"/>
   <path class="gischt" d="M60,290 Q78,282 96,290 M150,293 Q168,285 186,293 M240,293 Q258,285 276,293 M330,288 Q348,280 366,288"/>
+
+  <!-- Hai unter dem Schiff, schwimmt hin und her -->
+  <g class="hai">
+    <!-- Schwanzflosse -->
+    <path d="M130,352 L104,330 Q112,352 104,372 Z" fill="#5c7080"/>
+    <!-- Rückenflosse -->
+    <path d="M186,336 Q194,312 212,308 Q206,322 210,338 Z" fill="#5c7080"/>
+    <!-- Körper -->
+    <path d="M128,352 Q160,328 220,332 Q262,336 280,352 Q262,368 220,371 Q160,374 128,352 Z" fill="#748a9b"/>
+    <!-- weisser Bauch -->
+    <path d="M150,358 Q200,374 268,358 Q246,368 214,370 Q176,371 150,358 Z" fill="#f1f3f5"/>
+    <!-- Brustflosse -->
+    <path d="M206,362 L194,384 L222,366 Z" fill="#5c7080"/>
+    <!-- Kiemen -->
+    <path d="M238,344 Q236,352 238,360 M244,343 Q242,352 244,361" stroke="#4a5a68" stroke-width="1.5" fill="none"/>
+    <!-- Auge -->
+    <circle cx="258" cy="347" r="2.6" fill="#212529"/>
+    <!-- Maul mit spitzen Zähnen -->
+    <path d="M250,360 Q264,364 278,354" stroke="#4a5a68" stroke-width="1.5" fill="none"/>
+    <path d="M254,360 L256,364 L258,361 L260,365 L262,361 L264,364 L266,360 L268,363 L270,359 L272,361 L274,357" fill="#fff" stroke="#fff" stroke-width="0.8" stroke-linejoin="round"/>
+  </g>
 </svg>`;
