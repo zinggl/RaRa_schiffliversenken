@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "schiffli",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["-c", "export PATH=\"$HOME/.local/opt/node/bin:$PATH\"; npm run dev"],
+      "port": 5173
+    }
+  ]
+}
