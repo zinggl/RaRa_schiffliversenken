@@ -35,7 +35,7 @@ Den Code von Anfang an so bauen, dass die Spiellogik (Raster, Schiffe, Treffer) 
 - Committen nach jedem fertigen Modul oder Feedback. Gepusht wird nur mit `/release`.
 
 ## Werkstatt
-Geheimes Menü im Spiel: 3 Sekunden aufs Schiff-Logo drücken.
+Geheimes Menü im Spiel: 2 Sekunden aufs Schiff-Logo drücken.
 - Regler für alle Werte aus werkstatt.json
 - Am Dev-Server: «Speichern» schreibt direkt in werkstatt.json
 - Online-Version: «Kopieren» legt die Werte in die Zwischenablage

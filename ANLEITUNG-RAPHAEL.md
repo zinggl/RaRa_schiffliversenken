@@ -8,7 +8,7 @@ Du bist der **Game Designer** und **Chef-Tester**. Du bestimmst, wie das Spiel a
 3. Jetzt hast du ein App-Icon mit einem Schiff. iPad quer halten!
 
 ## 2. Die geheime Werkstatt 🔧
-**3 Sekunden aufs Schiff drücken**, bis der gelbe Ring voll ist.
+**2 Sekunden aufs Schiff drücken**, bis der gelbe Ring voll ist.
 In der Werkstatt kannst du Sachen verstellen, zum Beispiel die Farbe vom Meer.
 - Gefällt dir etwas? **📋 Kopieren** drücken und Papi schicken.
 

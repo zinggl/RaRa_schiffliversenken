@@ -154,3 +154,61 @@ body {
 .werkstatt-meldung.fehler {
   color: #c92a2a;
 }
+
+/* ---------- Logo auf dem Startbildschirm (HTML, damit es scharf ist) ---------- */
+.start-logo {
+  position: fixed;
+  left: 50%;
+  top: 44%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+
+.logo-schiff {
+  position: relative;
+  width: min(44vmin, 420px);
+}
+.logo-schiff .dreimaster {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Der gelbe Ring füllt sich, solange man drückt */
+.logo-ring {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: 100%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  overflow: visible;
+}
+.logo-ring-kreis {
+  fill: none;
+  stroke: #ffd43b;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0; /* nur sichtbar, solange man drückt */
+}
+.start-logo.drueckt .logo-ring-kreis {
+  opacity: 1;
+}
+
+.logo-titel {
+  margin: 5vmin 0 0;
+  font-size: min(10vmin, 96px);
+  font-weight: 900;
+  color: #fff;
+  white-space: nowrap;
+  text-shadow: 0 0.5vmin 1.2vmin rgba(0, 0, 0, 0.4);
+}
