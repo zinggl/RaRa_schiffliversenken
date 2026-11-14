@@ -15,16 +15,21 @@ In der Werkstatt kannst du Sachen verstellen, zum Beispiel die Farbe vom Meer, w
 🐟 Tipp: Tipp einen Fisch an, dann stiebt der ganze Schwarm davon!
 - Gefällt dir etwas? **📋 Kopieren** drücken und Papi schicken.
 
-## 3. Dein erster Auftrag: Modul 1 «Meine Flotte»
-Überleg dir das und sag es Papi. Er schreibt es auf.
-- **Name:** Wie soll dein Spiel heissen?
-- **Spielfeld:** Wie gross ist das Meer? (Beim Original: 10 × 10 Felder)
-- **Flotte:** Welche Schiffe gibt es, und wie lang sind sie? Haben sie Namen?
-- **Aussehen:** Wie sieht ein Treffer aus 💥? Und ein Schuss ins Wasser 💦? Gibt es Geräusche?
-- **Werkstatt:** Was willst du selber verstellen können? (z. B. Meerfarbe, Schiffsfarbe, Anzahl Schiffe)
-- **Fertig, wenn …:** Woran merkst du, dass es klappt?
+## 3. Deine Flotte aufstellen (Modul 1)
+1. **Aufs Schiff tippen** und den Spielmodus wählen.
+2. Deine Schiffe **Mbappé, Messi, Keni, Yamal und Xhaka** mit dem Finger aufs Meer ziehen.
+3. **Antippen** dreht ein Schiff. Wird es **rot**, passt es nicht: Es liegt auf einem anderen Schiff, berührt eines oder ragt hinaus.
+4. Stehen alle fünf, drückst du **«Bereit!»**.
 
-Dann schreibt Papi im Claude-Chat **/modul**. Claude erklärt den Plan, ihr sagt OK, und es wird gebaut.
+In der Werkstatt (Hai) kannst du die **Meergrösse** und die **Streifenfarben** jedes Schiffs ändern.
+
+## Dein nächster Auftrag: Modul 2 «Schiessen»
+Überleg dir das und sag es Papi:
+- Wie zielst du? (Feld antippen?)
+- Wie sieht ein **Treffer** aus, wie ein Schuss **ins Wasser**? Gibt es Geräusche?
+- Was passiert, wenn ein Schiff **versenkt** ist?
+- Wie schlau soll der **Computer** sein?
+- **Fertig, wenn …:** Woran merkst du, dass es klappt?
 
 ## 4. Testen und Feedback
 Spielen, ausprobieren, Regler verstellen. Danach sagst du:
@@ -32,6 +37,6 @@ Spielen, ausprobieren, Regler verstellen. Danach sagst du:
 Papi schreibt **/feedback**, und Claude baut es um.
 
 ## Unser Plan
-1. ⚓ Gegen den Computer spielen
+1. ⚓ Flotte aufstellen ✓ – dann gegen den Computer spielen
 2. 👨‍👦 Zu zweit am gleichen iPad
 3. 📱 Zu zweit online: du auf dem iPad, Papi auf dem iPhone

@@ -1,7 +1,7 @@
 {
-  "name": "Schiffli versenken",
-  "short_name": "Schiffli",
-  "description": "Schiffe versenken von Raphael: Finde und versenke die gegnerische Flotte.",
+  "name": "RaRa Seeschlacht",
+  "short_name": "Seeschlacht",
+  "description": "Schiffe versenken von Raphael: Stelle deine Fussball-Flotte auf und versenke die gegnerische.",
   "lang": "de-CH",
   "start_url": "./",
   "scope": "./",

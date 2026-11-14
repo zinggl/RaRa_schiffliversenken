@@ -10,8 +10,8 @@ Das Spiel heisst jetzt **RaRa Seeschlacht**. Nach dem Start wählt man den Spiel
   - 👨‍👦 1:1 auf einem iPad
   - 📱 1:1 über 2 iPads oder iPhones
   Alle führen in Modul 1 zum Aufstellen. Bei «1:1 auf einem iPad» stellen beide nacheinander auf (dazwischen ein «Nicht schauen!»-Bildschirm). Bei «2 Geräte» steht nach dem Aufstellen vorerst «Kommt bald».
-- **Meer:** Raster mit Feldern; die Grösse ist in der Werkstatt einstellbar.
-- **Flotte:** 5 Fussball-Schiffe, jedes grau mit Streifen in den Farben vom Club/Land des Spielers und dem Namen darauf:
+- **Meer:** von oben gesehen, Raster mit Feldern, Buchstaben oben und Zahlen links; die Grösse ist in der Werkstatt einstellbar.
+- **Flotte:** 5 Fussball-Schiffe als moderne Kriegsschiffe von oben, grau mit Streifen in den Farben vom Club/Land des Spielers und dem Namen darauf:
 
   | Schiff | Länge | Farben (Vorschlag, in der Werkstatt änderbar) |
   |---|---|---|
@@ -22,14 +22,14 @@ Das Spiel heisst jetzt **RaRa Seeschlacht**. Nach dem Start wählt man den Spiel
   | Xhaka | 2 | Rot / Weiss (Schweiz) |
 
 - **Aufstellen:** Jedes Schiff mit dem Finger aufs Meer ziehen. Antippen dreht es (quer ↔ hochkant). Passt es nicht, wird es rot und springt zurück.
-- **Werkstatt-Regler:** Meergrösse (6–12 Felder, Start 10), Meerfarbe, Streifenfarben der 5 Schiffe.
+- **Werkstatt-Regler:** Meergrösse (7–12 Felder, Start 10; kleiner passt die Flotte nicht ohne Berühren), Meerfarbe, Streifenfarben der 5 Schiffe.
 
 ## Fertig, wenn …
-- [ ] Startbildschirm zeigt «RaRa Seeschlacht»
-- [ ] Spielmodus-Bildschirm mit 3 Knöpfen, alle führen zum Aufstellen
-- [ ] Ich kann alle Schiffe mit dem Finger aufs Meer ziehen und durch Tippen drehen
-- [ ] Schiffe dürfen nicht übereinander oder aus dem Meer hinaus liegen; passt es nicht, wird das Schiff rot
-- [ ] Schiffe dürfen sich auch an der Seite nicht berühren
-- [ ] Wenn alle Schiffe stehen, erscheint der Knopf «Bereit!» (Schiessen kommt in Modul 2)
-- [ ] Alle neuen Werte haben einen Regler in der Werkstatt
+- [x] Startbildschirm zeigt «RaRa Seeschlacht»
+- [x] Spielmodus-Bildschirm mit 3 Knöpfen, alle führen zum Aufstellen
+- [x] Ich kann alle Schiffe mit dem Finger aufs Meer ziehen und durch Tippen drehen
+- [x] Schiffe dürfen nicht übereinander oder aus dem Meer hinaus liegen; passt es nicht, wird das Schiff rot
+- [x] Schiffe dürfen sich auch an der Seite nicht berühren
+- [x] Wenn alle Schiffe stehen, erscheint der Knopf «Bereit!» (Schiessen kommt in Modul 2)
+- [x] Alle neuen Werte haben einen Regler in der Werkstatt
 - [ ] Auf dem iPad getestet

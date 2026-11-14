@@ -4,7 +4,8 @@ import '@fontsource/cinzel/600.css';
 import '@fontsource/cinzel/700.css';
 import './stil.css';
 import { StartSzene } from './szenen/StartSzene.js';
-import { SpielSzene } from './szenen/SpielSzene.js';
+import { ModusSzene } from './szenen/ModusSzene.js';
+import { AufstellSzene } from './szenen/AufstellSzene.js';
 import { meerStarten } from './meer.js';
 import { fischeStarten } from './fische.js';
 import { haiStarten } from './hai.js';
@@ -25,5 +26,5 @@ new Phaser.Game({
     width: 1200,
     height: 800,
   },
-  scene: [StartSzene, SpielSzene],
+  scene: [StartSzene, ModusSzene, AufstellSzene],
 });

@@ -19,5 +19,63 @@
     "min": 0.2,
     "max": 3,
     "schritt": 0.1
+  },
+  "meerGroesse": {
+    "name": "Meergrösse (Felder)",
+    "typ": "zahl",
+    "wert": 10,
+    "min": 7,
+    "max": 12,
+    "schritt": 1
+  },
+  "mbappeFarbe1": {
+    "name": "Mbappé Streifen 1",
+    "typ": "farbe",
+    "wert": "#f1efe8"
+  },
+  "mbappeFarbe2": {
+    "name": "Mbappé Streifen 2",
+    "typ": "farbe",
+    "wert": "#c9a34a"
+  },
+  "messiFarbe1": {
+    "name": "Messi Streifen 1",
+    "typ": "farbe",
+    "wert": "#f2a7c3"
+  },
+  "messiFarbe2": {
+    "name": "Messi Streifen 2",
+    "typ": "farbe",
+    "wert": "#1c1c1c"
+  },
+  "keniFarbe1": {
+    "name": "Keni Streifen 1",
+    "typ": "farbe",
+    "wert": "#c8102e"
+  },
+  "keniFarbe2": {
+    "name": "Keni Streifen 2",
+    "typ": "farbe",
+    "wert": "#ffffff"
+  },
+  "yamalFarbe1": {
+    "name": "Yamal Streifen 1",
+    "typ": "farbe",
+    "wert": "#004d98"
+  },
+  "yamalFarbe2": {
+    "name": "Yamal Streifen 2",
+    "typ": "farbe",
+    "wert": "#a50044"
+  },
+  "xhakaFarbe1": {
+    "name": "Xhaka Streifen 1",
+    "typ": "farbe",
+    "wert": "#d52b1e"
+  },
+  "xhakaFarbe2": {
+    "name": "Xhaka Streifen 2",
+    "typ": "farbe",
+    "wert": "#ffffff"
   }
 }

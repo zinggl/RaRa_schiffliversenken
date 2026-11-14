@@ -239,8 +239,7 @@ body {
 /* ==========================================================================
    Startbildschirm
    ========================================================================== */
-.start,
-.platzhalter {
+.start {
   position: fixed;
   inset: 0;
   z-index: 10;
@@ -324,20 +323,6 @@ body {
   filter: brightness(1.18) drop-shadow(0 0 12px rgba(255, 214, 150, 0.45));
 }
 
-/* Platzhalter fürs Spielfeld */
-.platzhalter-titel {
-  position: absolute;
-  top: 40vh;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-family: 'Cinzel', Georgia, serif;
-  font-weight: 600;
-  font-size: min(5vmin, 48px);
-  letter-spacing: 0.08em;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
-}
-
 /* Hochformat: Bitte drehen */
 .drehen {
   display: none;
@@ -363,6 +348,317 @@ body {
   .drehen span {
     font-size: 64px;
   }
+}
+
+/* ==========================================================================
+   Knöpfe (überall gleich)
+   ========================================================================== */
+.knopf {
+  font: inherit;
+  font-size: min(2.4vmin, 18px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.8em 1.4em;
+  border-radius: 12px;
+  border: 1px solid rgba(243, 234, 214, 0.35);
+  background: rgba(10, 24, 38, 0.7);
+  color: var(--text);
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+.knopf:active {
+  background: rgba(30, 50, 70, 0.9);
+}
+.knopf-gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #1a1206;
+  font-weight: 700;
+}
+.knopf-gold:active {
+  background: #c9a35a;
+}
+.knopf-zurueck {
+  position: absolute;
+  top: max(14px, 2.5vh);
+  left: max(14px, 2.5vw);
+  font-size: min(2vmin, 15px);
+  padding: 0.6em 1.1em;
+}
+.knopf-zurueck::before {
+  content: '‹ ';
+}
+
+/* ==========================================================================
+   Spielmodus wählen
+   ========================================================================== */
+.modus {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+.modus-box {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  width: min(560px, 86vw);
+  padding: min(3vmin, 26px);
+  border-radius: 14px;
+  background: rgba(10, 24, 38, 0.9);
+  border: 1px solid rgba(217, 180, 106, 0.35);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  display: grid;
+  gap: min(1.6vmin, 12px);
+  pointer-events: auto;
+}
+.modus-titel {
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 600;
+  font-size: min(3vmin, 24px);
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 0.3em;
+}
+.modus-knopf {
+  display: flex;
+  align-items: center;
+  gap: min(2.4vmin, 18px);
+  width: 100%;
+  padding: min(1.8vmin, 14px) min(2.4vmin, 18px);
+  border-radius: 12px;
+  border: 1px solid rgba(243, 234, 214, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.modus-knopf:active {
+  background: rgba(217, 180, 106, 0.16);
+  border-color: rgba(217, 180, 106, 0.6);
+}
+.modus-symbol svg {
+  display: block;
+  width: min(6vmin, 44px);
+  height: min(6vmin, 44px);
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.modus-text {
+  display: grid;
+  gap: 2px;
+}
+.modus-name {
+  font-size: min(2.7vmin, 20px);
+  font-weight: 600;
+}
+.modus-info {
+  font-size: min(1.9vmin, 14px);
+  letter-spacing: 0.06em;
+  color: var(--text-leise);
+}
+
+/* ==========================================================================
+   Flotte aufstellen
+   ========================================================================== */
+.aufstellen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(4, 12, 22, 0.55), rgba(4, 12, 22, 0.75));
+}
+.aufstellen-titel {
+  position: absolute;
+  top: max(18px, 3vh);
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 600;
+  font-size: min(3vmin, 26px);
+  letter-spacing: 0.1em;
+  color: var(--text);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+.aufstellen-hinweis {
+  position: absolute;
+  bottom: max(10px, 2.4vh);
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: min(1.9vmin, 15px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-leise);
+}
+
+/* Das Meer von oben, mit Feldern */
+.brett {
+  position: absolute;
+  border-radius: 6px;
+  pointer-events: auto;
+  background-color: color-mix(in srgb, var(--meer) 70%, #031524);
+  background-image:
+    linear-gradient(to right, rgba(220, 238, 248, 0.16) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(220, 238, 248, 0.16) 1px, transparent 1px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='40'%3E%3Cpath d='M0 20 Q22 12 45 20 T90 20' fill='none' stroke='white' stroke-opacity='0.06' stroke-width='2'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 70% 20%, rgba(120, 200, 230, 0.22), transparent 60%),
+    radial-gradient(ellipse at 20% 90%, rgba(0, 0, 0, 0.35), transparent 60%);
+  background-size:
+    var(--zelle) var(--zelle),
+    var(--zelle) var(--zelle),
+    90px 40px,
+    100% 100%,
+    100% 100%;
+  border: 1px solid rgba(217, 180, 106, 0.55);
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.55),
+    inset 0 0 40px rgba(0, 0, 0, 0.35);
+}
+.beschriftung {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 600;
+  color: rgba(217, 180, 106, 0.85);
+}
+
+/* Ablage für die Flotte */
+.dock {
+  position: absolute;
+  border-radius: 12px;
+  background: rgba(10, 24, 38, 0.6);
+  border: 1px dashed rgba(243, 234, 214, 0.2);
+}
+.dock-titel {
+  position: absolute;
+  top: calc(var(--zelle) * -0.6);
+  left: 0;
+  right: 0;
+  height: calc(var(--zelle) * 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 600;
+  font-size: max(11px, calc(var(--zelle) * 0.32));
+  letter-spacing: 0.12em;
+  color: rgba(217, 180, 106, 0.85);
+}
+.dock.leer {
+  border-color: transparent;
+  background: transparent;
+}
+
+.knopf-bereit {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  font-size: min(3vmin, 24px);
+  padding: 0.8em 1.8em;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.knopf-bereit.sichtbar {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+/* Schiffe */
+.schiff {
+  position: absolute;
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  cursor: grab;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55));
+  z-index: 2;
+}
+.schiff svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.schiff.gleitet {
+  transition: left 0.26s ease, top 0.26s ease, transform 0.26s ease;
+}
+.schiff.gezogen {
+  z-index: 5;
+  cursor: grabbing;
+  filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.6));
+}
+/* Passt nicht: rot */
+.schiff.passt-nicht {
+  filter: drop-shadow(0 0 8px rgba(255, 70, 60, 0.95)) sepia(1) saturate(6) hue-rotate(-40deg) brightness(0.85);
+}
+
+/* Vorschau: wo das Schiff landen würde */
+.vorschau {
+  position: absolute;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.vorschau.sichtbar {
+  opacity: 1;
+}
+.vorschau.gut {
+  background: rgba(120, 220, 170, 0.22);
+  box-shadow: inset 0 0 0 1.5px rgba(150, 235, 190, 0.7);
+}
+.vorschau.schlecht {
+  background: rgba(255, 80, 70, 0.22);
+  box-shadow: inset 0 0 0 1.5px rgba(255, 110, 100, 0.8);
+}
+
+/* Bildschirm dazwischen: deckt alles zu (nicht schauen!) */
+.zwischenbild {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  background: radial-gradient(ellipse at 50% 30%, #143150, var(--nacht) 70%);
+  padding: 24px;
+}
+.zwischenbild-box {
+  max-width: 620px;
+  text-align: center;
+}
+.zwischenbild-titel {
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 700;
+  font-size: min(5.5vmin, 46px);
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+.zwischenbild-text {
+  margin: 1.2em 0 2em;
+  font-size: min(2.6vmin, 20px);
+  line-height: 1.6;
+  color: var(--text-leise);
+}
+.zwischenbild-knoepfe {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 /* ==========================================================================
