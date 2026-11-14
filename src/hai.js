@@ -1,47 +1,97 @@
-// Ein Weisser Hai, der langsam durchs Meer zieht (unter dem Schiff durch).
-// Dunkler Rücken, heller Bauch – so wie echte Haie.
+// Ein Tigerhai, der langsam durchs Meer zieht (unter dem Schiff durch).
+// Breite stumpfe Schnauze, Querstreifen, heller Bauch, Lichtflecken auf dem Rücken.
 // Geheimtipp: 2 Sekunden auf den Hai drücken öffnet die Werkstatt.
 // Solange man drückt, hält der Hai an, und ein goldener Ring füllt sich.
 import { werkstattOeffnen } from './werkstatt/werkstatt.js';
 
 const DRUECKEN_MS = 2000; // so lange muss man auf den Hai drücken
 
+// Körperform, wird auch als Schablone gebraucht (Streifen, Bauch und Lichtflecken bleiben im Körper)
+const KOERPER = `M74,57 C110,45 142,35 192,33 C242,31 278,35 296,44
+  C308,49 313,56 309,62 C305,68 294,72 278,75 C240,82 182,84 140,78 C110,74 90,68 74,64 Z`;
+
+// Querstreifen wie beim Tigerhai: unregelmässig, teils unterbrochen, zum Schwanz hin deutlicher
+const STREIFEN = [
+  // [x oben, Biegung, Länge (0–1), Breite, Stärke]
+  [112, -4, 0.9, 3.2, 0.2], [124, -6, 0.6, 2.4, 0.17], [137, -3, 0.95, 3.6, 0.19],
+  [151, -5, 0.7, 2.6, 0.15], [163, -4, 0.85, 3.0, 0.14], [178, -6, 0.55, 2.2, 0.12],
+  [192, -3, 0.75, 2.8, 0.11], [207, -5, 0.5, 2.0, 0.09], [221, -4, 0.6, 2.2, 0.08],
+  [236, -3, 0.4, 1.8, 0.06],
+];
+function streifen() {
+  return STREIFEN.map(([x, bogen, laenge, breite, staerke]) => {
+    const unten = 34 + 38 * laenge;
+    return `<path d="M${x},33 Q${x + bogen},${(33 + unten) / 2} ${x - 2},${unten}" stroke="#1d2626"
+      stroke-width="${breite}" stroke-linecap="round" fill="none" opacity="${staerke}"/>`;
+  }).join('');
+}
+
 const HAI_SVG = `
-<svg viewBox="0 0 300 120" aria-hidden="true">
+<svg viewBox="0 0 320 120" aria-hidden="true">
   <defs>
     <linearGradient id="hai-ruecken" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#2e4250"/>
-      <stop offset="0.55" stop-color="#5d7686"/>
-      <stop offset="1" stop-color="#7f97a5"/>
+      <stop offset="0" stop-color="#3a4645"/>
+      <stop offset="0.45" stop-color="#5f6c6b"/>
+      <stop offset="0.75" stop-color="#7f8a88"/>
     </linearGradient>
     <linearGradient id="hai-bauch" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#c9d6dc"/>
-      <stop offset="1" stop-color="#eef3f5"/>
+      <stop offset="0" stop-color="#dfe6e6"/>
+      <stop offset="1" stop-color="#b9c6c8"/>
     </linearGradient>
+    <linearGradient id="hai-flosse" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d4a4a"/>
+      <stop offset="1" stop-color="#55615f"/>
+    </linearGradient>
+    <clipPath id="hai-koerper"><path d="${KOERPER}"/></clipPath>
+    <filter id="hai-weich" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
   </defs>
-  <!-- Schwanzflosse (oben grösser als unten), bewegt sich leicht -->
+
+  <!-- Schwanzflosse: oberer Lappen lang und schlank, unterer klein; bewegt sich leicht -->
   <g class="hai-schwanz">
-    <path d="M58,60 Q40,40 18,8 Q30,40 34,60 Q30,74 22,96 Q42,78 58,64 Z" fill="#3d5464"/>
+    <path d="M78,57 Q56,46 30,10 Q24,4 26,12 Q36,36 52,58 Q44,70 36,84 Q38,86 42,82 Q58,72 78,65 Z"
+          fill="url(#hai-flosse)"/>
   </g>
-  <!-- Rückenflosse -->
-  <path d="M150,40 Q160,14 178,4 Q172,24 176,42 Z" fill="#33495a"/>
+
+  <!-- Rückenflosse hoch und nach hinten geschwungen, zweite Rückenflosse klein -->
+  <path d="M168,37 Q180,14 203,4 Q198,22 218,35 Z" fill="url(#hai-flosse)"/>
+  <path d="M104,49 Q108,41 116,38 Q114,45 120,48 Z" fill="#3d4a4a"/>
+
   <!-- Körper -->
-  <path d="M54,62 Q90,40 150,38 Q220,36 262,50 Q284,57 292,64 Q280,72 258,78
-           Q210,88 150,86 Q92,84 54,62 Z" fill="url(#hai-ruecken)"/>
-  <!-- Heller Bauch mit unregelmässiger Grenze -->
-  <path d="M92,74 Q120,70 150,74 Q190,69 226,72 Q246,70 268,74 Q252,80 222,84
-           Q180,89 140,86 Q110,83 92,74 Z" fill="url(#hai-bauch)"/>
-  <!-- Bauchflosse und Afterflosse -->
-  <path d="M110,82 L100,96 L124,84 Z" fill="#3d5464"/>
-  <path d="M78,72 L70,82 L88,74 Z" fill="#3d5464"/>
-  <!-- Brustflosse, lang nach hinten -->
-  <path d="M206,78 Q196,96 176,112 Q200,100 222,82 Z" fill="#3a5060"/>
+  <path d="${KOERPER}" fill="url(#hai-ruecken)"/>
+  <g clip-path="url(#hai-koerper)">
+    ${streifen()}
+    <!-- Heller Bauch mit klarer Grenze, beginnt unter dem Auge -->
+    <path d="M60,69 Q110,66 160,70 Q215,73 262,64 Q286,59 300,58 L330,58 L330,120 L60,120 Z" fill="url(#hai-bauch)"/>
+    <!-- Lichtflecken von der Sonne auf dem Rücken -->
+    <g filter="url(#hai-weich)" fill="#ffe9b8" opacity="0.62">
+      <ellipse cx="240" cy="36" rx="30" ry="4.5"/>
+      <ellipse cx="200" cy="37" rx="14" ry="3.5"/>
+      <ellipse cx="165" cy="41" rx="18" ry="3.5"/>
+      <ellipse cx="284" cy="43" rx="11" ry="3"/>
+      <ellipse cx="120" cy="50" rx="10" ry="2.5"/>
+    </g>
+    <!-- leichter Schatten an der Unterseite -->
+    <path d="M90,74 Q180,86 300,66 L300,90 L90,90 Z" fill="#5d6b6d" opacity="0.25"/>
+  </g>
+
+  <!-- Afterflosse und Bauchflosse -->
+  <path d="M110,72 Q112,80 118,84 Q120,77 126,74 Z" fill="#4a5655"/>
+  <path d="M150,79 Q150,88 156,94 Q160,85 170,81 Z" fill="#4a5655"/>
+
+  <!-- Lange Brustflosse, schräg nach hinten -->
+  <path d="M244,73 Q232,88 204,104 Q200,107 206,106 Q232,96 258,77 Z" fill="url(#hai-flosse)"/>
+
   <!-- Kiemenspalten -->
-  <path d="M222,56 Q220,64 222,73 M228,55 Q226,64 228,73 M234,55 Q232,63 234,72 M240,55 Q238,63 240,71"
-        stroke="#2b3c48" stroke-width="1.2" fill="none" opacity="0.7"/>
-  <!-- Auge und Maul -->
-  <circle cx="264" cy="58" r="2.2" fill="#0b1015"/>
-  <path d="M256,72 Q272,74 286,67" stroke="#2b3c48" stroke-width="1.3" fill="none"/>
+  <path d="M246,50 Q243,60 246,71 M252,49 Q249,59 252,71 M258,49 Q255,59 258,70 M264,49 Q261,58 264,69"
+        stroke="#2c3636" stroke-width="0.8" fill="none" opacity="0.4"/>
+
+  <!-- Breite, stumpfe Schnauze: Auge, Nasenloch, Maul -->
+  <ellipse cx="287" cy="50" rx="2.6" ry="2.3" fill="#0b0f10"/>
+  <path d="M300,55.5 Q302.5,56.5 305,55.5" stroke="#283232" stroke-width="0.9" fill="none" opacity="0.8"/>
+  <!-- Maul liegt unter der Schnauze, nur als feine Kante sichtbar -->
+  <path d="M302,67 Q294,72.5 280,74" stroke="#7d8a8b" stroke-width="1" fill="none" opacity="0.7"/>
 </svg>`;
 
 // Einmal beim Spielstart aufrufen. Der Hai hat eine eigene Ebene über dem Spiel,
