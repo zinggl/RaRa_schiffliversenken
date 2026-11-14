@@ -10,7 +10,7 @@ Jetzt wird richtig gespielt: Man schiesst auf das Meer des Gegners, bis eine Flo
   - **Wasser:** Wasserfontäne spritzt hoch, danach bleiben Ringe im Wasser.
 - **Regel:** Wer trifft, darf nochmals schiessen. Erst nach einem Schuss ins Wasser ist der andere dran.
 - **Versenkt:** Das Schiff des Gegners taucht auf (mit Name, z. B. «Messi versenkt!»), wird dunkel und sinkt langsam. In der Liste wird es durchgestrichen.
-- **Computer:** schwer – rechnet aus, wo Schiffe am ehesten liegen, und jagt getroffene Schiffe gezielt zu Ende.
+- **Computer:** drei Stufen, wählbar nach «Gegen den Computer»: **Leicht** (schiesst zufällig), **Mittel** (sucht nach einem Treffer rundherum weiter), **Schwer** (rechnet aus, wo Schiffe am ehesten liegen). Im Schnitt braucht er auf 10×10 rund 95 / 61 / 39 Schüsse.
 - **Zu zweit auf einem iPad:** Bei jedem Wechsel ein «Nicht schauen!»-Bildschirm, der alles zudeckt.
 - **Geräusche:** Kanonendonner, Explosion, Platschen, tiefes Horn beim Versenken (selbst erzeugt, keine Dateien).
 - **Spielende:** Feuerwerk für den Gewinner, gross «Sieg!» bzw. «Spieler 1 gewinnt», dazu Schüsse, Treffer und Trefferquote. Verliert man gegen den Computer: kein Feuerwerk, dafür sieht man, wo die Schiffe des Computers lagen. Knöpfe «Nochmals» und «Zum Start».

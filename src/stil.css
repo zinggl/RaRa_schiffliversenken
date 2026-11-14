@@ -452,6 +452,17 @@ body {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+.modus-symbol rect {
+  fill: none;
+}
+.modus-symbol rect.voll {
+  fill: var(--gold);
+  fill-opacity: 0.85;
+}
+.modus-knopf[aria-current='true'] {
+  border-color: rgba(217, 180, 106, 0.6);
+  background: rgba(217, 180, 106, 0.08);
+}
 .modus-text {
   display: grid;
   gap: 2px;
@@ -1073,6 +1084,13 @@ body {
   font-size: min(2.4vmin, 18px);
   line-height: 1.5;
   color: var(--text-leise);
+}
+.ende-stufe {
+  margin: -0.6em 0 1.2em;
+  font-size: min(1.9vmin, 14px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
 }
 .ende-statistik {
   width: 100%;

@@ -338,7 +338,7 @@ export class KampfSzene extends Phaser.Scene {
     for (;;) {
       await warte((wert('computerDenkzeit') ?? 1) * 1000);
       if (!this.scene.isActive()) return; // Spiel wurde verlassen
-      const { x, y } = computerZiel(feld, FLOTTE);
+      const { x, y } = computerZiel(feld, FLOTTE, spielstand.stufe);
       const r = await this.schuss(1, x, y);
       if (feld.alleVersenkt()) return this.ende(1);
       if (r.ergebnis === 'wasser') break;
@@ -386,6 +386,7 @@ export class KampfSzene extends Phaser.Scene {
     }
 
     const titel = this.modus === 'computer' ? (niederlage ? 'Niederlage' : 'Sieg!') : `Spieler ${gewinner + 1} gewinnt!`;
+    const stufeName = { leicht: 'Leicht', mittel: 'Mittel', schwer: 'Schwer' }[spielstand.stufe];
     const text =
       this.modus === 'computer'
         ? niederlage
@@ -405,6 +406,7 @@ export class KampfSzene extends Phaser.Scene {
       <div class="ende-box">
         <div class="ende-titel">${titel}</div>
         <div class="ende-text">${text}</div>
+        ${this.modus === 'computer' ? `<div class="ende-stufe">Stufe: ${stufeName}</div>` : ''}
         <table class="ende-statistik">
           <tr><th></th><td>Schüsse</td><td>Treffer</td><td>Quote</td></tr>
           ${zeile(0)}${zeile(1)}

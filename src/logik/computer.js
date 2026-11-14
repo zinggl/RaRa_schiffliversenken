@@ -1,4 +1,8 @@
-// Der Computer-Gegner (schwer). Er kennt nur, was auch ein Mensch weiss:
+// Der Computer-Gegner in drei Stufen:
+//   leicht – schiesst zufällig
+//   mittel – schiesst zufällig, sucht aber nach einem Treffer rundherum weiter, bis das Schiff versenkt ist
+//   schwer – rechnet aus, wo Schiffe am ehesten liegen (siehe unten)
+// Er kennt nur, was auch ein Mensch weiss:
 // wo er hingeschossen hat, ob es ein Treffer war und welche Schiffe versenkt sind.
 //
 // So denkt er:
@@ -10,7 +14,49 @@
 // 4. Er schiesst auf das Feld, das in den meisten Lagen vorkommt.
 import { Spielfeld } from './spielfeld.js';
 
-export function computerZiel(feld, flotte) {
+export function computerZiel(feld, flotte, stufe = 'schwer') {
+  if (stufe === 'leicht') return zufallsZiel(feld);
+  if (stufe === 'mittel') return jagdZiel(feld);
+  return rechenZiel(feld, flotte);
+}
+
+// Irgendein Feld, auf das noch nicht geschossen wurde
+function zufallsZiel(feld) {
+  const frei = [];
+  for (let x = 0; x < feld.groesse; x++) for (let y = 0; y < feld.groesse; y++) if (!feld.schonBeschossen(x, y)) frei.push({ x, y });
+  return frei[Math.floor(Math.random() * frei.length)];
+}
+
+// Mittel: Gibt es Treffer, die noch nicht versenkt sind, schiesst er gleich daneben.
+// Liegen schon zwei Treffer in einer Reihe, macht er in dieser Richtung weiter.
+function jagdZiel(feld) {
+  const n = feld.groesse;
+  const versenktFelder = new Set();
+  for (const id of feld.versenkt) {
+    const s = feld.hole(id);
+    for (const [x, y] of Spielfeld.felder(s.laenge, s.x, s.y, s.quer)) versenktFelder.add(`${x},${y}`);
+  }
+  const offen = [];
+  for (const [schluessel, e] of feld.schuesse) {
+    if (e === 'treffer' && !versenktFelder.has(schluessel)) offen.push(schluessel.split(',').map(Number));
+  }
+  if (offen.length === 0) return zufallsZiel(feld);
+
+  const frei = (x, y) => x >= 0 && y >= 0 && x < n && y < n && !feld.schonBeschossen(x, y);
+  let richtungen = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  if (offen.length >= 2) {
+    const waagrecht = offen.every(([, y]) => y === offen[0][1]);
+    const senkrecht = offen.every(([x]) => x === offen[0][0]);
+    if (waagrecht) richtungen = [[1, 0], [-1, 0]];
+    else if (senkrecht) richtungen = [[0, 1], [0, -1]];
+  }
+  const ziele = [];
+  for (const [x, y] of offen) for (const [dx, dy] of richtungen) if (frei(x + dx, y + dy)) ziele.push({ x: x + dx, y: y + dy });
+  return ziele.length ? ziele[Math.floor(Math.random() * ziele.length)] : zufallsZiel(feld);
+}
+
+// Schwer: Wahrscheinlichkeiten ausrechnen
+function rechenZiel(feld, flotte) {
   const n = feld.groesse;
   const k = (x, y) => `${x},${y}`;
   const im = (x, y) => x >= 0 && y >= 0 && x < n && y < n;

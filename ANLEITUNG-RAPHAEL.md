@@ -30,7 +30,7 @@ In der Werkstatt (Hai) kannst du die **Meergrösse** und die **Streifenfarben** 
 - Ist ein Schiff **versenkt**, taucht es auf und sinkt. Rechts siehst du, welche Schiffe noch schwimmen.
 - Im **kleinen Feld** siehst du deine eigene Flotte und wo der Gegner hingeschossen hat.
 - Wer zuerst alle Schiffe versenkt, gewinnt – mit **Feuerwerk**! 🎆
-- Achtung: Der Computer ist **schwer**. In der Werkstatt kannst du einstellen, wie lange er überlegt, und die Geräusche ein- oder ausschalten.
+- Gegen den Computer wählst du die **Schwierigkeit**: Leicht, Mittel oder Schwer. In der Werkstatt kannst du einstellen, wie lange er überlegt, und die Geräusche ein- oder ausschalten.
 
 ## 5. Testen und Feedback
 Spielen, ausprobieren, Regler verstellen. Danach sagst du:
