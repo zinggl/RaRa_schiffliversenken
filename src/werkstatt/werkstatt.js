@@ -18,7 +18,7 @@ export function werkstattOeffnen() {
   fenster.innerHTML = `
     <div class="werkstatt-box">
       <div class="werkstatt-kopf">
-        <h2>Werkstatt</h2>
+        <h2>Werkstatt <span class="werkstatt-version">Version ${__VERSION__}</span></h2>
         <button class="knopf-x" data-aktion="schliessen" aria-label="Schliessen">✕</button>
       </div>
       <div class="werkstatt-regler"></div>

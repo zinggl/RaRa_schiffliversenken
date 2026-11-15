@@ -2,6 +2,10 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 9 – 2026-11-15
+- Fische bleiben im Wasser: Das iPad holt jetzt automatisch die neueste Version (alte Version mit fliegenden Fischen blieb im Speicher)
+- Versionsnummer oben in der Werkstatt
+
 ## Version 8 – 2026-11-15
 - Modul 2 «Schiessen»: Schlacht gegen den Computer und zu zweit auf einem iPad
 - Explosion mit Feuer und Rauch, Wasserfontäne, versenkte Schiffe tauchen auf und sinken, Feuerwerk für den Gewinner

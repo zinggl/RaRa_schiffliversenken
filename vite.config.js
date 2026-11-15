@@ -1,6 +1,7 @@
 // Einstellungen für den Dev-Server und das Bauen.
 import { defineConfig } from 'vite';
 import { readFile, writeFile } from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const WERKSTATT_DATEI = fileURLToPath(new URL('./src/config/werkstatt.json', import.meta.url));
@@ -50,7 +51,11 @@ function werkstattSpeichern() {
   };
 }
 
+// Versionsnummer aus versionen.md (die oberste «## Version N»), wird in der Werkstatt angezeigt
+const VERSION = readFileSync(fileURLToPath(new URL('./versionen.md', import.meta.url)), 'utf8').match(/## Version (\d+)/)?.[1] ?? '?';
+
 export default defineConfig({
+  define: { __VERSION__: JSON.stringify(VERSION) },
   // Relative Pfade, damit es auch auf GitHub Pages unter /RaRa_schiffliversenken/ läuft
   base: './',
   plugins: [werkstattSpeichern()],

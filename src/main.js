@@ -10,11 +10,15 @@ import { KampfSzene } from './szenen/KampfSzene.js';
 import { meerStarten } from './meer.js';
 import { fischeStarten } from './fische.js';
 import { haiStarten } from './hai.js';
+import { aktualisierenEinrichten } from './aktualisieren.js';
 
 // Meer, Hai und Fische liegen als HTML hinter bzw. über dem Spiel, auf allen Bildschirmen
 meerStarten();
 haiStarten();
 fischeStarten();
+
+// Immer die neueste Version holen (auch in der App auf dem Home-Bildschirm)
+aktualisierenEinrichten();
 
 new Phaser.Game({
   type: Phaser.AUTO,
