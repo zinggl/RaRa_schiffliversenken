@@ -2,6 +2,10 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 11 – 2026-11-15
+- Meer bis 24 × 24 (Standard 10 × 10), 10 Schiffe: Messi 6 (der GOAT), Mbappé, Ronaldo, Yamal, Keni, Haaland, Neymar, Xhaka, Pedri, Musiala
+- Flotte passt sich der Meergrösse an, Spalten bis X, Zoomen mit zwei Fingern auf dem iPhone
+
 ## Version 10 – 2026-11-15
 - Modul 3 «Zu zweit mit zwei Geräten»: Spiel eröffnen mit QR-Code und Code, beitreten per Kamera oder Zahlenfeld
 - Gleichzeitig aufstellen, Münzwurf, Schlacht übers Internet, Nochmals ohne neuen Code, Meldung bei Verbindungsabbruch
