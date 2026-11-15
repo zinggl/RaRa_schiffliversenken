@@ -2,6 +2,10 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 10 – 2026-11-15
+- Modul 3 «Zu zweit mit zwei Geräten»: Spiel eröffnen mit QR-Code und Code, beitreten per Kamera oder Zahlenfeld
+- Gleichzeitig aufstellen, Münzwurf, Schlacht übers Internet, Nochmals ohne neuen Code, Meldung bei Verbindungsabbruch
+
 ## Version 9 – 2026-11-15
 - Fische bleiben im Wasser: Das iPad holt jetzt automatisch die neueste Version (alte Version mit fliegenden Fischen blieb im Speicher)
 - Versionsnummer oben in der Werkstatt
