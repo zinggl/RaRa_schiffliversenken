@@ -5,7 +5,7 @@
 // oder online mit zwei Geräten (Schüsse und Antworten gehen übers Netz, die Schiffe bleiben geheim).
 import Phaser from 'phaser';
 import { wert } from '../werkstatt/werte.js';
-import { FLOTTE } from '../logik/flotte.js';
+import { flotteFuer } from '../logik/flotte.js';
 import { spielstand } from '../logik/spielstand.js';
 import { computerZiel } from '../logik/computer.js';
 import { kriegsschiffSvg } from '../kriegsschiff.js';
@@ -17,8 +17,9 @@ import { netz } from '../netz/verbindung.js';
 import { ichBeginne, nochmalsWuenschen } from '../netz/ablauf.js';
 import { verlustMelden } from '../netz/verlust.js';
 import { FernesSpielfeld } from '../logik/fernesfeld.js';
+import { zoomNoetig, zoomErlauben } from '../zoom.js';
 
-const BUCHSTABEN = 'ABCDEFGHIJKL';
+const BUCHSTABEN = 'ABCDEFGHIJKLMNOPQRSTUVWX'; // bis 24 Spalten
 const KLEIN = 0.42; // eigenes Feld im Verhältnis zum grossen
 const FLUGZEIT_MS = 550; // vom Kanonendonner bis zum Einschlag
 const SPERRE_MS = 400;
@@ -36,6 +37,7 @@ export class KampfSzene extends Phaser.Scene {
 
   create() {
     this.felder = spielstand.flotten; // [Spieler 1, Spieler 2 bzw. Computer]
+    this.flotte = flotteFuer(this.felder[0].groesse); // welche Schiffe mitspielen
     this.aktiv = 0; // wer schiesst gerade (0 = Spieler 1)
     this.vorbei = false;
     this.sperre = false;
@@ -73,8 +75,10 @@ export class KampfSzene extends Phaser.Scene {
       this.stopFeuerwerk?.();
       this.ebene.remove();
       fischeZeigen(true);
+      zoomErlauben(false);
     });
 
+    zoomErlauben(zoomNoetig(this.felder[0].groesse)); // grosses Meer auf dem iPhone
     this.malen();
     this.statusSetzen();
     if (this.modus === 'online') this.onlineEinrichten();
@@ -227,7 +231,7 @@ export class KampfSzene extends Phaser.Scene {
     const feldGegner = this.felder[gegner];
     this.liste.innerHTML = `
       <div class="kampf-titel">${{ computer: 'Flotte des Computers', online: 'Flotte deines Gegners', zwei: `Flotte von Spieler ${gegner + 1}` }[this.modus]}</div>
-      ${FLOTTE.map((s) => `
+      ${this.flotte.map((s) => `
         <div class="liste-schiff ${feldGegner.versenkt.has(s.id) ? 'versenkt' : ''}">
           <span class="liste-name">${s.name}</span>
           <span class="liste-felder">${'<i></i>'.repeat(s.laenge)}</span>
@@ -251,7 +255,7 @@ export class KampfSzene extends Phaser.Scene {
 
   // Schiffe und Schuss-Markierungen auf ein Brett legen
   brettFuellen(brett, feld, besitzer, c, eigenes) {
-    for (const { id, name } of FLOTTE) {
+    for (const { id, name } of this.flotte) {
       const s = feld.hole(id);
       if (!s) continue; // online: Lage noch unbekannt
       const versenkt = feld.versenkt.has(id);
@@ -391,7 +395,7 @@ export class KampfSzene extends Phaser.Scene {
     this.malen();
 
     if (r.ergebnis === 'versenkt') {
-      const name = FLOTTE.find((s) => s.id === r.id).name;
+      const name = this.flotte.find((s) => s.id === r.id).name;
       await warte(300);
       ton.horn();
       this.meldung(`${name} versenkt!`);
@@ -453,7 +457,7 @@ export class KampfSzene extends Phaser.Scene {
     for (;;) {
       await warte((wert('computerDenkzeit') ?? 1) * 1000);
       if (!this.scene.isActive()) return; // Spiel wurde verlassen
-      const { x, y } = computerZiel(feld, FLOTTE, spielstand.stufe);
+      const { x, y } = computerZiel(feld, this.flotte, spielstand.stufe);
       const r = await this.schuss(1, x, y);
       if (feld.alleVersenkt()) return this.ende(1);
       if (r.ergebnis === 'wasser') break;
@@ -496,7 +500,7 @@ export class KampfSzene extends Phaser.Scene {
 
     if (!niederlage) {
       const farben = ['#ffd38a', '#fff4dc', '#d9b46a'];
-      for (const { id } of FLOTTE) {
+      for (const { id } of this.flotte) {
         for (const f of [wert(`${id}Farbe1`), wert(`${id}Farbe2`)]) {
           // Sehr dunkle Farben leuchten nicht – die lassen wir weg
           const h = parseInt(f.slice(1), 16);

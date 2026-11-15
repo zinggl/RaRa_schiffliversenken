@@ -17,11 +17,11 @@ In der Werkstatt kannst du Sachen verstellen, zum Beispiel die Farbe vom Meer, w
 
 ## 3. Deine Flotte aufstellen (Modul 1)
 1. **Aufs Schiff tippen** und den Spielmodus wählen.
-2. Deine Schiffe **Mbappé, Messi, Keni, Yamal und Xhaka** mit dem Finger aufs Meer ziehen.
+2. Deine Schiffe mit dem Finger aufs Meer ziehen. Der GOAT **Messi** hat 6 Felder, dann kommen **Mbappé, Ronaldo, Yamal, Keni, Haaland, Neymar, Xhaka, Pedri und Musiala**. Auf 10 × 10 spielen die 6 grössten mit, ab 12 × 12 alle 10.
 3. **Antippen** dreht ein Schiff. Wird es **rot**, passt es nicht: Es liegt auf einem anderen Schiff, berührt eines oder ragt hinaus.
-4. Stehen alle fünf, drückst du **«Bereit!»**.
+4. Stehen alle Schiffe, drückst du **«Bereit!»**.
 
-In der Werkstatt (Hai) kannst du die **Meergrösse** und die **Streifenfarben** jedes Schiffs ändern.
+In der Werkstatt (Hai) kannst du die **Meergrösse** (7 bis 24 Felder) und die **Streifenfarben** jedes Schiffs ändern. Auf dem iPhone kannst du grosse Meere mit **zwei Fingern vergrössern**.
 
 ## 4. Die Schlacht (Modul 2)
 - Tippe auf ein Feld im **grossen Meer** – das ist das Meer deines Gegners.

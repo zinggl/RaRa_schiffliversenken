@@ -13,6 +13,7 @@ export function kriegsschiffSvg(laenge, name, farbe1, farbe2) {
   const bruecke = { x: 52, b: laenge <= 2 ? 28 : 30 + laenge * 8 };
   const tuerme = laenge >= 3 ? [w - 122] : [];
   if (laenge >= 5) tuerme.push(w - 186);
+  if (laenge >= 6) tuerme.push(w - 250); // der GOAT hat drei Türme
 
   // Der Name steht zwischen Brücke und vorderstem Turm (oder Bug)
   const nameVon = bruecke.x + bruecke.b + 10;

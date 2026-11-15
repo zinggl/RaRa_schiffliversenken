@@ -25,6 +25,11 @@ Realistisch und hochwertig, **nicht kindlich**: wie ein gutes Handy-Spiel, nicht
    Testen in der Cloud: eigener Vermittler (npm-Paket «peer») und ?vermittler=127.0.0.1:9000 an der Adresse
 Den Code von Anfang an so bauen, dass die Spiellogik (Raster, Schiffe, Treffer) nicht an Grafik oder Gegner gebunden ist. So lassen sich die Modi 2 und 3 später einfach anhängen.
 
+## Flotte
+- 10 Fussball-Schiffe in src/logik/flotte.js: Messi 6 (der GOAT), Mbappé 5, Ronaldo 5, Yamal 4, Keni 4, Haaland 4, Neymar 3, Xhaka 3, Pedri 2, Musiala 2
+- Meergrösse 7–24 (Standard 10). flotteFuer(groesse) nimmt so viele Schiffe, wie Platz haben (10×10: 6, ab 12×12: alle)
+- iPhone ab 13×13: Zoomen mit zwei Fingern (src/zoom.js)
+
 ## Ordner
 - module/ – ein Steckbrief pro Modul (01-….md), Vorlage _vorlage.md
 - feedback.md – Raphaels Notizen nach jedem Test

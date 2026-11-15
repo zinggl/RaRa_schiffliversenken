@@ -29,6 +29,15 @@ body {
   overscroll-behavior: none;
 }
 
+/* iPhone auf grossen Meeren: Zoomen mit zwei Fingern erlauben (siehe zoom.js).
+   «manipulation» erlaubt Zoomen und Verschieben, aber kein Doppeltipp-Zoom – das versteht Safari zuverlässig.
+   Schiffe behalten «none», damit man sie weiterhin mit einem Finger ziehen kann. */
+html.zoom-erlaubt,
+html.zoom-erlaubt body,
+html.zoom-erlaubt .brett {
+  touch-action: manipulation;
+}
+
 #spiel {
   position: fixed;
   inset: 0;

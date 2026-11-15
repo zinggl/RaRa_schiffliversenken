@@ -4,7 +4,7 @@
 // Zu zweit auf einem iPad: danach «Nicht schauen!» und Spieler 2 stellt auf.
 import Phaser from 'phaser';
 import { wert, beiAenderung } from '../werkstatt/werte.js';
-import { FLOTTE, MEER_MIN, MEER_MAX } from '../logik/flotte.js';
+import { flotteFuer, MEER_MIN, MEER_MAX } from '../logik/flotte.js';
 import { Spielfeld } from '../logik/spielfeld.js';
 import { spielstand } from '../logik/spielstand.js';
 import { kriegsschiffSvg } from '../kriegsschiff.js';
@@ -12,9 +12,10 @@ import { fischeZeigen } from '../fische.js';
 import { zwischenbild } from '../zwischenbild.js';
 import { zufallsFlotte } from '../logik/zufallsflotte.js';
 import { verlustMelden } from '../netz/verlust.js';
+import { zoomNoetig, zoomErlauben } from '../zoom.js';
 import { ichBinBereit } from '../netz/ablauf.js';
 
-const BUCHSTABEN = 'ABCDEFGHIJKL';
+const BUCHSTABEN = 'ABCDEFGHIJKLMNOPQRSTUVWX'; // bis 24 Spalten
 const BEWEGUNG_AB = 8; // so viele Pixel, dann ist es Ziehen statt Antippen
 const ROT_MS = 380; // so lange bleibt ein Schiff rot, bevor es zurückspringt
 const GLEITEN_MS = 260;
@@ -52,16 +53,7 @@ export class AufstellSzene extends Phaser.Scene {
     this.vorschau = this.ebene.querySelector('.vorschau');
     this.knopfBereit = this.ebene.querySelector('.knopf-bereit');
 
-    // Ein HTML-Element pro Schiff
-    this.schiffe = FLOTTE.map((daten, nummer) => {
-      const element = document.createElement('div');
-      element.className = 'schiff';
-      this.ebene.appendChild(element);
-      const schiff = { ...daten, nummer, element };
-      this.ziehenEinrichten(schiff);
-      return schiff;
-    });
-    this.schiffeMalen();
+    this.schiffe = [];
     this.neuesFeld();
 
     this.ebene.querySelector('.knopf-zurueck').addEventListener('click', () => {
@@ -90,6 +82,7 @@ export class AufstellSzene extends Phaser.Scene {
       window.removeEventListener('resize', neuAnordnen);
       this.ebene.remove();
       fischeZeigen(true);
+      zoomErlauben(false);
     });
   }
 
@@ -99,8 +92,29 @@ export class AufstellSzene extends Phaser.Scene {
     return Phaser.Math.Clamp(Math.round(wert('meerGroesse') ?? 10), MEER_MIN, MEER_MAX);
   }
 
+  // Neues Meer: Die Flotte hängt von der Grösse ab (auf kleinen Meeren fallen die kleinsten Schiffe weg)
   neuesFeld() {
-    this.feld = new Spielfeld(this.groesse());
+    const n = this.groesse();
+    this.feld = new Spielfeld(n);
+    this.flotte = flotteFuer(n);
+    spielstand.flotte = this.flotte;
+    // Ein HTML-Element pro Schiff
+    this.schiffe.forEach((s) => s.element.remove());
+    this.schiffe = this.flotte.map((daten, nummer) => {
+      const element = document.createElement('div');
+      element.className = 'schiff';
+      this.ebene.appendChild(element);
+      const schiff = { ...daten, nummer, element };
+      this.ziehenEinrichten(schiff);
+      return schiff;
+    });
+    this.schiffeMalen();
+    // Grosses Meer auf dem iPhone: mit zwei Fingern zoomen
+    const zoom = zoomNoetig(n);
+    zoomErlauben(zoom);
+    this.ebene.querySelector('.aufstellen-hinweis').textContent = zoom
+      ? 'Ziehen zum Platzieren · Antippen zum Drehen · Zwei Finger zum Zoomen'
+      : 'Ziehen zum Platzieren · Antippen zum Drehen';
     this.anordnen();
   }
 
@@ -120,9 +134,10 @@ export class AufstellSzene extends Phaser.Scene {
     const kopf = Math.max(48, H * 0.1);
     const fuss = Math.max(36, H * 0.08);
     const rand = 0.6; // Platz für Buchstaben und Zahlen, in Feldern
-    // Spielfeld + Abstand (1 Feld) + Ablage (6 Felder) müssen nebeneinander Platz haben
-    const c = Math.floor(Math.min((H - kopf - fuss) / (n + rand), (B * 0.94) / (n + rand + 1 + 6)));
-    const dockB = 6 * c;
+    // Spielfeld + Abstand (1 Feld) + Ablage (längstes Schiff + 1 Feld) müssen nebeneinander Platz haben
+    const ablage = Math.max(...this.flotte.map((s) => s.laenge)) + 1;
+    const c = Math.min((H - kopf - fuss) / (n + rand), (B * 0.94) / (n + rand + 1 + ablage));
+    const dockB = ablage * c;
     const gesamt = (n + rand) * c + c + dockB;
     const links = Math.max(8, (B - gesamt) / 2);
     const bx = links + rand * c;
@@ -159,7 +174,7 @@ export class AufstellSzene extends Phaser.Scene {
   // Ablageplatz eines Schiffs in der Flotte rechts
   dockPlatz(s) {
     const { c, dx, dy, n } = this.lage;
-    const schritt = Math.min(1.4 * c, (n * c - 0.8 * c) / FLOTTE.length);
+    const schritt = Math.min(1.4 * c, (n * c - 0.8 * c) / this.flotte.length);
     return { left: dx + 0.5 * c, top: dy + 0.6 * c + s.nummer * schritt, quer: true };
   }
 
@@ -190,7 +205,7 @@ export class AufstellSzene extends Phaser.Scene {
   }
 
   bereitZeigen() {
-    const alle = this.feld.anzahl() === FLOTTE.length;
+    const alle = this.feld.anzahl() === this.flotte.length;
     this.knopfBereit.classList.toggle('sichtbar', alle);
     this.dock.classList.toggle('leer', alle);
   }
@@ -308,13 +323,13 @@ export class AufstellSzene extends Phaser.Scene {
   // ---------- Bereit ----------
 
   bereit() {
-    if (this.feld.anzahl() !== FLOTTE.length) return;
+    if (this.feld.anzahl() !== this.flotte.length) return;
     spielstand.modus = this.modus;
     spielstand.flotten[this.spieler - 1] = this.feld.kopie();
 
     // Gegen den Computer: Er stellt seine Flotte zufällig auf, dann geht es los
     if (this.modus === 'computer') {
-      spielstand.flotten[1] = zufallsFlotte(this.feld.groesse, FLOTTE);
+      spielstand.flotten[1] = zufallsFlotte(this.feld.groesse, this.flotte);
       this.scene.start('Kampf', { modus: 'computer' });
       return;
     }
