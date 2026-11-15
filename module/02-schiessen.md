@@ -24,4 +24,6 @@ Jetzt wird richtig gespielt: Man schiesst auf das Meer des Gegners, bis eine Flo
 - [x] Versenkte Schiffe tauchen auf und sinken, Meldung mit Name
 - [x] Feuerwerk für den Gewinner
 - [x] Alle neuen Werte haben einen Regler in der Werkstatt
-- [ ] Auf dem iPad getestet
+- [x] Auf dem iPad getestet
+
+Status: ✅ fertig
