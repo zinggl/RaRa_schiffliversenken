@@ -2,6 +2,12 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 8 – 2026-11-15
+- Modul 2 «Schiessen»: Schlacht gegen den Computer und zu zweit auf einem iPad
+- Explosion mit Feuer und Rauch, Wasserfontäne, versenkte Schiffe tauchen auf und sinken, Feuerwerk für den Gewinner
+- Computer in drei Stufen: Leicht, Mittel, Schwer
+- Geräusche (Kanone, Explosion, Platschen, Horn); Werkstatt: Geräusche, Lautstärke, Denkzeit
+
 ## Version 7 – 2026-11-14
 - Keine fliegenden Fische mehr: Fische bleiben immer im Wasser (auch beim Erschrecken und auf dem iPhone)
 
