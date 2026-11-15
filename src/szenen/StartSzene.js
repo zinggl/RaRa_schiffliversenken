@@ -5,6 +5,7 @@
 import Phaser from 'phaser';
 import { werkstattWiederOeffnenFallsNoetig } from '../werkstatt/werkstatt.js';
 import { DREIMASTER_SVG } from '../dreimaster.js';
+import { netz } from '../netz/verbindung.js';
 
 export class StartSzene extends Phaser.Scene {
   constructor() {
@@ -12,6 +13,20 @@ export class StartSzene extends Phaser.Scene {
   }
 
   create() {
+    // Zurück am Start: eine Online-Verbindung wird beendet
+    if (netz.aktiv) netz.trennen();
+
+    // Mit dem QR-Code geöffnet (…?spiel=4712)? Dann direkt dem Spiel beitreten.
+    const code = new URLSearchParams(location.search).get('spiel');
+    if (code && /^\d{4}$/.test(code) && !StartSzene.codeBenutzt) {
+      StartSzene.codeBenutzt = true;
+      const url = new URL(location.href);
+      url.searchParams.delete('spiel');
+      history.replaceState(null, '', url);
+      this.scene.start('Verbinden', { code });
+      return;
+    }
+
     this.ebene = document.createElement('div');
     this.ebene.className = 'start';
     this.ebene.innerHTML = `

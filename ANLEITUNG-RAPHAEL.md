@@ -32,7 +32,15 @@ In der Werkstatt (Hai) kannst du die **Meergrösse** und die **Streifenfarben** 
 - Wer zuerst alle Schiffe versenkt, gewinnt – mit **Feuerwerk**! 🎆
 - Gegen den Computer wählst du die **Schwierigkeit**: Leicht, Mittel oder Schwer. In der Werkstatt kannst du einstellen, wie lange er überlegt, und die Geräusche ein- oder ausschalten.
 
-## 5. Testen und Feedback
+## 5. Gegen Papi auf zwei Geräten (Modul 3)
+1. Aufs Schiff tippen → **«Zu zweit mit zwei Geräten»** → **«Spiel eröffnen»**.
+2. Dein iPad zeigt einen **QR-Code** und **4 Zahlen**.
+3. Papi öffnet die **Kamera** auf dem iPhone und hält sie auf den QR-Code – oder er wählt im Spiel «Spiel beitreten» und tippt die 4 Zahlen ein.
+4. Jetzt stellt ihr **gleichzeitig** eure Flotten auf. Wer fertig ist, wartet auf den anderen.
+5. Die **Münze** entscheidet, wer beginnt. Viel Glück! 🎆
+- Beide Geräte brauchen Internet und müssen die App offen lassen.
+
+## 6. Testen und Feedback
 Spielen, ausprobieren, Regler verstellen. Danach sagst du:
 **Was ist gut? Was nervt? Was fehlt?** Das kommt in `feedback.md`.
 Papi schreibt **/feedback**, und Claude baut es um.
@@ -40,4 +48,4 @@ Papi schreibt **/feedback**, und Claude baut es um.
 ## Unser Plan
 1. ⚓ Flotte aufstellen ✓ und gegen den Computer spielen ✓
 2. 👨‍👦 Zu zweit am gleichen iPad ✓
-3. 📱 Zu zweit online: du auf dem iPad, Papi auf dem iPhone
+3. 📱 Zu zweit online: du auf dem iPad, Papi auf dem iPhone ✓

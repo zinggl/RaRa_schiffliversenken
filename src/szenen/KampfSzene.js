@@ -1,7 +1,8 @@
 // Der Kampf: abwechselnd aufs Meer des Gegners schiessen, bis eine Flotte versenkt ist.
 // Gross: das Meer des Gegners (dort tippt man hin). Klein: die eigene Flotte.
 // Regel: Wer trifft, darf nochmals. Bei einem Schuss ins Wasser ist der andere dran.
-// Gegen den Computer oder zu zweit auf einem iPad (mit «Nicht schauen!» bei jedem Wechsel).
+// Gegen den Computer, zu zweit auf einem iPad (mit «Nicht schauen!» bei jedem Wechsel)
+// oder online mit zwei Geräten (Schüsse und Antworten gehen übers Netz, die Schiffe bleiben geheim).
 import Phaser from 'phaser';
 import { wert } from '../werkstatt/werte.js';
 import { FLOTTE } from '../logik/flotte.js';
@@ -12,6 +13,10 @@ import { fischeZeigen } from '../fische.js';
 import { zwischenbild } from '../zwischenbild.js';
 import { feuerwerkStarten } from '../feuerwerk.js';
 import * as ton from '../geraeusche.js';
+import { netz } from '../netz/verbindung.js';
+import { ichBeginne, nochmalsWuenschen } from '../netz/ablauf.js';
+import { verlustMelden } from '../netz/verlust.js';
+import { FernesSpielfeld } from '../logik/fernesfeld.js';
 
 const BUCHSTABEN = 'ABCDEFGHIJKL';
 const KLEIN = 0.42; // eigenes Feld im Verhältnis zum grossen
@@ -38,6 +43,11 @@ export class KampfSzene extends Phaser.Scene {
     this.frischVersenkt = new Set();
     this.ab = performance.now() + SPERRE_MS;
     fischeZeigen(false);
+    // Online: Das Meer des Gegners kennen wir nur aus seinen Antworten
+    if (this.modus === 'online') {
+      this.felder = [spielstand.flotten[0], new FernesSpielfeld(spielstand.flotten[0].groesse)];
+      this.aktiv = ichBeginne() ? 0 : 1;
+    }
 
     this.ebene = document.createElement('div');
     this.ebene.className = 'kampf';
@@ -67,15 +77,112 @@ export class KampfSzene extends Phaser.Scene {
 
     this.malen();
     this.statusSetzen();
+    if (this.modus === 'online') this.onlineEinrichten();
+  }
+
+  // ---------- Online ----------
+
+  onlineEinrichten() {
+    verlustMelden(this);
+    this.kette = Promise.resolve(); // Schüsse des Gegners der Reihe nach abarbeiten
+    const abos = [
+      netz.auf('schuss', (n) => (this.kette = this.kette.then(() => this.gegnerSchuss(n.x, n.y)))),
+      netz.auf('ergebnis', (n) => {
+        this.wartetAufErgebnis?.(n);
+        this.wartetAufErgebnis = null;
+      }),
+      netz.auf('flotte', (n) => {
+        // Am Ende: so lagen die Schiffe des Gegners
+        this.felder[1].flotteZeigen(n.schiffe);
+        this.enthuellen = true;
+        this.malen();
+      }),
+    ];
+    spielstand.online.selbstNeu = false;
+    spielstand.online.beiNochmals = () => {
+      if (!this.vorbei) return;
+      this.meldung('Dein Gegner will nochmals!');
+      setTimeout(() => this.scene.isActive() && this.neueRunde(), 1400);
+    };
+    this.events.once('shutdown', () => {
+      abos.forEach((aufhoeren) => aufhoeren());
+      if (spielstand.online) spielstand.online.beiNochmals = null;
+    });
+    this.muenzwurf();
+  }
+
+  // Die Münze zeigt, wer beginnt (geworfen hat sie schon der Eröffner)
+  muenzwurf() {
+    this.sperre = true;
+    const ich = this.aktiv === 0;
+    const bild = document.createElement('div');
+    bild.className = 'muenzwurf';
+    bild.innerHTML = `
+      <div class="muenze ${ich ? 'du' : 'gegner'}"><span>R</span></div>
+      <div class="muenzwurf-text">${ich ? 'Du beginnst!' : 'Dein Gegner beginnt'}</div>`;
+    this.ebene.appendChild(bild);
+    setTimeout(() => {
+      bild.classList.add('weg');
+      setTimeout(() => bild.remove(), 500);
+      this.statusSetzen();
+      this.ab = performance.now() + SPERRE_MS;
+      if (this.aktiv === 0) this.sperre = false;
+    }, 2400);
+  }
+
+  // Der Gegner hat geschossen: auf meiner Flotte auswerten und ihm antworten
+  async gegnerSchuss(x, y) {
+    if (this.vorbei || !this.scene.isActive()) return;
+    this.aktiv = 1;
+    this.statusSetzen();
+    const r = await this.schuss(1, x, y);
+    if (this.felder[0].alleVersenkt()) return this.ende(1);
+    if (r.ergebnis === 'wasser') {
+      this.aktiv = 0;
+      this.statusSetzen();
+      this.ab = performance.now() + SPERRE_MS;
+      this.sperre = false;
+    } else {
+      this.statusSetzen(r.ergebnis === 'versenkt' ? 'Dein Gegner hat versenkt und zielt nochmals …' : 'Dein Gegner hat getroffen und zielt nochmals …');
+    }
+  }
+
+  // Wer hat getroffen? Lokal sofort – online fragt man den Gegner bzw. antwortet ihm.
+  async auswerten(schuetze, ziel, x, y) {
+    if (this.modus !== 'online') return ziel.schiessen(x, y);
+    if (schuetze === 0) {
+      const antwort = new Promise((fertig) => (this.wartetAufErgebnis = fertig));
+      netz.senden({ typ: 'schuss', x, y });
+      const n = await antwort;
+      ziel.eintragen(n);
+      return { ergebnis: n.ergebnis, id: n.id };
+    }
+    const r = ziel.schiessen(x, y);
+    netz.senden({
+      typ: 'ergebnis',
+      x,
+      y,
+      ergebnis: r.ergebnis,
+      id: r.id ?? null,
+      schiff: r.ergebnis === 'versenkt' ? ziel.hole(r.id) : null,
+      alle: ziel.alleVersenkt(),
+    });
+    return r;
+  }
+
+  neueRunde() {
+    spielstand.flotten = [null, null];
+    this.scene.start('Aufstellen', { modus: this.modus, spieler: 1 });
   }
 
   // Wer schaut aufs iPad? Gegen den Computer immer Spieler 1, zu zweit der, der dran ist.
   betrachter() {
-    return this.modus === 'computer' ? 0 : this.aktiv;
+    return this.modus === 'zwei' ? this.aktiv : 0;
   }
 
   name(i) {
     if (this.modus === 'computer') return i === 0 ? 'Du' : 'Der Computer';
+    if (this.modus === 'online') return i === 0 ? 'Du' : 'Dein Gegner';
     return `Spieler ${i + 1}`;
   }
 
@@ -113,13 +220,13 @@ export class KampfSzene extends Phaser.Scene {
     this.brettStellen(this.klein, kx, by, c2, n);
     this.brettFuellen(this.klein, this.felder[ich], ich, c2, true);
     const titelKlein = this.ebene.querySelector('.titel-klein');
-    titelKlein.textContent = this.modus === 'computer' ? 'Deine Flotte' : `Flotte von Spieler ${ich + 1}`;
+    titelKlein.textContent = this.modus === 'zwei' ? `Flotte von Spieler ${ich + 1}` : 'Deine Flotte';
     Object.assign(titelKlein.style, { left: `${kx}px`, top: `${by - rand * c}px`, width: `${n * c2}px`, height: `${rand * c}px` });
 
     // Liste der gegnerischen Schiffe
     const feldGegner = this.felder[gegner];
     this.liste.innerHTML = `
-      <div class="kampf-titel">${this.modus === 'computer' ? 'Flotte des Computers' : `Flotte von Spieler ${gegner + 1}`}</div>
+      <div class="kampf-titel">${{ computer: 'Flotte des Computers', online: 'Flotte deines Gegners', zwei: `Flotte von Spieler ${gegner + 1}` }[this.modus]}</div>
       ${FLOTTE.map((s) => `
         <div class="liste-schiff ${feldGegner.versenkt.has(s.id) ? 'versenkt' : ''}">
           <span class="liste-name">${s.name}</span>
@@ -146,6 +253,7 @@ export class KampfSzene extends Phaser.Scene {
   brettFuellen(brett, feld, besitzer, c, eigenes) {
     for (const { id, name } of FLOTTE) {
       const s = feld.hole(id);
+      if (!s) continue; // online: Lage noch unbekannt
       const versenkt = feld.versenkt.has(id);
       // Beim Gegner sieht man nur versenkte Schiffe (am Spielende nach einer Niederlage alle)
       if (!eigenes && !versenkt && !this.enthuellen) continue;
@@ -234,6 +342,8 @@ export class KampfSzene extends Phaser.Scene {
     }
     if (this.modus === 'computer') {
       this.status.textContent = this.aktiv === 0 ? 'Du bist dran · Tippe aufs Meer des Computers' : 'Der Computer zielt …';
+    } else if (this.modus === 'online') {
+      this.status.textContent = this.aktiv === 0 ? 'Du bist dran · Tippe aufs Meer deines Gegners' : 'Dein Gegner zielt …';
     } else {
       this.status.textContent = `Spieler ${this.aktiv + 1} ist dran · Tippe aufs Meer des Gegners`;
     }
@@ -243,7 +353,7 @@ export class KampfSzene extends Phaser.Scene {
 
   angetippt(e) {
     if (this.sperre || this.vorbei || performance.now() < this.ab) return;
-    if (this.modus === 'computer' && this.aktiv !== 0) return;
+    if (this.modus !== 'zwei' && this.aktiv !== 0) return;
     const r = this.gross.getBoundingClientRect();
     const { c, n } = this.lage;
     const x = Math.floor((e.clientX - r.left) / c);
@@ -268,7 +378,7 @@ export class KampfSzene extends Phaser.Scene {
     ton.kanone();
     await warte(FLUGZEIT_MS);
 
-    const r = ziel.schiessen(x, y);
+    const r = await this.auswerten(schuetze, ziel, x, y);
     if (r.ergebnis === 'wasser') {
       this.fontaeneZeigen(brett, x, y, c);
       ton.platsch();
@@ -309,6 +419,11 @@ export class KampfSzene extends Phaser.Scene {
     if (this.modus === 'computer') {
       this.aktiv = 1;
       await this.computerZug();
+      return;
+    }
+    if (this.modus === 'online') {
+      this.aktiv = 1; // jetzt schiesst der Gegner, seine Schüsse kommen übers Netz
+      this.statusSetzen();
       return;
     }
     const naechster = 1 - schuetze;
@@ -367,11 +482,17 @@ export class KampfSzene extends Phaser.Scene {
   ende(gewinner) {
     this.vorbei = true;
     this.sperre = true;
-    const niederlage = this.modus === 'computer' && gewinner === 1;
-    // Nach einer Niederlage sieht man, wo die Schiffe des Computers lagen
-    if (niederlage) this.enthuellen = true;
+    const niederlage = this.modus !== 'zwei' && gewinner === 1;
+    // Nach einer Niederlage sieht man, wo die Schiffe des Gegners lagen
+    // (online schickt der Gewinner seine Flotte, sie kommt mit der Nachricht «flotte»)
+    if (niederlage && this.modus === 'computer') this.enthuellen = true;
+    if (this.modus === 'online' && gewinner === 0) netz.senden({ typ: 'flotte', schiffe: [...this.felder[0].schiffe] });
     this.malen();
-    this.status.textContent = niederlage ? 'So lagen die Schiffe des Computers' : 'Die Schlacht ist entschieden';
+    this.status.textContent = niederlage
+      ? this.modus === 'online'
+        ? 'So lagen die Schiffe deines Gegners'
+        : 'So lagen die Schiffe des Computers'
+      : 'Die Schlacht ist entschieden';
 
     if (!niederlage) {
       const farben = ['#ffd38a', '#fff4dc', '#d9b46a'];
@@ -385,14 +506,14 @@ export class KampfSzene extends Phaser.Scene {
       this.stopFeuerwerk = feuerwerkStarten(farben);
     }
 
-    const titel = this.modus === 'computer' ? (niederlage ? 'Niederlage' : 'Sieg!') : `Spieler ${gewinner + 1} gewinnt!`;
+    const titel = this.modus !== 'zwei' ? (niederlage ? 'Niederlage' : 'Sieg!') : `Spieler ${gewinner + 1} gewinnt!`;
     const stufeName = { leicht: 'Leicht', mittel: 'Mittel', schwer: 'Schwer' }[spielstand.stufe];
-    const text =
-      this.modus === 'computer'
-        ? niederlage
-          ? 'Der Computer hat deine Flotte versenkt.'
-          : 'Du hast die ganze Flotte des Computers versenkt.'
-        : `Spieler ${gewinner + 1} hat alle Schiffe von Spieler ${2 - gewinner} versenkt.`;
+    const texte = {
+      computer: niederlage ? 'Der Computer hat deine Flotte versenkt.' : 'Du hast die ganze Flotte des Computers versenkt.',
+      online: niederlage ? 'Dein Gegner hat deine Flotte versenkt.' : 'Du hast die ganze Flotte deines Gegners versenkt.',
+      zwei: `Spieler ${gewinner + 1} hat alle Schiffe von Spieler ${2 - gewinner} versenkt.`,
+    };
+    const text = texte[this.modus];
     const zeile = (i) => {
       const schuesse = this.felder[1 - i].anzahlSchuesse();
       const treffer = this.felder[1 - i].anzahlTreffer();
@@ -420,11 +541,9 @@ export class KampfSzene extends Phaser.Scene {
     box.addEventListener('click', (e) => {
       const knopf = e.target.closest('button');
       if (!knopf || performance.now() < ab) return;
-      if (knopf.dataset.ziel === 'start') this.scene.start('Start');
-      else {
-        spielstand.flotten = [null, null];
-        this.scene.start('Aufstellen', { modus: this.modus, spieler: 1 });
-      }
+      if (knopf.dataset.ziel === 'start') return this.scene.start('Start'); // online: trennt die Verbindung
+      if (this.modus === 'online') nochmalsWuenschen(); // der Gegner kommt automatisch mit
+      this.neueRunde();
     });
     setTimeout(() => this.ebene.appendChild(box), niederlage ? 600 : 1200);
   }

@@ -25,7 +25,7 @@ const STUFEN = [
 const MODI = [
   { modus: 'computer', name: 'Gegen den Computer', info: 'Ein Spieler' },
   { modus: 'zwei', name: 'Zu zweit auf einem iPad', info: 'Abwechselnd aufstellen und spielen' },
-  { modus: 'online', name: 'Zu zweit mit zwei Geräten', info: 'Kommt bald' },
+  { modus: 'online', name: 'Zu zweit mit zwei Geräten', info: 'Übers Internet, jeder auf seinem Gerät' },
 ];
 
 export class ModusSzene extends Phaser.Scene {
@@ -60,6 +60,7 @@ export class ModusSzene extends Phaser.Scene {
         return this.losgehen('computer');
       }
       if (knopf.dataset.modus === 'computer') return this.stufenZeigen();
+      if (knopf.dataset.modus === 'online') return this.scene.start('Verbinden');
       if (knopf.dataset.modus) this.losgehen(knopf.dataset.modus);
     });
   }

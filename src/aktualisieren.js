@@ -4,7 +4,7 @@
 // Läuft gerade eine Schlacht oder das Aufstellen, wird nicht neu geladen (sonst wäre das Spiel weg).
 
 function spielLaeuft() {
-  return !!document.querySelector('.aufstellen, .kampf');
+  return !!document.querySelector('.aufstellen, .kampf, .verbinden');
 }
 
 async function pruefen() {

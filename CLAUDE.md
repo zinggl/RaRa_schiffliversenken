@@ -19,9 +19,10 @@ Realistisch und hochwertig, **nicht kindlich**: wie ein gutes Handy-Spiel, nicht
 - Bedienelemente: dunkles Glas (`rgba(10,24,38,.94)`), feine goldene Linien, abgerundet 10–14px
 
 ## Spielmodi (Grobplan, Raphael darf ändern)
-1. Gegen den Computer – zuerst bauen
+1. Gegen den Computer – Stufen Leicht / Mittel / Schwer (src/logik/computer.js)
 2. Zwei Spieler am gleichen iPad – abwechselnd, mit «Nicht schauen!»-Bildschirm
-3. Zwei Spieler online, zwei Geräte – zuletzt; braucht einen Gratis-Dienst, Wahl erst dann treffen
+3. Zwei Spieler online, zwei Geräte – PeerJS (direkt, ohne Konto, Gratis-Vermittler 0.peerjs.com), Code + QR-Code (src/netz/)
+   Testen in der Cloud: eigener Vermittler (npm-Paket «peer») und ?vermittler=127.0.0.1:9000 an der Adresse
 Den Code von Anfang an so bauen, dass die Spiellogik (Raster, Schiffe, Treffer) nicht an Grafik oder Gegner gebunden ist. So lassen sich die Modi 2 und 3 später einfach anhängen.
 
 ## Ordner

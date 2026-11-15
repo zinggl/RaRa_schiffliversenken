@@ -11,6 +11,8 @@ import { kriegsschiffSvg } from '../kriegsschiff.js';
 import { fischeZeigen } from '../fische.js';
 import { zwischenbild } from '../zwischenbild.js';
 import { zufallsFlotte } from '../logik/zufallsflotte.js';
+import { verlustMelden } from '../netz/verlust.js';
+import { ichBinBereit } from '../netz/ablauf.js';
 
 const BUCHSTABEN = 'ABCDEFGHIJKL';
 const BEWEGUNG_AB = 8; // so viele Pixel, dann ist es Ziehen statt Antippen
@@ -64,8 +66,15 @@ export class AufstellSzene extends Phaser.Scene {
 
     this.ebene.querySelector('.knopf-zurueck').addEventListener('click', () => {
       if (performance.now() < this.ab) return;
+      if (this.modus === 'online') return this.scene.start('Start'); // trennt die Verbindung
       this.scene.start('Modus');
     });
+    if (this.modus === 'online') {
+      verlustMelden(this);
+      // Sind beide bereit, geht die Schlacht los (die Münze wirft der Eröffner)
+      spielstand.online.beiStart = () => this.scene.start('Kampf', { modus: 'online' });
+      this.events.once('shutdown', () => (spielstand.online.beiStart = null));
+    }
     this.knopfBereit.addEventListener('click', () => this.bereit());
 
     // Werkstatt: neue Meergrösse = neu aufstellen, neue Farben = neu malen
@@ -85,6 +94,8 @@ export class AufstellSzene extends Phaser.Scene {
   }
 
   groesse() {
+    // Online gilt die Meergrösse vom Gerät, das das Spiel eröffnet hat
+    if (this.modus === 'online' && spielstand.online) return spielstand.online.groesse;
     return Phaser.Math.Clamp(Math.round(wert('meerGroesse') ?? 10), MEER_MIN, MEER_MAX);
   }
 
@@ -326,14 +337,12 @@ export class AufstellSzene extends Phaser.Scene {
       return;
     }
 
-    // Zwei Geräte: kommt später
+    // Zwei Geräte: dem Gegner sagen, dass ich bereit bin, und auf ihn warten
     zwischenbild(this.ebene, {
       titel: 'Deine Flotte ist bereit',
-      text: 'Das Spiel mit zwei Geräten kommt bald.',
-      knoepfe: [
-        { text: 'Neu aufstellen', los: () => this.scene.start('Aufstellen', { modus: this.modus, spieler: 1 }) },
-        { text: 'Zum Start', gold: true, los: () => this.scene.start('Start') },
-      ],
+      text: '<span class="verbinden-warten"><i></i>Warte auf deinen Gegner …</span>',
+      knoepfe: [{ text: 'Spiel verlassen', los: () => this.scene.start('Start') }],
     });
+    ichBinBereit();
   }
 }

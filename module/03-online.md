@@ -15,9 +15,12 @@ Raphael auf dem iPad und Papi auf dem iPhone spielen übers Internet gegeneinand
 - **Nochmals:** nach dem Spiel direkt nochmals gegeneinander, ohne neuen Code.
 - **Technik:** direkte Verbindung (PeerJS), kein Konto, nichts wird gespeichert.
 
+## Getestet in der Cloud
+Zwei Geräte (iPad + iPhone) im Testbrowser mit eigenem Vermittler: ganze Partie mit Wechseln, Sieg/Niederlage, Aufdecken der Flotte, Nochmals, falscher Code, Gegner verlässt das Spiel, Verbindung weg (Meldung nach ~10 s). Offen: echter Gratis-Vermittler 0.peerjs.com und echte Geräte.
+
 ## Fertig, wenn …
 - [ ] Raphael auf dem iPad und Papi auf dem iPhone spielen eine ganze Schlacht bis zum Feuerwerk
-- [ ] Beide stellen gleichzeitig auf, das Spiel beginnt, wenn beide «Bereit!» gedrückt haben
-- [ ] Bricht die Verbindung ab, kommt eine klare Meldung
-- [ ] Nach dem Spiel kann man direkt nochmals spielen, ohne neuen Code
+- [x] Beide stellen gleichzeitig auf, das Spiel beginnt, wenn beide «Bereit!» gedrückt haben
+- [x] Bricht die Verbindung ab, kommt eine klare Meldung
+- [x] Nach dem Spiel kann man direkt nochmals spielen, ohne neuen Code
 - [ ] Auf iPad und iPhone getestet
