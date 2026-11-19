@@ -2,6 +2,10 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 18 – 2026-11-19
+- Grosser Jubel jetzt bei jedem Treffer (nicht nur beim Versenken), für alle Spieler
+- Mbappé: Arme verschränkt, Daumen hoch; Messi: Argentinien mit 3 Sternen; Zuber: helle Haut, dunkle Haare, Bart
+
 ## Version 17 – 2026-11-19
 - Keni nach Raphaels Foto: FC-Zürich-Trikot mit langen weissen Ärmeln, kurze blonde Haare, Faust hoch
 

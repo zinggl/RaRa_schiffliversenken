@@ -1295,7 +1295,8 @@ html.zoom-erlaubt .brett {
 .jubel-figur[data-hand='offen'] .hand-offen,
 .jubel-figur[data-hand='faust'] .hand-faust,
 .jubel-figur[data-hand='zeigen'] .hand-zeigen,
-.jubel-figur[data-hand='daumen'] .hand-daumen {
+.jubel-figur[data-hand='daumen'] .hand-daumen,
+.jubel-figur[data-hand='daumen-quer'] .hand-daumen-quer {
   display: inline;
 }
 .jubel-zeichen {

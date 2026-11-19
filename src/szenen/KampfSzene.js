@@ -18,7 +18,7 @@ import { ichBeginne, nochmalsWuenschen } from '../netz/ablauf.js';
 import { verlustMelden } from '../netz/verlust.js';
 import { FernesSpielfeld } from '../logik/fernesfeld.js';
 import { zoomNoetig, zoomErlauben } from '../zoom.js';
-import { jubelKlein, jubelGross } from '../jubel.js';
+import { jubelGross } from '../jubel.js';
 
 const BUCHSTABEN = 'ABCDEFGHIJKLMNOPQRSTUVWX'; // bis 24 Spalten
 const KLEIN = 0.42; // eigenes Feld im Verhältnis zum grossen
@@ -409,7 +409,8 @@ export class KampfSzene extends Phaser.Scene {
         await warte(900);
       }
     } else {
-      if (r.ergebnis === 'treffer' && jubeln) jubelKlein(this.ebene, spieler, farben, (wert('jubelDauer') ?? 10) * 1000);
+      // Jeder Treffer: grosser Jubel (Raphaels Wunsch), antippen = weiter
+      if (r.ergebnis === 'treffer' && jubeln) await jubelGross(this.ebene, spieler, farben, (wert('jubelDauer') ?? 10) * 1000, 'Treffer!');
       await warte(r.ergebnis === 'wasser' ? 650 : 450);
     }
     return r;

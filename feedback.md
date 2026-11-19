@@ -6,6 +6,7 @@ Nach jedem Test hier aufschreiben (oder diktieren): Was ist gut? Was nervt? Was 
 ## Offen
 
 ## Erledigt
+- 2026-11-19 Jubel bei jedem Treffer gross; Mbappé Arme verschränkt mit Daumen hoch; Argentinien 3 Sterne; Zuber mit heller Haut und dunklen Haaren
 - 2026-11-19 Keni nach Raphaels Foto: FC Zürich, lange weisse Ärmel, kurze blonde Haare, Faust hoch; Schiffsfarben Weiss/Dunkelblau
 - 2026-11-19 Messi nach Foto (Argentinien), neuer Spieler Zuber (FCZ, 8 Felder, Schrei mit Faust)
 - 2026-11-19 «Jubel realer machen (zuerst Mbappé und Yamal)» – neue Brustbild-Figuren mit Gesicht, Frisur, Händen und Trikot-Details; Yamal nach Raphaels Foto (Spanien-Trikot, Hände gekreuzt, blonde Locken), Mbappé in Weiss-Gold mit verschränkten Armen

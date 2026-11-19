@@ -17,7 +17,7 @@ const GRUND = { aL: 6, fL: 0, aR: -6, fR: 0, y: 0, kopf: 0 };
 // Aussehen der Spieler: Hautfarbe, Frisur, Haarfarbe, Bart, Gesichtsausdruck, Trikot-Art
 const AUSSEHEN = {
   // Zuber nach Raphaels Foto: FCZ-Trikot, kurze blonde Haare, schreit vor Freude
-  zuber: { haut: '#3f281c', frisur: 'blond-kurz', haar: '#e4cf92', seiten: '#120c08', trikot: 'fcz' },
+  zuber: { haut: '#e2b896', frisur: 'kurz', haar: '#2b1d14', bart: true, trikot: 'fcz' },
   mbappe: { haut: '#6a432d', frisur: 'buzz', haar: '#140d09', ausdruck: 'schmunzeln', trikot: 'real' },
   haaland: { haut: '#ecc9ac', frisur: 'dutt', haar: '#d9c07c' },
   ronaldo: { haut: '#c99572', frisur: 'kurz', haar: '#2a1c12' },
@@ -35,7 +35,7 @@ const AUSSEHEN = {
 // Die Jubel-Posen (aus Raphaels Liste). hand: offen | faust | zeigen | daumen
 export const JUBEL = {
   zuber: { text: 'Schrei mit Faust', hand: 'faust', mund: 'schreien', pose: { aL: 42, fL: -58, aR: -8, fR: -4, kopf: -3 } },
-  mbappe: { text: 'Arme verschränkt', hand: 'faust', pose: { aL: -8, fL: -88, aR: 8, fR: 88, kopf: -3 } },
+  mbappe: { text: 'Arme verschränkt, Daumen hoch', hand: 'daumen-quer', pose: { aL: -10, fL: -112, aR: 10, fR: 112, kopf: -4 } },
   haaland: { text: 'Meditiert', hand: 'offen', augenZu: true, ruhig: true, pose: { aL: 30, fL: 22, aR: -30, fR: -22 } },
   ronaldo: {
     text: 'Siuuu!',
@@ -80,7 +80,7 @@ function finger(x, y, winkel, laenge, breite, haut, dunkel) {
 }
 
 // Hände (zeigen in Armrichtung nach unten); alle Arten werden gezeichnet, CSS zeigt die richtige
-function haende(x, y, haut, dunkel, id) {
+function haende(x, y, haut, dunkel, id, seite = 'l') {
   const faust = (b) => `
       <path d="M${x - 9.5},${y + 1} Q${x - 11},${y + 12} ${x - 8},${y + b} Q${x},${y + b + 3} ${x + 8},${y + b} Q${x + 11},${y + 12} ${x + 9.5},${y + 1} Z" fill="url(#${id}-haut)"/>
       <path d="M${x - 7},${y + b - 4} Q${x - 3.5},${y + b - 1} ${x},${y + b - 4} Q${x + 3.5},${y + b - 1} ${x + 7},${y + b - 4}" stroke="${dunkel}" stroke-width="0.9" fill="none" opacity="0.6"/>
@@ -96,6 +96,7 @@ function haende(x, y, haut, dunkel, id) {
     </g>
     <g class="hand hand-faust">${faust(19)}</g>
     <g class="hand hand-zeigen">${faust(17)}${finger(x + 3, y + 15, 0, 19, 4.8, haut, dunkel)}</g>
+    <g class="hand hand-daumen-quer">${faust(18)}${finger(x + (seite === 'l' ? 6 : -6), y + 8, seite === 'l' ? 180 - 122 : -(180 - 122), 15, 6, haut, dunkel)}</g>
     <g class="hand hand-daumen">${faust(18)}${finger(x + 7, y + 10, 4, 16, 5.6, haut, dunkel)}</g>`;
 }
 
@@ -122,7 +123,7 @@ function arm(seite, [sx, sy], farbe1, farbe2, haut, id, a = {}) {
         ${a.langarm ? `<path d="M${ex - 9},${ey + 14} Q${ex - 4},${ey + 22} ${ex - 8},${ey + 30} M${ex + 6},${ey + 8} Q${ex + 2},${ey + 18} ${ex + 7},${ey + 26}" stroke="#000" stroke-opacity="0.1" stroke-width="2" fill="none"/><path d="M${ex - 8},${wy - 4} L${ex + 8},${wy - 4}" stroke="#d8d8d4" stroke-width="3"/>` : ''}
         <path d="M${ex + 3},${ey + 8} Q${ex + 7},${ey + 22} ${ex + 4},${wy - 8}" stroke="#fff" stroke-opacity="0.1" stroke-width="2.5" fill="none"/>
         ${a.tattoo === seite ? `<g opacity="0.55" stroke="#2b2622" fill="none" stroke-width="1.8"><path d="M${ex - 8},${ey + 6} q6,6 0,12 q-5,6 2,12 q6,5 0,11"/><circle cx="${ex + 3}" cy="${ey + 14}" r="3.5"/><path d="M${ex + 6},${ey + 24} l-8,6 M${ex + 4},${ey + 34} q-4,4 -9,2"/><path d="M${ex - 9},${ey + 3} L${ex + 9},${ey + 3}" stroke-width="1.2"/></g>` : ''}
-        ${haende(ex, wy - 2, haut, dunkel, id)}
+        ${haende(ex, wy - 2, haut, dunkel, id, seite)}
       </g>
     </g>`;
 }
@@ -302,7 +303,7 @@ function trikotDetails(art, farbe1, farbe2, id) {
       </g>
       <path d="M98,118 Q120,136 142,118" stroke="#111" stroke-width="5" fill="none" stroke-linecap="round"/>
       <path d="M140,170 h14 v10 q0,8 -7,11 q-7,-3 -7,-11 Z" fill="#f6f6f3" stroke="#d9b46a" stroke-width="1.6"/>
-      <path d="M144,166 l1,-2.5 1,2.5 M149,166 l1,-2.5 1,2.5" stroke="#d9b46a" stroke-width="1.2" fill="none"/>
+      ${[141.5, 147, 152.5].map((x) => `<path d="M${x},160.5 l1,2.1 2.3,0.2 -1.7,1.5 0.5,2.2 -2.1,-1.2 -2.1,1.2 0.5,-2.2 -1.7,-1.5 2.3,-0.2 Z" fill="#d9b46a"/>`).join('')}
       <rect x="117" y="168" width="13" height="16" rx="2" fill="#d9b46a"/>
       <text x="108" y="222" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="26" fill="#14161a">10</text>`;
   }
@@ -452,9 +453,10 @@ export function jubelKlein(eltern, spieler, farben, dauer = 10000) {
 
 // Versenkt: gross in der Mitte. Antippen überspringt den Jubel.
 // Gibt ein Versprechen zurück, das nach dem Jubel erfüllt ist.
-export function jubelGross(eltern, spieler, farben, dauer = 10000) {
+export function jubelGross(eltern, spieler, farben, dauer = 10000, text = 'versenkt!') {
   eltern.querySelectorAll('.jubel.klein').forEach((alt) => alt.remove());
   const { e, svg, j } = jubelBauen(spieler, farben, true);
+  e.querySelector('.jubel-text').textContent = text;
   e.insertAdjacentHTML('beforeend', '<div class="jubel-weiter">Antippen zum Weiterspielen</div>');
   // Unsichtbare Fläche über allem: irgendwo tippen = weiter
   const faenger = document.createElement('div');
