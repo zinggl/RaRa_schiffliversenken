@@ -2,6 +2,9 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 17 – 2026-11-19
+- Keni nach Raphaels Foto: FC-Zürich-Trikot mit langen weissen Ärmeln, kurze blonde Haare, Faust hoch
+
 ## Version 16 – 2026-11-19
 - Neuer Spieler Zuber (FC Zürich): längstes Schiff mit 8 Feldern, Jubel: Schrei mit Faust
 - Messi nach Raphaels Foto: Argentinien-Trikot, Kapitänsbinde, Tattoo, Blick zum Himmel
