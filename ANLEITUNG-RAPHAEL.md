@@ -17,7 +17,7 @@ In der Werkstatt kannst du Sachen verstellen, zum Beispiel die Farbe vom Meer, w
 
 ## 3. Deine Flotte aufstellen (Modul 1)
 1. **Aufs Schiff tippen** und den Spielmodus wählen.
-2. Deine Schiffe mit dem Finger aufs Meer ziehen: **Zuber (8 Felder)**, **Mbappé (7)**, Haaland (6), Ronaldo (5), Yamal (4), Keni (3), **Messi (2)** und die Schnellboote Neymar, Xhaka, Pedri und Musiala (je 1). Das Meer ist am Anfang 12 × 12, so sind alle 10 Schiffe dabei. Stellst du es in der Werkstatt kleiner, fallen die kleinsten weg (10 × 10: 8 Schiffe).
+2. Deine Schiffe mit dem Finger aufs Meer ziehen: **Zuber (8 Felder)**, **Mbappé (7)**, Haaland (6), Ronaldo (5), Yamal (4), Keni (3), **Messi (2)** und die Schnellboote Neymar, Xhaka, Pedri und Musiala (je 1). Das Meer ist am Anfang 12 × 12, so sind alle 11 Schiffe dabei. Stellst du es in der Werkstatt kleiner, fallen die kleinsten weg (10 × 10: 5 Schiffe).
 3. **Antippen** dreht ein Schiff. Wird es **rot**, passt es nicht: Es liegt auf einem anderen Schiff, berührt eines oder ragt hinaus.
 4. Stehen alle Schiffe, drückst du **«Bereit!»**.
 
