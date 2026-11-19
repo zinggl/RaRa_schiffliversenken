@@ -1255,7 +1255,7 @@ html.zoom-erlaubt .brett {
   transition: transform 0.45s cubic-bezier(0.3, 0.7, 0.3, 1);
 }
 .jubel-figur .koerper {
-  transform-origin: 100px 170px;
+  transform-origin: 120px 200px;
 }
 /* Nach der Pose wippt die Figur leicht (Haaland bleibt ruhig) */
 .jubel:not(.ruhig) .jubel-figur {
@@ -1281,16 +1281,22 @@ html.zoom-erlaubt .brett {
   50% { transform: scaleX(-1); }
   to { transform: scaleX(1); }
 }
-.jubel-figur .herz,
-.jubel-figur .finger,
-.jubel-figur .daumen {
+.jubel-figur .herz {
   opacity: 0;
   transition: opacity 0.3s ease 0.35s;
 }
-.jubel-figur.mit-herz .herz,
-.jubel-figur.mit-finger .finger,
-.jubel-figur.mit-daumen .daumen {
+.jubel-figur.mit-herz .herz {
   opacity: 1;
+}
+/* Nur die passende Hand zeigen (offen, Faust, Zeigefinger, Daumen) */
+.jubel-figur .hand {
+  display: none;
+}
+.jubel-figur[data-hand='offen'] .hand-offen,
+.jubel-figur[data-hand='faust'] .hand-faust,
+.jubel-figur[data-hand='zeigen'] .hand-zeigen,
+.jubel-figur[data-hand='daumen'] .hand-daumen {
+  display: inline;
 }
 .jubel-zeichen {
   position: absolute;

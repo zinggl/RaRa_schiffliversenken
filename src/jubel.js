@@ -1,97 +1,330 @@
 // Der Jubel der Spieler: Wird ein Schiff getroffen, jubelt der getroffene Spieler.
 // Treffer: klein am Rand. Versenkt: gross in der Mitte, mit Namen. Beides dauert so lange wie «jubelDauer».
-// Die Figur ist eine schlanke Silhouette im Trikot der Clubfarben (keine Fotos).
-// Sie besteht aus Gelenken, die sich drehen: Arme (Schulter, Ellbogen), Beine (Hüfte, Knie).
-// Winkel in Grad, 0 = hängt gerade nach unten. Linke Seite (vom Betrachter aus):
-// positiv = nach aussen/oben. Rechte Seite: negativ = nach aussen/oben.
+// Die Figur ist ein gezeichnetes Brustbild (keine Fotos): Trikot in den Clubfarben, Gesicht,
+// Frisur und Hautfarbe passend zum Spieler, Arme mit Gelenken (Schulter, Ellbogen) und Händen.
+// Winkel in Grad, 0 = Arm hängt gerade nach unten. Linker Arm (vom Betrachter aus): positiv = nach
+// aussen/oben, negativ = vor den Körper. Rechter Arm: umgekehrt.
+// Vorlage für Yamal: Raphaels Foto (Unterarme vor der Brust gekreuzt, Hände gespreizt).
 
-// Gelenke der Figur (viewBox 0 -34 200 324: oben Platz für hochgestreckte Arme)
-const G = {
-  schulterL: [80, 86], ellbogenL: [80, 126], handL: [80, 160],
-  schulterR: [120, 86], ellbogenR: [120, 126], handR: [120, 160],
-  huefteL: [92, 170], knieL: [92, 214], fussL: [92, 256],
-  huefteR: [108, 170], knieR: [108, 214], fussR: [108, 256],
-  hals: [100, 78],
+// Gelenke (Zeichenfläche 0 0 240 300, sichtbar -30 … 270, damit ausgestreckte Arme Platz haben)
+const S_L = [72, 150]; // Schultern
+const S_R = [168, 150];
+const OBERARM = 66;
+const UNTERARM = 58;
+
+const GRUND = { aL: 6, fL: 0, aR: -6, fR: 0, y: 0, kopf: 0 };
+
+// Aussehen der Spieler: Hautfarbe, Frisur, Haarfarbe, Bart, Gesichtsausdruck, Trikot-Art
+const AUSSEHEN = {
+  mbappe: { haut: '#6a432d', frisur: 'buzz', haar: '#140d09', ausdruck: 'schmunzeln', trikot: 'real' },
+  haaland: { haut: '#ecc9ac', frisur: 'dutt', haar: '#d9c07c' },
+  ronaldo: { haut: '#c99572', frisur: 'kurz', haar: '#2a1c12' },
+  yamal: { haut: '#8a5839', frisur: 'fade-locken', haar: '#e9d394', seiten: '#1b130d', ausdruck: 'lachen', trikot: 'spanien' },
+  keni: { haut: '#e6bd9d', frisur: 'kurz', haar: '#7a5534' },
+  messi: { haut: '#d8a983', frisur: 'kurz', haar: '#4c3220', bart: true },
+  neymar: { haut: '#b98459', frisur: 'kurz', haar: '#3a2617' },
+  xhaka: { haut: '#d6a682', frisur: 'kurz', haar: '#1f1914', bart: true },
+  pedri: { haut: '#d6a381', frisur: 'wellig', haar: '#2b1d13' },
+  musiala: { haut: '#7c4b2f', frisur: 'locken', haar: '#1d140f' },
 };
 
-const GRUND = { aL: 8, fL: 0, aR: -8, fR: 0, bL: 3, kL: 0, bR: -3, kR: 0, y: 0, kopf: 0 };
-
-// Die Jubel-Posen (aus Raphaels Liste)
+// Die Jubel-Posen (aus Raphaels Liste). hand: offen | faust | zeigen | daumen
 export const JUBEL = {
-  mbappe: { text: 'Arme verschränkt', pose: { aL: -25, fL: -100, aR: 25, fR: 100, kopf: -4 } },
-  haaland: { text: 'Meditiert', pose: { aL: 22, fL: 38, aR: -22, fR: -38, bL: 82, kL: -168, bR: -82, kR: 168, y: 70 }, ruhig: true },
+  mbappe: { text: 'Arme verschränkt', hand: 'faust', pose: { aL: -8, fL: -88, aR: 8, fR: 88, kopf: -3 } },
+  haaland: { text: 'Meditiert', hand: 'offen', augenZu: true, ruhig: true, pose: { aL: 30, fL: 22, aR: -30, fR: -22 } },
   ronaldo: {
     text: 'Siuuu!',
-    sprung: { aL: 150, fL: 10, aR: -150, fR: -10, bL: 18, kL: -70, bR: -18, kR: 70, y: -48 },
-    pose: { aL: 52, fL: 6, aR: -52, fR: -6, bL: 30, kL: -6, bR: -30, kR: 6, y: 8, kopf: -6 },
+    hand: 'offen',
+    mund: 'offen',
+    sprung: { aL: 150, fL: 10, aR: -150, fR: -10, y: -26 },
+    pose: { aL: 46, fL: 10, aR: -46, fR: -10, y: 6, kopf: -4 },
   },
-  yamal: { text: '3 0 4', pose: { aL: 140, fL: -128, aR: -140, fR: 128 }, zeichen: '304' },
-  keni: { text: 'Faust hoch', pose: { aL: 32, fL: -85, aR: -176, fR: 0, bL: 14, kL: -28, bR: -10, kR: 22 } },
-  messi: { text: 'Finger zum Himmel', pose: { aL: 168, fL: 4, aR: -168, fR: -4, kopf: 0 }, finger: true },
-  neymar: { text: 'Herz', pose: { aL: -20, fL: -141, aR: 20, fR: 141 }, herz: true },
-  xhaka: { text: 'Faust aufs Wappen', pose: { aL: 38, fL: -70, aR: 20, fR: 141 } },
-  pedri: { text: 'Arme hoch', pose: { aL: 150, fL: 12, aR: -150, fR: -12 } },
-  musiala: { text: 'Daumen hoch', pose: { aL: 38, fL: 140, aR: -38, fR: -140 }, daumen: true },
+  yamal: { text: 'Hände gekreuzt', hand: 'offen', pose: { aL: -16, fL: -118, aR: 16, fR: 118 } },
+  keni: { text: 'Faust hoch', hand: 'faust', mund: 'offen', pose: { aL: 34, fL: -72, aR: -172, fR: 0 } },
+  messi: { text: 'Finger zum Himmel', hand: 'zeigen', pose: { aL: 166, fL: 5, aR: -166, fR: -5 } },
+  neymar: { text: 'Herz', hand: 'offen', herz: true, pose: { aL: -4, fL: -130, aR: 4, fR: 130 } },
+  xhaka: { text: 'Faust aufs Wappen', hand: 'faust', mund: 'offen', pose: { aL: -6, fL: -118, aR: -40, fR: -115 } },
+  pedri: { text: 'Arme hoch', hand: 'offen', mund: 'offen', pose: { aL: 150, fL: 10, aR: -150, fR: -10 } },
+  musiala: { text: 'Daumen hoch', hand: 'daumen', pose: { aL: 40, fL: 140, aR: -40, fR: -140 } },
 };
 
 let zaehler = 0;
 
-function figurSvg(farbe1, farbe2) {
-  const id = `jf${zaehler++}`;
-  const [sLx, sLy] = G.schulterL; const [eLx, eLy] = G.ellbogenL; const [hLx, hLy] = G.handL;
-  const [sRx, sRy] = G.schulterR; const [eRx, eRy] = G.ellbogenR; const [hRx, hRy] = G.handR;
-  const [uLx, uLy] = G.huefteL; const [nLx, nLy] = G.knieL; const [fLx, fLy] = G.fussL;
-  const [uRx, uRy] = G.huefteR; const [nRx, nRy] = G.knieR; const [fRx, fRy] = G.fussR;
-  const haut = '#b98762';
-  const arm = (s, e, h, seite) => `
-    <g class="glied ${seite}-arm" style="transform-origin:${s[0]}px ${s[1]}px">
-      <line x1="${s[0]}" y1="${s[1]}" x2="${e[0]}" y2="${e[1]}" stroke="${farbe1}" stroke-width="13" stroke-linecap="round"/>
-      <g class="glied ${seite}-unterarm" style="transform-origin:${e[0]}px ${e[1]}px">
-        <line x1="${e[0]}" y1="${e[1]}" x2="${h[0]}" y2="${h[1]}" stroke="${haut}" stroke-width="10" stroke-linecap="round"/>
-        <circle cx="${h[0]}" cy="${h[1] + 3}" r="6.5" fill="${haut}"/>
-        <line class="finger" x1="${h[0]}" y1="${h[1] + 3}" x2="${h[0]}" y2="${h[1] + 16}" stroke="${haut}" stroke-width="3.5" stroke-linecap="round"/>
-        <line class="daumen" x1="${h[0] + (seite === 'l' ? 3 : -3)}" y1="${h[1] + 4}" x2="${h[0] + (seite === 'l' ? 3 : -3)}" y2="${h[1] + 15}" stroke="${haut}" stroke-width="4.5" stroke-linecap="round"/>
-      </g>
-    </g>`;
-  const bein = (u, n, f, seite) => `
-    <g class="glied ${seite}-bein" style="transform-origin:${u[0]}px ${u[1]}px">
-      <line x1="${u[0]}" y1="${u[1]}" x2="${n[0]}" y2="${n[1]}" stroke="${haut}" stroke-width="14" stroke-linecap="round"/>
-      <g class="glied ${seite}-unterschenkel" style="transform-origin:${n[0]}px ${n[1]}px">
-        <line x1="${n[0]}" y1="${n[1]}" x2="${f[0]}" y2="${f[1]}" stroke="${farbe1}" stroke-width="12" stroke-linecap="round"/>
-        <ellipse cx="${f[0] + (seite === 'l' ? -4 : 4)}" cy="${f[1] + 5}" rx="10" ry="5" fill="#15181b"/>
-      </g>
-    </g>`;
+// Etwas dunkler/heller machen (für Schatten und Licht)
+function toenen(farbe, faktor) {
+  const h = parseInt(farbe.slice(1), 16);
+  const k = (v) => Math.max(0, Math.min(255, Math.round(v * faktor)));
+  return `rgb(${k((h >> 16) & 255)},${k((h >> 8) & 255)},${k(h & 255)})`;
+}
+
+// Ein Finger als schmale, sich verjüngende Form (zeigt in Richtung «winkel», 0 = nach unten)
+function finger(x, y, winkel, laenge, breite, haut, dunkel) {
+  const r = (winkel * Math.PI) / 180;
+  const dx = Math.sin(r);
+  const dy = Math.cos(r);
+  const nx = dy; // quer zum Finger
+  const ny = -dx;
+  const ex = x + dx * laenge;
+  const ey = y + dy * laenge;
+  const b1 = breite / 2;
+  const b2 = breite * 0.38;
+  const mx = x + dx * laenge * 0.55;
+  const my = y + dy * laenge * 0.55;
+  return `<path d="M${x + nx * b1},${y + ny * b1} L${ex + nx * b2},${ey + ny * b2} Q${ex + dx * 2.2},${ey + dy * 2.2} ${ex - nx * b2},${ey - ny * b2} L${x - nx * b1},${y - ny * b1} Z" fill="${haut}"/>
+    <path d="M${mx + nx * b1 * 0.8},${my + ny * b1 * 0.8} L${mx - nx * b1 * 0.8},${my - ny * b1 * 0.8}" stroke="${dunkel}" stroke-width="0.7" opacity="0.5"/>`;
+}
+
+// Hände (zeigen in Armrichtung nach unten); alle Arten werden gezeichnet, CSS zeigt die richtige
+function haende(x, y, haut, dunkel, id) {
+  const faust = (b) => `
+      <path d="M${x - 9.5},${y + 1} Q${x - 11},${y + 12} ${x - 8},${y + b} Q${x},${y + b + 3} ${x + 8},${y + b} Q${x + 11},${y + 12} ${x + 9.5},${y + 1} Z" fill="url(#${id}-haut)"/>
+      <path d="M${x - 7},${y + b - 4} Q${x - 3.5},${y + b - 1} ${x},${y + b - 4} Q${x + 3.5},${y + b - 1} ${x + 7},${y + b - 4}" stroke="${dunkel}" stroke-width="0.9" fill="none" opacity="0.6"/>
+      <path d="M${x - 7},${y + b - 9} Q${x},${y + b - 7} ${x + 7},${y + b - 9}" stroke="${dunkel}" stroke-width="0.8" fill="none" opacity="0.45"/>`;
   return `
-<svg class="jubel-figur" viewBox="0 -34 200 324" aria-hidden="true">
-  <defs>
-    <linearGradient id="${id}-trikot" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#000" stop-opacity="0.28"/>
-      <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0.16"/>
-    </linearGradient>
-  </defs>
-  <ellipse class="schatten" cx="100" cy="270" rx="46" ry="7" fill="#000" opacity="0.35"/>
-  <g class="koerper">
-    ${bein([uLx, uLy], [nLx, nLy], [fLx, fLy], 'l')}
-    ${bein([uRx, uRy], [nRx, nRy], [fRx, fRy], 'r')}
-    <!-- Hose -->
-    <path d="M86,150 L114,150 L116,178 L101,180 L100,170 L99,180 L84,178 Z" fill="${farbe2}"/>
-    <!-- Trikot -->
-    <path d="M78,84 Q100,76 122,84 L116,154 Q100,158 84,154 Z" fill="${farbe1}"/>
-    <path d="M78,84 Q100,76 122,84 L116,154 Q100,158 84,154 Z" fill="url(#${id}-trikot)"/>
-    <path d="M94,80 L100,90 L106,80" fill="none" stroke="${farbe2}" stroke-width="3"/>
-    <rect class="wappen" x="86" y="98" width="9" height="11" rx="2" fill="${farbe2}" opacity="0.9"/>
-    <!-- Kopf -->
-    <g class="glied kopf" style="transform-origin:${G.hals[0]}px ${G.hals[1]}px">
-      <rect x="95" y="68" width="10" height="12" fill="${haut}"/>
-      <circle cx="100" cy="56" r="15" fill="${haut}"/>
-      <path d="M85,54 Q86,38 100,38 Q114,38 115,54 Q108,46 100,46 Q92,46 85,54 Z" fill="#1d1612"/>
+    <g class="hand hand-offen">
+      <path d="M${x - 9},${y} Q${x - 11},${y + 9} ${x - 8},${y + 16} L${x + 8},${y + 16} Q${x + 11},${y + 9} ${x + 9},${y} Z" fill="url(#${id}-haut)"/>
+      ${finger(x - 6.5, y + 14, -28, 13, 4.4, haut, dunkel)}
+      ${finger(x - 2.2, y + 15, -9, 16, 4.6, haut, dunkel)}
+      ${finger(x + 2.4, y + 15, 9, 16.5, 4.6, haut, dunkel)}
+      ${finger(x + 6.6, y + 14, 27, 13.5, 4.3, haut, dunkel)}
+      ${finger(x - 8.5, y + 5, -62, 12, 5.2, haut, dunkel)}
     </g>
-    <!-- Arme vor dem Körper (für verschränkte Arme, Herz, Faust aufs Wappen) -->
-    ${arm([sLx, sLy], [eLx, eLy], [hLx, hLy], 'l')}
-    ${arm([sRx, sRy], [eRx, eRy], [hRx, hRy], 'r')}
+    <g class="hand hand-faust">${faust(19)}</g>
+    <g class="hand hand-zeigen">${faust(17)}${finger(x + 3, y + 15, 0, 19, 4.8, haut, dunkel)}</g>
+    <g class="hand hand-daumen">${faust(18)}${finger(x + 7, y + 10, 4, 16, 5.6, haut, dunkel)}</g>`;
+}
+
+function arm(seite, [sx, sy], farbe1, farbe2, haut, id) {
+  const ex = sx;
+  const ey = sy + OBERARM;
+  const wy = ey + UNTERARM;
+  const dunkel = toenen(haut, 0.68);
+  return `
+    <g class="glied ${seite}-arm" style="transform-origin:${sx}px ${sy}px">
+      <!-- Oberarm: Bizeps, dann Ärmel vom Trikot -->
+      <path d="M${sx - 12},${sy + 30} Q${sx - 16},${sy + 50} ${sx - 10},${ey} L${sx + 10},${ey} Q${sx + 16},${sy + 48} ${sx + 12},${sy + 30} Z" fill="url(#${id}-haut)"/>
+      <path d="M${sx + 2},${sy + 44} Q${sx + 9},${sy + 52} ${sx + 6},${ey - 4}" stroke="#fff" stroke-opacity="0.12" stroke-width="3" fill="none"/>
+      <path d="M${sx - 19},${sy - 6} Q${sx - 21},${sy + 20} ${sx - 16},${sy + 43} Q${sx},${sy + 46} ${sx + 16},${sy + 43} Q${sx + 21},${sy + 20} ${sx + 19},${sy - 6} Q${sx},${sy - 16} ${sx - 19},${sy - 6} Z" fill="${farbe1}"/>
+      <path d="M${sx - 19},${sy - 6} Q${sx - 21},${sy + 20} ${sx - 16},${sy + 43} Q${sx},${sy + 46} ${sx + 16},${sy + 43} Q${sx + 21},${sy + 20} ${sx + 19},${sy - 6} Q${sx},${sy - 16} ${sx - 19},${sy - 6} Z" fill="url(#${id}-stoff)"/>
+      <path d="M${sx - 10},${sy + 8} Q${sx - 4},${sy + 22} ${sx - 9},${sy + 34}" stroke="#000" stroke-opacity="0.12" stroke-width="2.2" fill="none"/>
+      <path d="M${sx - 16},${sy + 38} Q${sx},${sy + 41} ${sx + 16},${sy + 38}" stroke="${farbe2}" stroke-width="4" fill="none"/>
+      <ellipse cx="${ex}" cy="${ey}" rx="10" ry="9" fill="url(#${id}-haut)"/>
+      <g class="glied ${seite}-unterarm" style="transform-origin:${ex}px ${ey}px">
+        <!-- Unterarm: oben kräftig, zum Handgelenk schmal -->
+        <path d="M${ex - 10},${ey} Q${ex - 13},${ey + 18} ${ex - 7.5},${wy} L${ex + 7.5},${wy} Q${ex + 12},${ey + 16} ${ex + 10},${ey} Z" fill="url(#${id}-haut)"/>
+        <path d="M${ex + 3},${ey + 8} Q${ex + 7},${ey + 22} ${ex + 4},${wy - 8}" stroke="#fff" stroke-opacity="0.1" stroke-width="2.5" fill="none"/>
+        ${haende(ex, wy - 2, haut, dunkel, id)}
+      </g>
+    </g>`;
+}
+
+// Frisuren. «kopf» ist die Schädelform, damit Haare sauber am Haaransatz sitzen.
+const SCHAEDEL = 'M95,62 Q92,30 120,26 Q148,30 145,62 Q143,46 132,42 Q120,39 108,42 Q97,46 95,62 Z';
+function frisurSvg(a, id) {
+  const h = a.haar;
+  const s = a.seiten ?? toenen(h, 0.8);
+  switch (a.frisur) {
+    case 'buzz':
+      // Ganz kurz geschoren, gerader Haaransatz (Mbappé)
+      return `<path d="M96,60 Q95,30 120,27.5 Q145,30 144,60 Q141,47 136,43 L131,41.5 Q120,40 109,41.5 L104,43 Q99,47 96,60 Z" fill="${h}" opacity="0.88"/>
+        <path d="M96,60 Q95,30 120,27.5 Q145,30 144,60 Q141,47 136,43 L131,41.5 Q120,40 109,41.5 L104,43 Q99,47 96,60 Z" fill="url(#${id}-stoppeln)"/>
+        <path d="M103,35 Q120,29 137,35" stroke="#fff" stroke-opacity="0.12" stroke-width="3" fill="none"/>`;
+    case 'fade-locken': {
+      // Seiten kurz rasiert und dunkel, oben blonde Locken (Yamal)
+      let k = '';
+      const locken = [];
+      // Viele kleine, unregelmässige Locken in einer flachen Kuppel
+      for (let reihe = 0; reihe < 5; reihe++) {
+        const anzahl = 9 - Math.abs(reihe - 2);
+        for (let i = 0; i < anzahl; i++) {
+          const breite = 40 - Math.abs(reihe - 2) * 4;
+          const x = 120 - breite / 2 + (i + 0.5) * (breite / anzahl) + (((i * 13 + reihe * 7) % 5) - 2) * 0.6;
+          const y = 45 - reihe * 3.6 - Math.sin(((x - 100) / 40) * Math.PI) * 3.2 + (((i * 5 + reihe) % 3) - 1) * 0.7;
+          locken.push([x, y, 2.4 + ((i * 7 + reihe * 3) % 5) * 0.18]);
+        }
+      }
+      for (const [x, y, r] of locken) {
+        k += `<circle cx="${x}" cy="${y}" r="${r}" fill="${toenen(h, 0.72)}"/>
+          <circle cx="${x - 0.6}" cy="${y - 0.8}" r="${r * 0.82}" fill="${h}"/>
+          <path d="M${x - r * 0.5},${y - r * 0.2} Q${x},${y - r * 0.9} ${x + r * 0.5},${y - r * 0.1}" stroke="#fff" stroke-opacity="0.45" stroke-width="0.9" fill="none"/>`;
+      }
+      return `<path d="${SCHAEDEL}" fill="${s}"/>
+        <path d="M95,62 Q94,50 99,44 L101,60 Z M145,62 Q146,50 141,44 L139,60 Z" fill="url(#${id}-fade)"/>
+        <path d="M100,47 Q102,30 120,28 Q138,30 140,47 Q130,42 120,42 Q110,42 100,47 Z" fill="${toenen(h, 0.62)}"/>
+        ${k}`;
+    }
+    case 'dutt':
+      return `<path d="${SCHAEDEL}" fill="${h}"/>
+        <path d="M95,60 Q92,40 101,32 M145,60 Q148,40 139,32" stroke="${toenen(h, 0.82)}" stroke-width="2.5" fill="none"/>
+        <ellipse cx="120" cy="22" rx="11" ry="9" fill="${toenen(h, 0.9)}"/>
+        <path d="M112,22 Q120,15 128,22" stroke="#fff" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>`;
+    case 'locken': {
+      let k = '';
+      for (const [x, y, r] of [[104, 38, 6], [111, 32, 6.5], [119, 29, 7], [127, 30, 6.5], [135, 34, 6], [140, 41, 5], [108, 43, 5], [116, 37, 6], [125, 38, 6], [133, 42, 5]]) {
+        k += `<circle cx="${x}" cy="${y}" r="${r}" fill="${h}"/><circle cx="${x - 1.2}" cy="${y - 1.5}" r="${r * 0.4}" fill="#fff" opacity="0.12"/>`;
+      }
+      return `<path d="${SCHAEDEL}" fill="${s}"/>${k}`;
+    }
+    case 'wellig':
+      return `<path d="${SCHAEDEL}" fill="${h}"/>
+        <path d="M100,47 Q108,36 118,42 Q126,34 136,40 Q142,42 145,52 Q140,44 132,46 Q124,40 116,47 Q108,42 100,51 Z" fill="${toenen(h, 1.3)}"/>`;
+    default:
+      return `<path d="${SCHAEDEL}" fill="${h}"/>
+        <path d="M101,44 Q114,34 140,40" stroke="${toenen(h, 1.4)}" stroke-width="2" fill="none" opacity="0.7"/>`;
+  }
+}
+
+// Gesicht: Augen mit Lidern, Nase mit Nasenflügeln, Lippen, Ohren, Licht und Schatten
+function gesichtSvg(a, j, id) {
+  const haut = a.haut;
+  const schatten = toenen(haut, 0.7);
+  const tief = toenen(haut, 0.55);
+  const licht = toenen(haut, 1.18);
+  const lippe = toenen(haut, 0.78);
+  const brauen = a.haar === '#d9c07c' ? '#a88d52' : a.frisur === 'fade-locken' ? '#2a1c12' : toenen(a.haar, 0.95);
+  const auge = (cx) => `
+    <path d="M${cx - 7},66 Q${cx},60.5 ${cx + 7},66 Q${cx},69.5 ${cx - 7},66 Z" fill="#efe7dc"/>
+    <circle cx="${cx + 0.4}" cy="65.3" r="3.3" fill="url(#${id}-iris)"/>
+    <circle cx="${cx + 0.4}" cy="65.3" r="1.5" fill="#0c0806"/>
+    <circle cx="${cx + 1.5}" cy="64.2" r="0.9" fill="#fff" opacity="0.9"/>
+    <path d="M${cx - 7.5},66 Q${cx},59.5 ${cx + 7.5},65.6" stroke="#160e0a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <path d="M${cx - 6},67.6 Q${cx},70 ${cx + 6},67.4" stroke="${tief}" stroke-width="0.8" fill="none" opacity="0.6"/>`;
+  const augen = j.augenZu
+    ? `<path d="M103,66 Q110,69.5 117,66 M123,66 Q130,69.5 137,66" stroke="#20160f" stroke-width="1.8" fill="none" stroke-linecap="round"/>`
+    : auge(110) + auge(130);
+  const ausdruck = j.mund === 'offen' ? 'offen' : a.ausdruck ?? 'laecheln';
+  const mund = {
+    offen: `<path d="M109,87 Q120,83.5 131,87 Q129,99 120,100 Q111,99 109,87 Z" fill="#3d1714"/>
+      <path d="M110.5,87.4 Q120,85 129.5,87.4 L128.5,90.4 Q120,88.8 111.5,90.4 Z" fill="#f2ece4"/>
+      <path d="M113,96 Q120,98.5 127,96" stroke="#b5544e" stroke-width="2.5" fill="none" opacity="0.8"/>`,
+    lachen: `<path d="M106,84.5 Q120,87.5 134,84.5 Q132,97.5 120,99.5 Q108,97.5 106,84.5 Z" fill="#3d1714"/>
+      <path d="M107.5,85.4 Q120,88 132.5,85.4 Q131.5,91.5 120,92.5 Q108.5,91.5 107.5,85.4 Z" fill="#f4eee6"/>
+      <path d="M112,86.6 L112.4,91 M116,87.3 L116.2,92 M120,87.6 L120,92.4 M124,87.3 L123.8,92 M128,86.6 L127.6,91" stroke="#c9bfb2" stroke-width="0.6"/>
+      <path d="M106,84.5 Q120,87.5 134,84.5" stroke="${toenen(haut, 0.62)}" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <path d="M109,96 Q120,101.5 131,96" stroke="${lippe}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M104,83 Q105.5,86 107,85 M136,83 Q134.5,86 133,85" stroke="${toenen(haut, 0.6)}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`,
+    schmunzeln: `<path d="M110,87.5 Q118,90.5 131,85.5" stroke="${toenen(haut, 0.5)}" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <path d="M111,88 Q120,94.5 129,87.8 Q120,91 111,88 Z" fill="${lippe}"/>
+      <path d="M110.5,87.4 Q115,85 120,86.2 Q125,84.6 130.5,86.4" stroke="${toenen(haut, 0.62)}" stroke-width="1.2" fill="none"/>`,
+    laecheln: `<path d="M109,86 Q120,95 131,86 Q120,90.5 109,86 Z" fill="#f2ece4" stroke="${lippe}" stroke-width="1.4"/>`,
+  }[ausdruck];
+  const bart = a.bart
+    ? `<path d="M97,70 Q99,96 120,105 Q141,96 143,70 Q141,90 131,95 Q120,99 109,95 Q99,90 97,70 Z" fill="${a.haar}" opacity="0.92"/>
+       <path d="M109,84 Q120,80 131,84 Q120,86.5 109,84 Z" fill="${a.haar}"/>`
+    : '';
+  return `
+    <!-- Ohren -->
+    <path d="M97,60 Q89,58 90,68 Q91,78 98,78 Z" fill="${schatten}"/>
+    <path d="M95,63 Q92,66 94,72" stroke="${tief}" stroke-width="1.2" fill="none"/>
+    <path d="M143,60 Q151,58 150,68 Q149,78 142,78 Z" fill="${haut}"/>
+    <path d="M145,63 Q148,66 146,72" stroke="${schatten}" stroke-width="1.2" fill="none"/>
+    <!-- Gesichtsform mit Wangenknochen und Kinn -->
+    <path d="M97,60 Q96,34 120,31 Q144,34 143,60 Q143.5,74 139,84 Q134,99 120,105 Q106,99 101,84 Q96.5,74 97,60 Z" fill="url(#${id}-gesicht)"/>
+    <g filter="url(#${id}-weich)">
+      <ellipse cx="104" cy="80" rx="6" ry="9" fill="${tief}" opacity="0.35"/>
+      <ellipse cx="135" cy="74" rx="5" ry="7" fill="${licht}" opacity="0.35"/>
+      <ellipse cx="124" cy="44" rx="12" ry="6" fill="${licht}" opacity="0.3"/>
+      <ellipse cx="110" cy="62" rx="8" ry="3.5" fill="${tief}" opacity="0.3"/>
+      <ellipse cx="130" cy="62" rx="8" ry="3.5" fill="${tief}" opacity="0.25"/>
+      <ellipse cx="120" cy="101" rx="9" ry="3" fill="${licht}" opacity="0.25"/>
+    </g>
+    <!-- Brauen -->
+    <path d="M102.5,59.5 Q109,54.5 117.5,57.5 Q110,56.8 102.5,59.5 Z M122.5,57.5 Q131,54.5 137.5,59.5 Q130,56.8 122.5,57.5 Z" fill="${brauen}" stroke="${brauen}" stroke-width="1.8" stroke-linejoin="round"/>
+    ${augen}
+    <!-- Nase -->
+    <path d="M118,64 Q117,73 115,78" stroke="${schatten}" stroke-width="1.3" fill="none" opacity="0.7"/>
+    <path d="M123,64 Q124.5,72 125,77" stroke="${licht}" stroke-width="1.6" fill="none" opacity="0.6"/>
+    <path d="M113.5,79.5 Q116,83.5 120,82.5 Q124,83.5 126.5,79.5 Q125,77 120,78 Q115,77 113.5,79.5 Z" fill="${schatten}" opacity="0.55"/>
+    <ellipse cx="116.8" cy="81" rx="1.6" ry="1.1" fill="${tief}"/>
+    <ellipse cx="123.2" cy="81" rx="1.6" ry="1.1" fill="${tief}"/>
+    ${bart}
+    ${mund}`;
+}
+
+// Trikot-Einzelheiten (Kragen und Wappen) je nach Club/Land
+function trikotDetails(art, farbe1, farbe2) {
+  if (art === 'real') {
+    // Weiss mit Gold: Krone über einem runden Wappen
+    return `<path d="M98,118 Q120,136 142,118" stroke="#d9b46a" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M100,119 Q120,132 140,119" stroke="#1c2a4a" stroke-width="1.6" fill="none"/>
+      <circle cx="147" cy="180" r="8.5" fill="#f5f1e6" stroke="#d9b46a" stroke-width="2"/>
+      <path d="M141,169 L143,164 L145.5,168 L147,163 L148.5,168 L151,164 L153,169 Z" fill="#d9b46a"/>
+      <path d="M142,184 L152,176" stroke="#1c2a4a" stroke-width="2.4"/>`;
+  }
+  if (art === 'spanien') {
+    // Rot mit gelbem Kragen, Wappen und Stern
+    return `<path d="M98,118 Q120,136 142,118" stroke="#f1bf00" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <path d="M140,170 h15 v11 q0,8 -7.5,11.5 q-7.5,-3.5 -7.5,-11.5 Z" fill="#c60b1e" stroke="#f1bf00" stroke-width="1.8"/>
+      <path d="M143,174 h9 M143,178 h9" stroke="#f1bf00" stroke-width="1.6"/>
+      <path d="M147.5,160 l1.4,3 3.2,0.3 -2.4,2.1 0.8,3.1 -3,-1.7 -3,1.7 0.8,-3.1 -2.4,-2.1 3.2,-0.3 Z" fill="#f1bf00"/>`;
+  }
+  return `<path d="M98,118 Q120,136 142,118" stroke="${farbe2}" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M138,166 h18 v12 q0,10 -9,14 q-9,-4 -9,-14 Z" fill="${farbe2}" stroke="#d9b46a" stroke-width="1.5"/>`;
+}
+
+function figurSvg(spielerId, farbe1, farbe2, j) {
+  const id = `jf${zaehler++}`;
+  const a = AUSSEHEN[spielerId] ?? AUSSEHEN.pedri;
+  const haut = a.haut;
+  const schatten = toenen(haut, 0.7);
+  return `
+<svg class="jubel-figur" viewBox="-30 0 300 300" aria-hidden="true">
+  <defs>
+    <linearGradient id="${id}-stoff" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.36"/>
+      <stop offset="0.45" stop-color="#000" stop-opacity="0.04"/>
+      <stop offset="0.8" stop-color="#fff" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.14"/>
+    </linearGradient>
+    <linearGradient id="${id}-haut" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="${toenen(haut, 0.64)}"/>
+      <stop offset="0.5" stop-color="${haut}"/>
+      <stop offset="0.78" stop-color="${toenen(haut, 1.14)}"/>
+      <stop offset="1" stop-color="${toenen(haut, 0.86)}"/>
+    </linearGradient>
+    <radialGradient id="${id}-gesicht" cx="0.6" cy="0.42" r="0.68">
+      <stop offset="0" stop-color="${toenen(haut, 1.12)}"/>
+      <stop offset="0.65" stop-color="${haut}"/>
+      <stop offset="1" stop-color="${schatten}"/>
+    </radialGradient>
+    <radialGradient id="${id}-iris" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#6b4a2e"/>
+      <stop offset="1" stop-color="#24160c"/>
+    </radialGradient>
+    <linearGradient id="${id}-fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${a.seiten ?? '#000'}" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="${haut}" stop-opacity="0.2"/>
+    </linearGradient>
+    <pattern id="${id}-stoppeln" width="2.4" height="2.4" patternUnits="userSpaceOnUse">
+      <circle cx="1.2" cy="1.2" r="0.5" fill="#fff" opacity="0.12"/>
+    </pattern>
+    <filter id="${id}-weich" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2"/></filter>
+  </defs>
+  <g class="koerper">
+    <!-- Trikot mit Licht von rechts, Falten und Nähten -->
+    <path d="M97,118 Q82,124 62,133 Q48,141 51,166 L58,300 L182,300 L189,166 Q192,141 178,133 Q158,124 143,118 Z" fill="${farbe1}"/>
+    <path d="M97,118 Q82,124 62,133 Q48,141 51,166 L58,300 L182,300 L189,166 Q192,141 178,133 Q158,124 143,118 Z" fill="url(#${id}-stoff)"/>
+    <g filter="url(#${id}-weich)" opacity="0.8">
+      <path d="M84,196 Q96,214 90,240" stroke="#000" stroke-opacity="0.22" stroke-width="4" fill="none"/>
+      <path d="M152,188 Q142,212 152,238" stroke="#000" stroke-opacity="0.18" stroke-width="4" fill="none"/>
+      <path d="M106,252 Q120,266 136,252" stroke="#000" stroke-opacity="0.16" stroke-width="4" fill="none"/>
+      <path d="M156,140 Q170,150 176,170" stroke="#fff" stroke-opacity="0.22" stroke-width="5" fill="none"/>
+    </g>
+    <path d="M70,150 Q74,200 66,290 M170,150 Q166,200 174,290" stroke="${farbe2}" stroke-width="2.5" fill="none" opacity="0.65"/>
+    <!-- Hals mit Muskeln und Schatten unter dem Kinn -->
+    <g class="glied kopf" style="transform-origin:120px 120px">
+      <path d="M103,92 L137,92 L141,124 Q120,135 99,124 Z" fill="url(#${id}-haut)"/>
+      <path d="M107,102 Q112,114 115,124 M133,102 Q128,114 125,124" stroke="${schatten}" stroke-width="2.5" fill="none" opacity="0.25" filter="url(#${id}-weich)"/>
+      <path d="M103,98 Q120,114 137,98 L137,106 Q120,120 103,106 Z" fill="${toenen(haut, 0.5)}" opacity="0.45"/>
+      ${gesichtSvg(a, j, id)}
+      ${frisurSvg(a, id)}
+    </g>
+    ${trikotDetails(a.trikot, farbe1, farbe2)}
+    <!-- Arme vor dem Körper -->
+    ${arm('l', S_L, farbe1, farbe2, haut, id)}
+    ${arm('r', S_R, farbe1, farbe2, haut, id)}
     <!-- Herz (Neymar) -->
-    <path class="herz" d="M100,112 C92,104 86,98 92,92 C96,88 100,92 100,95 C100,92 104,88 108,92 C114,98 108,104 100,112 Z" fill="#e0475b"/>
+    <path class="herz" d="M120,186 C110,176 102,168 110,160 C115,155 120,160 120,164 C120,160 125,155 130,160 C138,168 130,176 120,186 Z" fill="#e0475b" stroke="#fff" stroke-opacity="0.5"/>
   </g>
 </svg>`;
 }
@@ -107,10 +340,6 @@ function poseSetzen(svg, pose) {
   drehen('l-unterarm', p.fL);
   drehen('r-arm', p.aR);
   drehen('r-unterarm', p.fR);
-  drehen('l-bein', p.bL);
-  drehen('l-unterschenkel', p.kL);
-  drehen('r-bein', p.bR);
-  drehen('r-unterschenkel', p.kR);
   drehen('kopf', p.kopf);
   svg.querySelector('.koerper').style.transform = `translateY(${p.y}px)`;
 }
@@ -122,15 +351,13 @@ function jubelBauen(spieler, farben, gross) {
   e.innerHTML = `
     <div class="jubel-buehne">
       <div class="jubel-licht"></div>
-      ${figurSvg(farben[0], farben[1])}
-      ${j.zeichen ? `<div class="jubel-zeichen">${j.zeichen}</div>` : ''}
+      ${figurSvg(spieler.id, farben[0], farben[1], j)}
     </div>
     <div class="jubel-name">${spieler.name}</div>
     ${gross ? `<div class="jubel-text">versenkt!</div>` : `<div class="jubel-text klein">Treffer</div>`}`;
   const svg = e.querySelector('svg');
+  svg.dataset.hand = j.hand ?? 'offen';
   svg.classList.toggle('mit-herz', !!j.herz);
-  svg.classList.toggle('mit-finger', !!j.finger);
-  svg.classList.toggle('mit-daumen', !!j.daumen);
   poseSetzen(svg, GRUND);
   return { e, svg, j };
 }

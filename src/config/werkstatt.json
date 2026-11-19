@@ -61,12 +61,12 @@
   "yamalFarbe1": {
     "name": "Yamal Streifen 1",
     "typ": "farbe",
-    "wert": "#004d98"
+    "wert": "#c60b1e"
   },
   "yamalFarbe2": {
     "name": "Yamal Streifen 2",
     "typ": "farbe",
-    "wert": "#a50044"
+    "wert": "#f1bf00"
   },
   "keniFarbe1": {
     "name": "Keni Streifen 1",
