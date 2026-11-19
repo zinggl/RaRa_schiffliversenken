@@ -2,6 +2,9 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 14 – 2026-11-19
+- Jubel dauert 10 Sekunden (Werkstatt: 1–15 s), Antippen überspringt den grossen Jubel
+
 ## Version 13 – 2026-11-19
 - Jubel der Spieler: kurz beim Treffer, gross beim Versenken (Mbappé, Haaland, Ronaldo, Yamal, Keni, Messi, Neymar, Xhaka, Pedri, Musiala)
 - Standard-Meer 12 × 12: alle 10 Schiffe spielen mit

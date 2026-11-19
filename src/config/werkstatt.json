@@ -155,11 +155,11 @@
     "wert": true
   },
   "jubelDauer": {
-    "name": "Jubel-Dauer beim Versenken (Sek.)",
+    "name": "Jubel-Dauer (Sek.)",
     "typ": "zahl",
-    "wert": 2.5,
+    "wert": 10,
     "min": 1,
-    "max": 5,
-    "schritt": 0.5
+    "max": 15,
+    "schritt": 1
   }
 }

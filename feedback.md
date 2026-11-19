@@ -4,8 +4,10 @@ Nach jedem Test hier aufschreiben (oder diktieren): Was ist gut? Was nervt? Was 
 `/feedback` macht daraus Aufgaben und hakt Erledigtes ab.
 
 ## Offen
+- 2026-11-19 «Jubel realer machen» – Raphael sucht ein Bild von Lamine Yamal als Vorlage zum Zeichnen
 
 ## Erledigt
+- 2026-11-19 «Der Jubel soll 10 Sekunden dauern» – Jubel dauert jetzt 10 s (Werkstatt: 1–15 s), Antippen überspringt den grossen Jubel, neuer Treffer ersetzt den kleinen
 - 2026-11-19 «Auf dem iPad fehlen die kleineren Schiffe» – Standard-Meer jetzt 12 × 12, damit alle 10 Schiffe mitspielen
 - 2026-11-19 «Wenn ich Mbappé treffe, soll er seinen Jubel machen – bei allen Spielern» – jeder der 10 Spieler hat seinen Jubel: kurz beim Treffer, gross beim Versenken; Werkstatt: Jubel ein/aus, Jubel-Dauer
 - 2026-11-19 «Mbappé das längste Schiff (7), Messi das kleinste, dazwischen Keni, Yamal, Ronaldo, Haaland» – neue Flotte 7-6-5-4-3-2, dazu Neymar, Xhaka, Pedri, Musiala als 1-Feld-Schnellboote; Mbappé mit vier Türmen

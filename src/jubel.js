@@ -1,5 +1,5 @@
 // Der Jubel der Spieler: Wird ein Schiff getroffen, jubelt der getroffene Spieler.
-// Treffer: kurz klein am Rand. Versenkt: gross in der Mitte, mit Namen.
+// Treffer: klein am Rand. Versenkt: gross in der Mitte, mit Namen. Beides dauert so lange wie «jubelDauer».
 // Die Figur ist eine schlanke Silhouette im Trikot der Clubfarben (keine Fotos).
 // Sie besteht aus Gelenken, die sich drehen: Arme (Schulter, Ellbogen), Beine (Hüfte, Knie).
 // Winkel in Grad, 0 = hängt gerade nach unten. Linke Seite (vom Betrachter aus):
@@ -151,8 +151,9 @@ function abspielen(svg, j) {
   );
 }
 
-// Treffer: kurz klein am Rand
-export function jubelKlein(eltern, spieler, farben, dauer = 1400) {
+// Treffer: klein am Rand. Ein neuer Treffer ersetzt den alten kleinen Jubel.
+export function jubelKlein(eltern, spieler, farben, dauer = 10000) {
+  eltern.querySelectorAll('.jubel.klein').forEach((alt) => alt.remove());
   const { e, svg, j } = jubelBauen(spieler, farben, false);
   eltern.appendChild(e);
   abspielen(svg, j);
@@ -160,16 +161,32 @@ export function jubelKlein(eltern, spieler, farben, dauer = 1400) {
   setTimeout(() => e.remove(), dauer);
 }
 
-// Versenkt: gross in der Mitte. Gibt ein Versprechen zurück, das nach dem Jubel erfüllt ist.
-export function jubelGross(eltern, spieler, farben, dauer = 2500) {
+// Versenkt: gross in der Mitte. Antippen überspringt den Jubel.
+// Gibt ein Versprechen zurück, das nach dem Jubel erfüllt ist.
+export function jubelGross(eltern, spieler, farben, dauer = 10000) {
+  eltern.querySelectorAll('.jubel.klein').forEach((alt) => alt.remove());
   const { e, svg, j } = jubelBauen(spieler, farben, true);
+  e.insertAdjacentHTML('beforeend', '<div class="jubel-weiter">Antippen zum Weiterspielen</div>');
+  // Unsichtbare Fläche über allem: irgendwo tippen = weiter
+  const faenger = document.createElement('div');
+  faenger.className = 'jubel-faenger';
+  eltern.appendChild(faenger);
   eltern.appendChild(e);
   abspielen(svg, j);
   return new Promise((fertig) => {
-    setTimeout(() => e.classList.add('weg'), dauer - 400);
-    setTimeout(() => {
-      e.remove();
-      fertig();
-    }, dauer);
+    let vorbei = false;
+    const ende = () => {
+      if (vorbei) return;
+      vorbei = true;
+      e.classList.add('weg');
+      faenger.remove();
+      setTimeout(() => {
+        e.remove();
+        fertig();
+      }, 400);
+    };
+    const ab = performance.now() + 600; // nicht gleich mit dem Schuss-Tipp überspringen
+    faenger.addEventListener('pointerdown', () => performance.now() > ab && ende());
+    setTimeout(ende, dauer - 400);
   });
 }

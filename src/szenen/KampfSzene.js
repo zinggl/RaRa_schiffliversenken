@@ -403,13 +403,13 @@ export class KampfSzene extends Phaser.Scene {
     if (r.ergebnis === 'versenkt') {
       await warte(300);
       ton.horn();
-      if (jubeln) await jubelGross(this.ebene, spieler, farben, (wert('jubelDauer') ?? 2.5) * 1000);
+      if (jubeln) await jubelGross(this.ebene, spieler, farben, (wert('jubelDauer') ?? 10) * 1000);
       else {
         this.meldung(`${spieler.name} versenkt!`);
         await warte(900);
       }
     } else {
-      if (r.ergebnis === 'treffer' && jubeln) jubelKlein(this.ebene, spieler, farben);
+      if (r.ergebnis === 'treffer' && jubeln) jubelKlein(this.ebene, spieler, farben, (wert('jubelDauer') ?? 10) * 1000);
       await warte(r.ergebnis === 'wasser' ? 650 : 450);
     }
     return r;

@@ -29,7 +29,7 @@ In der Werkstatt (Hai) kannst du die **Meergrösse** (7 bis 24 Felder) und die *
 - **Wasser:** Eine Fontäne spritzt hoch. Jetzt ist der andere dran.
 - Ist ein Schiff **versenkt**, taucht es auf und sinkt. Rechts siehst du, welche Schiffe noch schwimmen.
 - Im **kleinen Feld** siehst du deine eigene Flotte und wo der Gegner hingeschossen hat.
-- Triffst du ein Schiff, **jubelt der getroffene Spieler** kurz am Rand. Ist es versenkt, jubelt er **gross in der Mitte**:
+- Triffst du ein Schiff, **jubelt der getroffene Spieler** kurz am Rand. Ist es versenkt, jubelt er **gross in der Mitte**, 10 Sekunden lang (antippen = weiterspielen):
   Mbappé verschränkt die Arme, Haaland meditiert, Ronaldo macht «Siuuu!», Yamal zeigt 304, Keni reckt die Faust,
   Messi zeigt zum Himmel, Neymar macht ein Herz, Xhaka klopft aufs Wappen, Pedri reisst die Arme hoch, Musiala zeigt Daumen hoch.
 - Wer zuerst alle Schiffe versenkt, gewinnt – mit **Feuerwerk**! 🎆
