@@ -23,7 +23,7 @@
   "meerGroesse": {
     "name": "Meergrösse (Felder)",
     "typ": "zahl",
-    "wert": 10,
+    "wert": 12,
     "min": 7,
     "max": 24,
     "schritt": 1

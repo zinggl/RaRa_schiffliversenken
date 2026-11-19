@@ -2,6 +2,11 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 13 – 2026-11-19
+- Jubel der Spieler: kurz beim Treffer, gross beim Versenken (Mbappé, Haaland, Ronaldo, Yamal, Keni, Messi, Neymar, Xhaka, Pedri, Musiala)
+- Standard-Meer 12 × 12: alle 10 Schiffe spielen mit
+- Werkstatt: Jubel ein/aus, Jubel-Dauer
+
 ## Version 12 – 2026-11-19
 - Neue Flotte nach Raphaels Aufstellung: Mbappé 7, Haaland 6, Ronaldo 5, Yamal 4, Keni 3, Messi 2
 - Neymar, Xhaka, Pedri, Musiala als Schnellboote mit 1 Feld; auf 10 × 10 spielen 8 Schiffe mit
