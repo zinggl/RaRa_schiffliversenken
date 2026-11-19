@@ -81,12 +81,12 @@
   "keniFarbe1": {
     "name": "Keni Streifen 1",
     "typ": "farbe",
-    "wert": "#c8102e"
+    "wert": "#ffffff"
   },
   "keniFarbe2": {
     "name": "Keni Streifen 2",
     "typ": "farbe",
-    "wert": "#ffffff"
+    "wert": "#1b2a5c"
   },
   "messiFarbe1": {
     "name": "Messi Streifen 1",

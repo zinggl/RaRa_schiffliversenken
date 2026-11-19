@@ -22,7 +22,8 @@ const AUSSEHEN = {
   haaland: { haut: '#ecc9ac', frisur: 'dutt', haar: '#d9c07c' },
   ronaldo: { haut: '#c99572', frisur: 'kurz', haar: '#2a1c12' },
   yamal: { haut: '#8a5839', frisur: 'fade-locken', haar: '#e9d394', seiten: '#1b130d', ausdruck: 'lachen', trikot: 'spanien' },
-  keni: { haut: '#e6bd9d', frisur: 'kurz', haar: '#7a5534' },
+  // Keni (FC Zürich) nach Raphaels Foto: FCZ-Trikot mit langen weissen Ärmeln, kurze blonde Haare
+  keni: { haut: '#3b261a', frisur: 'blond-kurz', haar: '#dcc58a', seiten: '#120c08', trikot: 'fcz', langarm: true },
   // Messi nach Raphaels Foto: Argentinien-Trikot, Blick zum Himmel, Kapitänsbinde, Tattoo am rechten Arm
   messi: { haut: '#d6a47c', frisur: 'zurueck', haar: '#5a3b25', bart: true, trikot: 'argentinien', blick: 'oben', ausdruck: 'staunen', tattoo: 'l', binde: 'r' },
   neymar: { haut: '#b98459', frisur: 'kurz', haar: '#3a2617' },
@@ -106,7 +107,7 @@ function arm(seite, [sx, sy], farbe1, farbe2, haut, id, a = {}) {
   return `
     <g class="glied ${seite}-arm" style="transform-origin:${sx}px ${sy}px">
       <!-- Oberarm: Bizeps, dann Ärmel vom Trikot -->
-      <path d="M${sx - 12},${sy + 30} Q${sx - 16},${sy + 50} ${sx - 10},${ey} L${sx + 10},${ey} Q${sx + 16},${sy + 48} ${sx + 12},${sy + 30} Z" fill="url(#${id}-haut)"/>
+      <path d="M${sx - 12},${sy + 30} Q${sx - 16},${sy + 50} ${sx - 10},${ey} L${sx + 10},${ey} Q${sx + 16},${sy + 48} ${sx + 12},${sy + 30} Z" fill="${a.langarm ? `url(#${id}-aermel)` : `url(#${id}-haut)`}"/>
       <path d="M${sx + 2},${sy + 44} Q${sx + 9},${sy + 52} ${sx + 6},${ey - 4}" stroke="#fff" stroke-opacity="0.12" stroke-width="3" fill="none"/>
       <path d="M${sx - 19},${sy - 6} Q${sx - 21},${sy + 20} ${sx - 16},${sy + 43} Q${sx},${sy + 46} ${sx + 16},${sy + 43} Q${sx + 21},${sy + 20} ${sx + 19},${sy - 6} Q${sx},${sy - 16} ${sx - 19},${sy - 6} Z" fill="${a.trikot === 'argentinien' ? '#f6f6f3' : a.trikot === 'fcz' ? farbe2 : farbe1}"/>
       <path d="M${sx - 19},${sy - 6} Q${sx - 21},${sy + 20} ${sx - 16},${sy + 43} Q${sx},${sy + 46} ${sx + 16},${sy + 43} Q${sx + 21},${sy + 20} ${sx + 19},${sy - 6} Q${sx},${sy - 16} ${sx - 19},${sy - 6} Z" fill="url(#${id}-stoff)"/>
@@ -114,10 +115,11 @@ function arm(seite, [sx, sy], farbe1, farbe2, haut, id, a = {}) {
       <path d="M${sx - 16},${sy + 38} Q${sx},${sy + 41} ${sx + 16},${sy + 38}" stroke="${a.trikot === 'argentinien' ? '#111' : a.trikot === 'fcz' ? '#8fb6e6' : farbe2}" stroke-width="4" fill="none"/>
       ${a.binde === seite ? `<path d="M${sx - 18.5},${sy + 18} Q${sx},${sy + 22} ${sx + 18.5},${sy + 18} L${sx + 18},${sy + 29} Q${sx},${sy + 33} ${sx - 18},${sy + 29} Z" fill="#1d3f9a"/><text x="${sx}" y="${sy + 28.5}" text-anchor="middle" font-size="8" font-weight="800" fill="#fff" font-family="system-ui">C</text>` : ''}
       ${a.tattoo === seite ? `<path d="M${sx - 11},${sy + 46} Q${sx - 4},${sy + 52} ${sx - 9},${sy + 58} M${sx + 2},${sy + 47} q4,6 -1,12 M${sx - 6},${sy + 60} q6,2 10,-2" stroke="#2b2622" stroke-width="2.2" fill="none" opacity="0.55"/>` : ''}
-      <ellipse cx="${ex}" cy="${ey}" rx="10" ry="9" fill="url(#${id}-haut)"/>
+      <ellipse cx="${ex}" cy="${ey}" rx="10" ry="9" fill="${a.langarm ? `url(#${id}-aermel)` : `url(#${id}-haut)`}"/>
       <g class="glied ${seite}-unterarm" style="transform-origin:${ex}px ${ey}px">
         <!-- Unterarm: oben kräftig, zum Handgelenk schmal -->
-        <path d="M${ex - 10},${ey} Q${ex - 13},${ey + 18} ${ex - 7.5},${wy} L${ex + 7.5},${wy} Q${ex + 12},${ey + 16} ${ex + 10},${ey} Z" fill="url(#${id}-haut)"/>
+        <path d="M${ex - 10},${ey} Q${ex - 13},${ey + 18} ${ex - 7.5},${wy} L${ex + 7.5},${wy} Q${ex + 12},${ey + 16} ${ex + 10},${ey} Z" fill="${a.langarm ? `url(#${id}-aermel)` : `url(#${id}-haut)`}"/>
+        ${a.langarm ? `<path d="M${ex - 9},${ey + 14} Q${ex - 4},${ey + 22} ${ex - 8},${ey + 30} M${ex + 6},${ey + 8} Q${ex + 2},${ey + 18} ${ex + 7},${ey + 26}" stroke="#000" stroke-opacity="0.1" stroke-width="2" fill="none"/><path d="M${ex - 8},${wy - 4} L${ex + 8},${wy - 4}" stroke="#d8d8d4" stroke-width="3"/>` : ''}
         <path d="M${ex + 3},${ey + 8} Q${ex + 7},${ey + 22} ${ex + 4},${wy - 8}" stroke="#fff" stroke-opacity="0.1" stroke-width="2.5" fill="none"/>
         ${a.tattoo === seite ? `<g opacity="0.55" stroke="#2b2622" fill="none" stroke-width="1.8"><path d="M${ex - 8},${ey + 6} q6,6 0,12 q-5,6 2,12 q6,5 0,11"/><circle cx="${ex + 3}" cy="${ey + 14}" r="3.5"/><path d="M${ex + 6},${ey + 24} l-8,6 M${ex + 4},${ey + 34} q-4,4 -9,2"/><path d="M${ex - 9},${ey + 3} L${ex + 9},${ey + 3}" stroke-width="1.2"/></g>` : ''}
         ${haende(ex, wy - 2, haut, dunkel, id)}
@@ -328,6 +330,12 @@ function figurSvg(spielerId, farbe1, farbe2, j) {
       <stop offset="0.45" stop-color="#000" stop-opacity="0.04"/>
       <stop offset="0.8" stop-color="#fff" stop-opacity="0.16"/>
       <stop offset="1" stop-color="#000" stop-opacity="0.14"/>
+    </linearGradient>
+    <linearGradient id="${id}-aermel" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#bdbdb8"/>
+      <stop offset="0.5" stop-color="#f2f2ef"/>
+      <stop offset="0.8" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d6d6d2"/>
     </linearGradient>
     <linearGradient id="${id}-haut" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="${toenen(haut, 0.64)}"/>
