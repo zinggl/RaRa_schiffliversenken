@@ -28,16 +28,6 @@
     "max": 24,
     "schritt": 1
   },
-  "messiFarbe1": {
-    "name": "Messi Streifen 1",
-    "typ": "farbe",
-    "wert": "#f2a7c3"
-  },
-  "messiFarbe2": {
-    "name": "Messi Streifen 2",
-    "typ": "farbe",
-    "wert": "#1c1c1c"
-  },
   "mbappeFarbe1": {
     "name": "Mbappé Streifen 1",
     "typ": "farbe",
@@ -47,6 +37,16 @@
     "name": "Mbappé Streifen 2",
     "typ": "farbe",
     "wert": "#c9a34a"
+  },
+  "haalandFarbe1": {
+    "name": "Haaland Streifen 1",
+    "typ": "farbe",
+    "wert": "#6cabdd"
+  },
+  "haalandFarbe2": {
+    "name": "Haaland Streifen 2",
+    "typ": "farbe",
+    "wert": "#ffffff"
   },
   "ronaldoFarbe1": {
     "name": "Ronaldo Streifen 1",
@@ -78,15 +78,15 @@
     "typ": "farbe",
     "wert": "#ffffff"
   },
-  "haalandFarbe1": {
-    "name": "Haaland Streifen 1",
+  "messiFarbe1": {
+    "name": "Messi Streifen 1",
     "typ": "farbe",
-    "wert": "#6cabdd"
+    "wert": "#f2a7c3"
   },
-  "haalandFarbe2": {
-    "name": "Haaland Streifen 2",
+  "messiFarbe2": {
+    "name": "Messi Streifen 2",
     "typ": "farbe",
-    "wert": "#ffffff"
+    "wert": "#1c1c1c"
   },
   "neymarFarbe1": {
     "name": "Neymar Streifen 1",

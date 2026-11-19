@@ -7,20 +7,26 @@ let zaehler = 0; // für eindeutige IDs der Verläufe
 export function kriegsschiffSvg(laenge, name, farbe1, farbe2) {
   const id = `ks${zaehler++}`;
   const w = laenge * 100;
-  const rumpf = `M10,33 L${w - 92},27 Q${w - 16},40 ${w - 5},50 Q${w - 16},60 ${w - 92},73 L10,67 Q4,50 10,33 Z`;
+  const klein = laenge === 1; // Schnellboot: kurz und schmal
+  const rumpf = klein
+    ? 'M8,38 L50,35 Q86,42 95,50 Q86,58 50,65 L8,62 Q3,50 8,38 Z'
+    : `M10,33 L${w - 92},27 Q${w - 16},40 ${w - 5},50 Q${w - 16},60 ${w - 92},73 L10,67 Q4,50 10,33 Z`;
+  const streifen1 = klein ? 12 : 30; // Breite der Clubfarben-Streifen am Heck
+  const streifen2 = klein ? 7 : 14;
 
   // Brücke (Aufbau) und Geschütztürme je nach Länge
-  const bruecke = { x: 52, b: laenge <= 2 ? 28 : 30 + laenge * 8 };
+  const bruecke = klein ? { x: 24, b: 18 } : { x: 52, b: laenge <= 2 ? 28 : 30 + laenge * 8 };
   const tuerme = laenge >= 3 ? [w - 122] : [];
   if (laenge >= 5) tuerme.push(w - 186);
-  if (laenge >= 6) tuerme.push(w - 250); // der GOAT hat drei Türme
+  if (laenge >= 6) tuerme.push(w - 250);
+  if (laenge >= 7) tuerme.push(w - 314); // das längste Schiff hat vier Türme
 
   // Der Name steht zwischen Brücke und vorderstem Turm (oder Bug)
   const nameVon = bruecke.x + bruecke.b + 10;
-  const nameBis = (tuerme.length ? Math.min(...tuerme) - 16 : w - 52) - 4;
+  const nameBis = klein ? 88 : (tuerme.length ? Math.min(...tuerme) - 16 : w - 52) - 4;
   const platz = nameBis - nameVon;
   const text = name.toUpperCase();
-  const schrift = laenge <= 2 ? 14 : 16;
+  const schrift = klein ? 11 : laenge <= 2 ? 14 : 16;
   const natuerlich = text.length * schrift * 0.78;
   const passend = natuerlich > platz ? `textLength="${platz}" lengthAdjust="spacingAndGlyphs"` : '';
 
@@ -53,12 +59,12 @@ export function kriegsschiffSvg(laenge, name, farbe1, farbe2) {
   <path d="${rumpf}" fill="url(#${id}-stahl)"/>
   <g clip-path="url(#${id}-form)">
     <!-- Clubfarben am Heck -->
-    <rect x="0" y="0" width="30" height="100" fill="${farbe1}"/>
-    <rect x="30" y="0" width="14" height="100" fill="${farbe2}"/>
-    <rect x="44" y="0" width="1.2" height="100" fill="#1f2529" opacity="0.5"/>
+    <rect x="0" y="0" width="${streifen1}" height="100" fill="${farbe1}"/>
+    <rect x="${streifen1}" y="0" width="${streifen2}" height="100" fill="${farbe2}"/>
+    <rect x="${streifen1 + streifen2}" y="0" width="1.2" height="100" fill="#1f2529" opacity="0.5"/>
     <!-- Decksplanken-Linien und Mittellinie -->
-    <path d="M46,50 L${w - 30},50" stroke="#ffffff" stroke-width="0.8" opacity="0.18"/>
-    <path d="M46,36 L${w - 90},33 M46,64 L${w - 90},67" stroke="#2a3035" stroke-width="0.8" opacity="0.35"/>
+    <path d="M${streifen1 + streifen2 + 2},50 L${w - 30},50" stroke="#ffffff" stroke-width="0.8" opacity="0.18"/>
+    ${klein ? '' : `<path d="M46,36 L${w - 90},33 M46,64 L${w - 90},67" stroke="#2a3035" stroke-width="0.8" opacity="0.35"/>`}
   </g>
   <path d="${rumpf}" fill="none" stroke="#252b30" stroke-width="1.6"/>
 

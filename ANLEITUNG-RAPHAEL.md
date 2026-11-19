@@ -17,7 +17,7 @@ In der Werkstatt kannst du Sachen verstellen, zum Beispiel die Farbe vom Meer, w
 
 ## 3. Deine Flotte aufstellen (Modul 1)
 1. **Aufs Schiff tippen** und den Spielmodus wählen.
-2. Deine Schiffe mit dem Finger aufs Meer ziehen. Der GOAT **Messi** hat 6 Felder, dann kommen **Mbappé, Ronaldo, Yamal, Keni, Haaland, Neymar, Xhaka, Pedri und Musiala**. Auf 10 × 10 spielen die 6 grössten mit, ab 12 × 12 alle 10.
+2. Deine Schiffe mit dem Finger aufs Meer ziehen: **Mbappé (7 Felder)**, Haaland (6), Ronaldo (5), Yamal (4), Keni (3), **Messi (2)** und die Schnellboote Neymar, Xhaka, Pedri und Musiala (je 1). Auf 10 × 10 spielen 8 Schiffe mit, ab 11 × 11 alle 10.
 3. **Antippen** dreht ein Schiff. Wird es **rot**, passt es nicht: Es liegt auf einem anderen Schiff, berührt eines oder ragt hinaus.
 4. Stehen alle Schiffe, drückst du **«Bereit!»**.
 
@@ -44,6 +44,21 @@ In der Werkstatt (Hai) kannst du die **Meergrösse** (7 bis 24 Felder) und die *
 Spielen, ausprobieren, Regler verstellen. Danach sagst du:
 **Was ist gut? Was nervt? Was fehlt?** Das kommt in `feedback.md`.
 Papi schreibt **/feedback**, und Claude baut es um.
+
+## Wie du weitermachst – deine Werkzeuge
+- **Spielen und beobachten:** Was macht Spass? Was ist langweilig? Wo musst du lange warten?
+- **/feedback** – kleine Wünsche («Messi soll kleiner sein», «der Hai soll schneller schwimmen»). Papi tippt sie ab, Claude baut sie ein.
+- **/modul** – eine grosse neue Idee. Zuerst beantwortest du ein paar Fragen, dann zeigt Claude den Plan, und nach deinem OK wird gebaut.
+- **Werkstatt (Hai)** – vieles kannst du selber ausprobieren, bevor du es Claude sagst.
+- **/release** – stellt die neue Version online, damit du sie auf dem iPad hast.
+
+## Ideen für die nächsten Module (du entscheidest!)
+- 💣 **Spezialwaffen:** z. B. eine Bombe, die 3 × 3 Felder trifft, oder ein Radar, das ein Feld aufdeckt
+- 🏆 **Turnier / Karriere:** gegen den Computer Stufe um Stufe aufsteigen, mit Pokal am Schluss
+- ⚽ **Fussball-Jubel:** Bei einem Treffer ruft ein Stadion «Tooor!», beim Versenken ein Jubellied (du könntest es selber singen und aufnehmen!)
+- 📊 **Rekorde:** Bestenliste mit deiner besten Trefferquote und dem schnellsten Sieg
+- ⏱️ **Zeitdruck:** Jeder hat nur 10 Sekunden pro Schuss
+- 🎲 **Zufällig aufstellen:** Ein Knopf, der deine Flotte in einer Sekunde aufs Meer verteilt
 
 ## Unser Plan
 1. ⚓ Flotte aufstellen ✓ und gegen den Computer spielen ✓

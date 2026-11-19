@@ -1,16 +1,18 @@
-// Raphaels Fussball-Flotte: Name und Länge (in Feldern). Messi ist der GOAT – das grösste Schiff.
-// Die Streifenfarben stehen in der Werkstatt (z. B. «messiFarbe1» und «messiFarbe2»).
+// Raphaels Fussball-Flotte: Name und Länge (in Feldern), vom längsten zum kleinsten.
+// Aufstellung von Raphael: Mbappé ganz oben, dann Haaland, Ronaldo, Yamal, Keni, Messi.
+// Die Streifenfarben stehen in der Werkstatt (z. B. «mbappeFarbe1» und «mbappeFarbe2»).
 export const FLOTTE_ALLE = [
-  { id: 'messi', name: 'Messi', laenge: 6 },
-  { id: 'mbappe', name: 'Mbappé', laenge: 5 },
+  { id: 'mbappe', name: 'Mbappé', laenge: 7 },
+  { id: 'haaland', name: 'Haaland', laenge: 6 },
   { id: 'ronaldo', name: 'Ronaldo', laenge: 5 },
   { id: 'yamal', name: 'Yamal', laenge: 4 },
-  { id: 'keni', name: 'Keni', laenge: 4 },
-  { id: 'haaland', name: 'Haaland', laenge: 4 },
-  { id: 'neymar', name: 'Neymar', laenge: 3 },
-  { id: 'xhaka', name: 'Xhaka', laenge: 3 },
-  { id: 'pedri', name: 'Pedri', laenge: 2 },
-  { id: 'musiala', name: 'Musiala', laenge: 2 },
+  { id: 'keni', name: 'Keni', laenge: 3 },
+  { id: 'messi', name: 'Messi', laenge: 2 },
+  // Schnellboote mit 1 Feld
+  { id: 'neymar', name: 'Neymar', laenge: 1 },
+  { id: 'xhaka', name: 'Xhaka', laenge: 1 },
+  { id: 'pedri', name: 'Pedri', laenge: 1 },
+  { id: 'musiala', name: 'Musiala', laenge: 1 },
 ];
 
 export const MEER_MIN = 7;
