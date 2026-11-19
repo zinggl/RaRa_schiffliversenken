@@ -29,6 +29,9 @@ In der Werkstatt (Hai) kannst du die **Meergrösse** (7 bis 24 Felder) und die *
 - **Wasser:** Eine Fontäne spritzt hoch. Jetzt ist der andere dran.
 - Ist ein Schiff **versenkt**, taucht es auf und sinkt. Rechts siehst du, welche Schiffe noch schwimmen.
 - Im **kleinen Feld** siehst du deine eigene Flotte und wo der Gegner hingeschossen hat.
+- Triffst du ein Schiff, **jubelt der getroffene Spieler** kurz am Rand. Ist es versenkt, jubelt er **gross in der Mitte**:
+  Mbappé verschränkt die Arme, Haaland meditiert, Ronaldo macht «Siuuu!», Yamal zeigt 304, Keni reckt die Faust,
+  Messi zeigt zum Himmel, Neymar macht ein Herz, Xhaka klopft aufs Wappen, Pedri reisst die Arme hoch, Musiala zeigt Daumen hoch.
 - Wer zuerst alle Schiffe versenkt, gewinnt – mit **Feuerwerk**! 🎆
 - Gegen den Computer wählst du die **Schwierigkeit**: Leicht, Mittel oder Schwer. In der Werkstatt kannst du einstellen, wie lange er überlegt, und die Geräusche ein- oder ausschalten.
 
@@ -55,7 +58,7 @@ Papi schreibt **/feedback**, und Claude baut es um.
 ## Ideen für die nächsten Module (du entscheidest!)
 - 💣 **Spezialwaffen:** z. B. eine Bombe, die 3 × 3 Felder trifft, oder ein Radar, das ein Feld aufdeckt
 - 🏆 **Turnier / Karriere:** gegen den Computer Stufe um Stufe aufsteigen, mit Pokal am Schluss
-- ⚽ **Fussball-Jubel:** Bei einem Treffer ruft ein Stadion «Tooor!», beim Versenken ein Jubellied (du könntest es selber singen und aufnehmen!)
+- ⚽ **Stadion-Ton:** Zum Jubel ruft ein Stadion «Tooor!», beim Versenken ein Jubellied (du könntest es selber singen und aufnehmen!)
 - 📊 **Rekorde:** Bestenliste mit deiner besten Trefferquote und dem schnellsten Sieg
 - ⏱️ **Zeitdruck:** Jeder hat nur 10 Sekunden pro Schuss
 - 🎲 **Zufällig aufstellen:** Ein Knopf, der deine Flotte in einer Sekunde aufs Meer verteilt

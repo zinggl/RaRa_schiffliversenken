@@ -1193,6 +1193,140 @@ html.zoom-erlaubt .brett {
   100% { opacity: 0; }
 }
 
+/* Jubel der Spieler (siehe jubel.js) */
+.jubel {
+  position: absolute;
+  z-index: 25;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 14px;
+  background: rgba(10, 24, 38, 0.9);
+  border: 1px solid rgba(217, 180, 106, 0.55);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+  animation: jubel-rein 0.35s ease-out both;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.jubel.weg {
+  opacity: 0;
+  transform: translateY(10px);
+}
+@keyframes jubel-rein {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+/* Klein: unten rechts, kurz beim Treffer */
+.jubel.klein {
+  right: max(14px, 2vw);
+  bottom: max(14px, 3vh);
+  width: min(17vmin, 140px);
+  padding: 8px 8px 10px;
+}
+/* Gross: in der Mitte, beim Versenken */
+.jubel.gross {
+  left: 50%;
+  top: 50%;
+  width: min(34vmin, 300px);
+  padding: 14px 14px 18px;
+  margin-left: calc(min(34vmin, 300px) / -2);
+  transform-origin: 50% 50%;
+  translate: 0 -50%;
+}
+.jubel-buehne {
+  position: relative;
+  width: 100%;
+}
+.jubel-licht {
+  position: absolute;
+  inset: 0 10% 6% 10%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 60%, rgba(217, 180, 106, 0.28), transparent 70%);
+}
+.jubel-figur {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.jubel-figur .glied,
+.jubel-figur .koerper {
+  transform-box: view-box;
+  transition: transform 0.45s cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+.jubel-figur .koerper {
+  transform-origin: 100px 170px;
+}
+/* Nach der Pose wippt die Figur leicht (Haaland bleibt ruhig) */
+.jubel:not(.ruhig) .jubel-figur {
+  animation: wippen 0.6s ease-in-out 0.5s infinite alternate;
+}
+.jubel.ruhig .jubel-figur {
+  animation: atmen-figur 2s ease-in-out 0.5s infinite alternate;
+}
+@keyframes wippen {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
+}
+@keyframes atmen-figur {
+  from { transform: scale(1); }
+  to { transform: scale(1.015); }
+}
+/* Ronaldo dreht sich im Sprung */
+.jubel-figur.dreht {
+  animation: drehsprung 0.5s ease-in-out;
+}
+@keyframes drehsprung {
+  from { transform: scaleX(1); }
+  50% { transform: scaleX(-1); }
+  to { transform: scaleX(1); }
+}
+.jubel-figur .herz,
+.jubel-figur .finger,
+.jubel-figur .daumen {
+  opacity: 0;
+  transition: opacity 0.3s ease 0.35s;
+}
+.jubel-figur.mit-herz .herz,
+.jubel-figur.mit-finger .finger,
+.jubel-figur.mit-daumen .daumen {
+  opacity: 1;
+}
+.jubel-zeichen {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2%;
+  text-align: center;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.6em;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0;
+  animation: erscheinen 0.4s ease-out 0.5s forwards;
+}
+.jubel-name {
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 700;
+  font-size: min(2.4vmin, 18px);
+  letter-spacing: 0.08em;
+  color: var(--gold);
+}
+.jubel.gross .jubel-name {
+  font-size: min(5.5vmin, 44px);
+}
+.jubel-text {
+  font-size: min(2.4vmin, 18px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.jubel-text.klein {
+  font-size: min(1.6vmin, 12px);
+  color: var(--text-leise);
+}
+
 /* Spielende */
 .feuerwerk {
   position: fixed;

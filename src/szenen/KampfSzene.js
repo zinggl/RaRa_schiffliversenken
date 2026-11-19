@@ -18,6 +18,7 @@ import { ichBeginne, nochmalsWuenschen } from '../netz/ablauf.js';
 import { verlustMelden } from '../netz/verlust.js';
 import { FernesSpielfeld } from '../logik/fernesfeld.js';
 import { zoomNoetig, zoomErlauben } from '../zoom.js';
+import { jubelKlein, jubelGross } from '../jubel.js';
 
 const BUCHSTABEN = 'ABCDEFGHIJKLMNOPQRSTUVWX'; // bis 24 Spalten
 const KLEIN = 0.42; // eigenes Feld im Verhältnis zum grossen
@@ -394,13 +395,21 @@ export class KampfSzene extends Phaser.Scene {
     if (r.ergebnis === 'versenkt') this.frischVersenkt.add(`${1 - schuetze}:${r.id}`);
     this.malen();
 
+    // Der getroffene Spieler jubelt – wenn der schiesst, der aufs iPad schaut
+    const spieler = r.id ? this.flotte.find((s) => s.id === r.id) : null;
+    const jubeln = spieler && aufsGrosse && wert('jubel') !== false;
+    const farben = spieler ? [wert(`${spieler.id}Farbe1`), wert(`${spieler.id}Farbe2`)] : null;
+
     if (r.ergebnis === 'versenkt') {
-      const name = this.flotte.find((s) => s.id === r.id).name;
       await warte(300);
       ton.horn();
-      this.meldung(`${name} versenkt!`);
-      await warte(900);
+      if (jubeln) await jubelGross(this.ebene, spieler, farben, (wert('jubelDauer') ?? 2.5) * 1000);
+      else {
+        this.meldung(`${spieler.name} versenkt!`);
+        await warte(900);
+      }
     } else {
+      if (r.ergebnis === 'treffer' && jubeln) jubelKlein(this.ebene, spieler, farben);
       await warte(r.ergebnis === 'wasser' ? 650 : 450);
     }
     return r;
