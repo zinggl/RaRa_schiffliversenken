@@ -2,6 +2,10 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 15 – 2026-11-19
+- Echtere Jubel-Figuren für alle 10 Spieler: Brustbild mit Gesicht, Frisur, Händen und Trikot-Details
+- Yamal nach Raphaels Foto (Spanien-Trikot, Hände gekreuzt, blonde Locken), Mbappé in Weiss-Gold mit verschränkten Armen
+
 ## Version 14 – 2026-11-19
 - Jubel dauert 10 Sekunden (Werkstatt: 1–15 s), Antippen überspringt den grossen Jubel
 
