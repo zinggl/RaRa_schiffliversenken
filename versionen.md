@@ -2,6 +2,10 @@
 
 Jede neue Version, die mit `/release` online geht, kommt hier zuoberst hin.
 
+## Version 12 – 2026-11-19
+- Neue Flotte nach Raphaels Aufstellung: Mbappé 7, Haaland 6, Ronaldo 5, Yamal 4, Keni 3, Messi 2
+- Neymar, Xhaka, Pedri, Musiala als Schnellboote mit 1 Feld; auf 10 × 10 spielen 8 Schiffe mit
+
 ## Version 11 – 2026-11-15
 - Meer bis 24 × 24 (Standard 10 × 10), 10 Schiffe: Messi 6 (der GOAT), Mbappé, Ronaldo, Yamal, Keni, Haaland, Neymar, Xhaka, Pedri, Musiala
 - Flotte passt sich der Meergrösse an, Spalten bis X, Zoomen mit zwei Fingern auf dem iPhone
