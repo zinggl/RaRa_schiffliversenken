@@ -26,9 +26,9 @@ Realistisch und hochwertig, **nicht kindlich**: wie ein gutes Handy-Spiel, nicht
 Den Code von Anfang an so bauen, dass die Spiellogik (Raster, Schiffe, Treffer) nicht an Grafik oder Gegner gebunden ist. So lassen sich die Modi 2 und 3 später einfach anhängen.
 
 ## Flotte
-- 10 Fussball-Schiffe in src/logik/flotte.js (Raphaels Aufstellung, vom längsten zum kleinsten):
-  Mbappé 7, Haaland 6, Ronaldo 5, Yamal 4, Keni 3, Messi 2, dann Schnellboote mit 1 Feld: Neymar, Xhaka, Pedri, Musiala
-- Meergrösse 7–24 (Standard 12, damit alle 10 Schiffe mitspielen). flotteFuer(groesse) nimmt so viele Schiffe, wie Platz haben (10×10: 8, ab 11×11: alle)
+- 11 Fussball-Schiffe in src/logik/flotte.js (Raphaels Aufstellung, vom längsten zum kleinsten):
+  Zuber 8 (FCZ), Mbappé 7, Haaland 6, Ronaldo 5, Yamal 4, Keni 3, Messi 2, dann Schnellboote mit 1 Feld: Neymar, Xhaka, Pedri, Musiala
+- Meergrösse 8–24 (Standard 12, damit alle 11 Schiffe mitspielen). flotteFuer(groesse) nimmt so viele Schiffe, wie Platz haben (10×10: 8, ab 11×11: alle)
 - iPhone ab 13×13: Zoomen mit zwei Fingern (src/zoom.js)
 - Jubel der Spieler (src/jubel.js): Figur aus Gelenken, eine Pose pro Spieler; Treffer = klein am Rand, Versenkt = gross in der Mitte; nur wenn der schiesst, der aufs iPad schaut
 

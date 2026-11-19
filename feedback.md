@@ -4,8 +4,10 @@ Nach jedem Test hier aufschreiben (oder diktieren): Was ist gut? Was nervt? Was 
 `/feedback` macht daraus Aufgaben und hakt Erledigtes ab.
 
 ## Offen
+- 2026-11-19 Keni genauer zeichnen – wartet auf ein Foto von Raphael
 
 ## Erledigt
+- 2026-11-19 Messi nach Foto (Argentinien), neuer Spieler Zuber (FCZ, 8 Felder, Schrei mit Faust)
 - 2026-11-19 «Jubel realer machen (zuerst Mbappé und Yamal)» – neue Brustbild-Figuren mit Gesicht, Frisur, Händen und Trikot-Details; Yamal nach Raphaels Foto (Spanien-Trikot, Hände gekreuzt, blonde Locken), Mbappé in Weiss-Gold mit verschränkten Armen
 - 2026-11-19 «Der Jubel soll 10 Sekunden dauern» – Jubel dauert jetzt 10 s (Werkstatt: 1–15 s), Antippen überspringt den grossen Jubel, neuer Treffer ersetzt den kleinen
 - 2026-11-19 «Auf dem iPad fehlen die kleineren Schiffe» – Standard-Meer jetzt 12 × 12, damit alle 10 Schiffe mitspielen
