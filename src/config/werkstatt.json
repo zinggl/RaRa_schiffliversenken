@@ -24,9 +24,19 @@
     "name": "Meergrösse (Felder)",
     "typ": "zahl",
     "wert": 12,
-    "min": 7,
+    "min": 8,
     "max": 24,
     "schritt": 1
+  },
+  "zuberFarbe1": {
+    "name": "Zuber Streifen 1",
+    "typ": "farbe",
+    "wert": "#ffffff"
+  },
+  "zuberFarbe2": {
+    "name": "Zuber Streifen 2",
+    "typ": "farbe",
+    "wert": "#1b2a5c"
   },
   "mbappeFarbe1": {
     "name": "Mbappé Streifen 1",
@@ -81,12 +91,12 @@
   "messiFarbe1": {
     "name": "Messi Streifen 1",
     "typ": "farbe",
-    "wert": "#f2a7c3"
+    "wert": "#75aadb"
   },
   "messiFarbe2": {
     "name": "Messi Streifen 2",
     "typ": "farbe",
-    "wert": "#1c1c1c"
+    "wert": "#ffffff"
   },
   "neymarFarbe1": {
     "name": "Neymar Streifen 1",

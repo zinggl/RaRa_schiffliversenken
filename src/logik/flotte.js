@@ -1,7 +1,8 @@
 // Raphaels Fussball-Flotte: Name und Länge (in Feldern), vom längsten zum kleinsten.
-// Aufstellung von Raphael: Mbappé ganz oben, dann Haaland, Ronaldo, Yamal, Keni, Messi.
+// Aufstellung von Raphael: Zuber (FCZ) ganz oben, dann Mbappé, Haaland, Ronaldo, Yamal, Keni, Messi.
 // Die Streifenfarben stehen in der Werkstatt (z. B. «mbappeFarbe1» und «mbappeFarbe2»).
 export const FLOTTE_ALLE = [
+  { id: 'zuber', name: 'Zuber', laenge: 8 },
   { id: 'mbappe', name: 'Mbappé', laenge: 7 },
   { id: 'haaland', name: 'Haaland', laenge: 6 },
   { id: 'ronaldo', name: 'Ronaldo', laenge: 5 },
@@ -15,7 +16,7 @@ export const FLOTTE_ALLE = [
   { id: 'musiala', name: 'Musiala', laenge: 1 },
 ];
 
-export const MEER_MIN = 7;
+export const MEER_MIN = 8; // Zuber hat 8 Felder
 export const MEER_MAX = 24;
 
 // Wie viele Schiffe passen aufs Meer? Jedes Schiff braucht samt freiem Rand (Schiffe berühren sich nie)
